@@ -34,6 +34,9 @@ class Firebase {
 
     userID = () => this.auth.currentUser.uid;
 
+    homes = () => {
+        return this.db.collection('Homes').where("userIDs", "array-contains", this.auth.currentUser.uid).get();
+    }
     handleSignInWithApple = () => {
         var provider = new app.auth.OAuthProvider('apple.com');
         provider.addScope('name');
@@ -64,7 +67,6 @@ class Firebase {
         var provider = new app.auth.OAuthProvider('apple.com');
         provider.addScope('name');
         this.auth.currentUser.linkWithPopup(provider).then((result) => {
-        }).catch((error) => {
         })
     }
 }

@@ -40,7 +40,7 @@ class Home extends Component {
         const { chores, loading } = this.state;
         return (
             <div>
-                <h1>Admin</h1>
+                <h1>Home</h1>
 
                 {loading && <div>Loading ...</div>}
                 {<ChoresList chores={chores} />}
