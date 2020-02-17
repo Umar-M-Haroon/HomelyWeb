@@ -51,19 +51,6 @@ class SignUpFormBase extends Component {
         return expression.test(String(email).toLowerCase())
     }
 
-    createAndOpenAppleURL = () => {
-        const parameters = new URLSearchParams({
-            "client_id": process.env.REACT_APP_APPLE_CLIENT_ID,
-            "redirect_uri": process.env.REACT_APP_APPLE_REDIRECT_URI,
-            "state": "HI",
-            "scope": process.env.REACT_APP_APPLE_SCOPE,
-            "response_mode": process.env.REACT_APP_APPLE_RESPONSE_MODE,
-            "response_type": process.env.REACT_APP_APPLE_RESPONSE_TYPE
-        });
-        const url = new URL(`https://appleid.apple.com/auth/authorize?${parameters.toString()}`);
-        window.open(url);
-    }
-
     render() {
         const {
             username,

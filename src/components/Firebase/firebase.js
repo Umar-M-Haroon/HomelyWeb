@@ -35,6 +35,13 @@ class Firebase {
     userID = () => this.auth.currentUser.uid;
 
     homes = () => {
+        this.auth.currentUser.providerData.forEach(element => {
+            this.db.collection('Homes').where("userIDs", "array-contains", element.uid).get().then((result) => {
+                result.docs.forEach((doc) => {
+                    console.log("ID:" + doc.id);
+                })
+            });
+        });
         return this.db.collection('Homes').where("userIDs", "array-contains", this.auth.currentUser.uid).get();
     }
     handleSignInWithApple = () => {
@@ -43,17 +50,14 @@ class Firebase {
         this.auth.signInWithPopup(provider)
             .then((result) => {
                 if (result.additionalUserInfo.isNewUser === false) {
-                    this.auth.signOut().then(() => {
-                        let token = result.additionalUserInfo.profile.sub;
-                        var createCustomToken = this.functions.httpsCallable('createCustomToken');
-                        createCustomToken({ identifier: token }).then(result => {
-                            var createdToken = result.data.token;
-                            this.auth.signInWithCustomToken(createdToken).then(() => {
-                                this.migrateUserToSignInWithApple();
-                            });
-                        }).catch((error) => {
-                            console.log("error creating custom token" + error);
-                        })
+                    let token = result.additionalUserInfo.profile.sub;
+                    var createCustomToken = this.functions.httpsCallable('createCustomToken');
+                    createCustomToken({ identifier: token }).then(result => {
+                        var createdToken = result.data.token;
+                        this.auth.signInWithCustomToken(createdToken).then(() => {
+                            console.log(this.auth.currentUser.uid);
+                            this.migrateUserToSignInWithApple();
+                        });
                     }).catch((error) => {
                         console.log(error);
                     })
@@ -66,7 +70,11 @@ class Firebase {
     migrateUserToSignInWithApple = () => {
         var provider = new app.auth.OAuthProvider('apple.com');
         provider.addScope('name');
-        this.auth.currentUser.linkWithPopup(provider).then((result) => {
+        this.auth.currentUser.linkWithPopup(provider).catch((error) => {
+            if (error.code === "auth/credential-already-in-use") {
+                this.auth.signInWithCredential(error.credential).then((result) => {
+                });
+            }
         })
     }
 }

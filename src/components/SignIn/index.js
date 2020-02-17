@@ -10,7 +10,7 @@ const SignIn = () => (
     <div>
         <h1>SignIn</h1>
         <SignInForm />
-        <PasswordForgetLink/>
+        <PasswordForgetLink />
         <SignUpLink />
     </div>
 );
@@ -22,6 +22,11 @@ const INITIAL_STATE = {
     error: null,
 };
 class SignInFormBase extends Component {
+    componentDidMount() {
+        document.getElementById("Apple-Sign-In").onclick = (() => {
+            this.props.firebase.handleSignInWithApple();
+        });
+    }
     constructor(props) {
         super(props);
         this.state = { ...INITIAL_STATE };
@@ -45,26 +50,34 @@ class SignInFormBase extends Component {
         const { email, password, error } = this.state;
         const isInvalid = password === '' || email === '';
         return (
-            <form onSubmit={this.onSubmit}>
-                <input
-                    name="email"
-                    value={email}
-                    onChange={this.onChange}
-                    type="text"
-                    placeholder="Email Address"
-                />
-                <input
-                    name="password"
-                    value={password}
-                    onChange={this.onChange}
-                    type="password"
-                    placeholder="Password"
-                />
-                <button disabled={isInvalid} type="submit">
-                    Sign In
+            <div>
+                <form onSubmit={this.onSubmit}>
+                    <input
+                        name="email"
+                        value={email}
+                        onChange={this.onChange}
+                        type="text"
+                        placeholder="Email Address"
+                    />
+                    <input
+                        name="password"
+                        value={password}
+                        onChange={this.onChange}
+                        type="password"
+                        placeholder="Password"
+                    />
+                    <button disabled={isInvalid} type="submit">
+                        Sign In
             </button>
-                {error && <p>{error.message}</p>}
-            </form>
+                    {error && <p>{error.message}</p>}
+                </form>
+                <h6 className="signin-button">or </h6>
+                <div className="signin-button">
+                    <button id="Apple-Sign-In" className="btn btn-link">
+                        <img className="signin-button" src="https://appleid.cdn-apple.com/appleid/button?height=64&width=300&type=continue" alt="Sign In With Apple" />
+                    </button>
+                </div>
+            </div>
         );
     }
 }

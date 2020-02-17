@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import './Landing.css';
 import { ReactComponent as Logo } from '../../homely-logo.svg';
-import SignUp from '../SignUp';
 import { AuthUserContext } from '../Session';
 import * as ROUTES from '../../constants/routes';
+import SignIn from '../SignIn';
 class Landing extends Component {
     render() {
         return (
@@ -21,12 +21,15 @@ class Landing extends Component {
         );
     }
 }
-const SignUpLanding = () => (
-    <div className="Main">
-        <h1 className="Title">Welcome to Homely!</h1>
-        <Logo className="Homely-Logo">Homely Logo</Logo>
-        <h3 className="Title">Sign in or sign up to get started</h3>
-        <SignUp />
-    </div>
-)
+class SignUpLanding extends Component {
+
+    render() {
+        return (<div className="Main">
+            <h1 className="Title">Welcome to Homely!</h1>
+            <Logo className="Homely-Logo">Homely Logo</Logo>
+            <h3 className="Title">Sign in or sign up to get started</h3>
+            <SignIn />
+        </div>)
+    }
+}
 export default Landing;
