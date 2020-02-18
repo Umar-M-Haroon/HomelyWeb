@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { withAuthorization } from '../Session';
 import { withFirebase } from '../Firebase';
 import './Home.css'
+import {ReactComponent as Options} from '../../itemOptions.svg';
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -44,23 +45,23 @@ class Home extends Component {
                 <h1>Home</h1>
                 {loading && <div>Loading ...</div>}
                 <div class="choreFrame">
-                <h2>Chores</h2>
-                {<ChoresList chores={chores} />}
+                    <h2>Chores</h2>
+                    {<ChoresList chores={chores} />}
                 </div>
             </div>
         );
-        
+
     }
 }
 
 const ChoresList = ({ chores }) => (
     <ul>
         {chores.map(chore => (
-         <li>
-             <span>
-                  {chore} <div class="button completeButton">...</div>
-             </span>
-         </li>
+            <li>
+                <span className="item">
+                    {chore} <button type="button" className="optionsButton"><Options className="itemOptions">Options</Options></button>
+                </span>
+            </li>
         ))}
     </ul>
 );
