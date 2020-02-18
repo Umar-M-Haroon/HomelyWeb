@@ -41,7 +41,7 @@ class Home extends Component {
         return (
             <div>
                 <h1>Home</h1>
-
+                <h2>Chores</h2>
                 {loading && <div>Loading ...</div>}
                 {<ChoresList chores={chores} />}
             </div>
