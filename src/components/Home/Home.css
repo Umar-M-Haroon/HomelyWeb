@@ -1,0 +1,6 @@
+.frame {
+    border-radius: 25px;
+    background-image: linear-gradient(to bottom right, darkgreen, lightgreen);
+    width: 300px;
+    padding: 10px;
+  }

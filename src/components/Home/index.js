@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withAuthorization } from '../Session';
 import { withFirebase } from '../Firebase';
+import './Home.css'
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -43,9 +44,13 @@ class Home extends Component {
                 <h1>Home</h1>
 
                 {loading && <div>Loading ...</div>}
+                <div class="frame">
+                <h2>Chores</h2>
                 {<ChoresList chores={chores} />}
+                </div>
             </div>
         );
+        
     }
 }
 
@@ -54,12 +59,13 @@ const ChoresList = ({ chores }) => (
         {chores.map(chore => (
          <li>
              <span>
-                 <strong>Title</strong> {chore}
+                  {chore}
              </span>
          </li>
         ))}
     </ul>
 );
+
 
 const condition = authUser => !!authUser;
 export default withFirebase(withAuthorization(condition)(Home));
