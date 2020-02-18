@@ -1,6 +1,24 @@
-.frame {
+.button {
+    background-color: white; /* Green */
+    border: none;
+    color: grey;
+    padding: 5px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 2px 2px;
+    cursor: pointer;
+}
+.choreFrame {
     border-radius: 25px;
+    box-shadow: 5px 5px 10px grey;
     background-image: linear-gradient(to bottom right, darkgreen, lightgreen);
     width: 300px;
     padding: 10px;
-  }
+}
+
+.completeButton {
+    border-radius: 80%;
+    background-image: linear-gradient(to bottom right, white, lightgrey);
+}

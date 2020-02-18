@@ -42,9 +42,8 @@ class Home extends Component {
         return (
             <div>
                 <h1>Home</h1>
-                <h2>Chores</h2>
                 {loading && <div>Loading ...</div>}
-                <div class="frame">
+                <div class="choreFrame">
                 <h2>Chores</h2>
                 {<ChoresList chores={chores} />}
                 </div>
@@ -59,7 +58,7 @@ const ChoresList = ({ chores }) => (
         {chores.map(chore => (
          <li>
              <span>
-                  {chore}
+                  {chore} <div class="button completeButton">...</div>
              </span>
          </li>
         ))}
