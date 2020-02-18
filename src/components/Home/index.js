@@ -42,7 +42,7 @@ class Home extends Component {
         return (
             <div>
                 <h1>Home</h1>
-
+                <h2>Chores</h2>
                 {loading && <div>Loading ...</div>}
                 <div class="frame">
                 <h2>Chores</h2>
