@@ -44,7 +44,11 @@ class Home extends Component {
             <div>
                 <h1>Home</h1>
                 {loading && <div>Loading ...</div>}
-                {<ChoresList chores={chores} />}
+                <div className="categories">
+                    {<ChoresList chores={chores} />}
+                    {<SuppliesList supplies={chores} />}
+                    {<PaymentsList payments={chores} />}
+                </div>
             </div>
         );
 
@@ -52,20 +56,48 @@ class Home extends Component {
 }
 
 const ChoresList = ({ chores }) => (
-    <div class="choreFrame">
+    <div class="categoryFrame">
         <h2>Chores</h2>
-        <ul>
+        <ul className="listFrame">
             {chores.map(chore => (
-                <li>
+                <div className="itemFrame">
                     <span className="item">
-                        {chore} <button type="button" className="optionsButton"><Options className="itemOptions">Options</Options></button>
+                        {chore} <button type="button" className="btn btn-primary">Options</button>
                     </span>
-                </li>
+                </div>
             ))}
         </ul>
     </div >
 );
 
+const SuppliesList = ({ supplies }) => (
+    <div class="categoryFrame">
+        <h2>Supplies</h2>
+        <ul className="listFrame">
+            {supplies.map(supply => (
+                <div className="itemFrame">
+                    <span className="item">
+                        {supply} <button type="button" className="btn btn-primary">Options</button>
+                    </span>
+                </div>
+            ))}
+        </ul>
+    </div >
+)
+const PaymentsList = ({ payments }) => (
+    <div class="categoryFrame">
+        <h2>Payments</h2>
+        <ul className="listFrame">
+            {payments.map(payment => (
+                <div className="itemFrame">
+                    <span className="item">
+                        {payment} <button type="button" className="btn btn-primary">Options</button>
+                    </span>
+                </div>
+            ))}
+        </ul>
+    </div >
+)
 
 const condition = authUser => !!authUser;
 export default withFirebase(withAuthorization(condition)(Home));

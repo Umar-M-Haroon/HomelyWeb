@@ -1,32 +1,48 @@
-.choreFrame {
+.categoryFrame {
+  display: inline-block;
   border-radius: 25px;
   box-shadow: 5px 5px 10px grey;
-  background: linear-gradient(
-      to bottom right,
-      rgba(255, 255, 255, 0.6),
-      rgba(255, 255, 255, 0)
-    ),
-    linear-gradient(to bottom right, #0447e0, #0447e0);
+  background: linear-gradient( to bottom right, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0)), linear-gradient(to bottom right, #0447e0, #0447e0);
   width: 300px;
   height: 600px;
   padding: 10px;
+  position: relative;
+  margin: 40px;
+  text-align: left;
 }
 
-.itemOptions {
-  fill: white;
-  width: 30px;
-  height: 30px;
+.itemFrame {
+  align-items: center;
   margin: auto;
+  background-color: white;
+  margin-top: 8px;
+  margin-left: -40px;
+  height: 70px;
+  border-radius: 8px;
 }
+
+.listFrame {
+  max-height: 92%;
+  overflow: auto;
+}
+
 .optionsButton {
   background-color: rgba(0, 0, 0, 0);
   border: none;
   outline: none;
 }
+
 li {
-    list-style-type: none;
+  list-style-type: none;
 }
+
 .item {
-    height: 65px;
-    font-size: 20px;
+  height: 65px;
+  font-size: 20px;
+}
+
+.categories {
+  text-align: center;
+  align-items: center;
+  width: 100%;
 }
