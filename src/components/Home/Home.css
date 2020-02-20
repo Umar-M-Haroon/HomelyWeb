@@ -12,13 +12,16 @@
 }
 
 .itemFrame {
-  background-color: white;
-  margin-top: 8px;
+  /* background-color: white; */
+  /* margin-top: 8px; */
   margin-left: -20px;
-  height: 70px;
-  border-radius: 8px;
-}
+  /* min-height: 70px; */
+  /* border-radius: 50px; */
 
+}
+.card-text {
+  max-width: 70%;
+}
 .listFrame {
   max-height: 92%;
   overflow: auto;
@@ -29,7 +32,7 @@
   position: absolute;
   right: 0;
   margin-right: 20px;
-  margin-top: 8px;
+  top: auto;
 }
 .item {
   font-size: 20px;
