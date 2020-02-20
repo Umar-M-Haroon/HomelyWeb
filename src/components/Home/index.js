@@ -79,7 +79,7 @@ const ChoresList = ({ chores }) => (
             {chores.map(chore => (
                 <div className="itemFrame">
                     <span className="item">
-                        {chore} <button type="button" className="btn btn-primary">Options</button>
+                        {chore} <button type="button" className="options btn btn-primary">Options</button>
                     </span>
                 </div>
             ))}
@@ -94,7 +94,8 @@ const SuppliesList = ({ supplies }) => (
             {supplies.map(supply => (
                 <div className="itemFrame">
                     <span className="item">
-                        {supply} <button type="button" className="btn btn-primary">Options</button>
+                        {supply} 
+                        <button type="button" className="options btn btn-primary">Options</button>
                     </span>
                 </div>
             ))}
@@ -108,7 +109,7 @@ const PaymentsList = ({ payments }) => (
             {payments.map(payment => (
                 <div className="itemFrame">
                     <span className="item">
-                        {payment} <button type="button" className="btn btn-primary">Options</button>
+                        {payment} <button type="button" className="options btn btn-primary">Options</button>
                     </span>
                 </div>
             ))}

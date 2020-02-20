@@ -1,57 +1,44 @@
 .categoryFrame {
   display: inline-flex;
-  border-radius: 25px;
+  border-radius: 20px;
   box-shadow: 5px 5px 10px grey;
   background: linear-gradient( to bottom right, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0)), linear-gradient(to bottom right, #0447e0, #0447e0);
   width: 400px;
   height: 600px;
   padding: 10px;
-  margin: 40px;
+  margin: 20px;
   text-align: left;
   position: relative;
 }
 
 .itemFrame {
-  /* align-items: center; */
-  /* margin: auto; */
   background-color: white;
   margin-top: 8px;
   margin-left: -20px;
   height: 70px;
   border-radius: 8px;
-  position: relative;
-  width: 100%;
-  min-width: 100%;
 }
 
 .listFrame {
   max-height: 92%;
   overflow: auto;
-}
-
-.optionsButton {
-  background-color: rgba(0, 0, 0, 0);
-  border: none;
-  outline: none;
-}
-
-li {
-  list-style-type: none;
-}
-
-.item {
-  height: 65px;
-  font-size: 20px;
-}
-
-.categories {
-  text-align: center;
-  align-items: center;
   width: 100%;
+  display: flexbox;
 }
+.options{
+  position: absolute;
+  right: 0;
+  margin-right: 20px;
+  margin-top: 8px;
+}
+.item {
+  font-size: 20px;
+  margin-left: 8px;
+  font-weight: 600;
+}
+
 
 .Title{
-  position: relative;
   text-align: left;
   margin-left: -20px;
 }
