@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { withAuthorization } from '../Session';
 import { withFirebase } from '../Firebase';
+import Calendar from 'react-calendar';
 import './Home.css'
 class Home extends Component {
     constructor(props) {
@@ -11,6 +12,18 @@ class Home extends Component {
             chores: [],
         };
     }
+
+    /*RUN npm i react-calendar*/
+    /*Creating the state for the calendar*/
+    state = {
+        date: new Date(),
+    }
+    /*A couple of the functions that are listed on the website that I posted on basecamp. At the moment, 
+    onClickDay is just set to pop up that you have clicked on a day as I am unsure on how to link it to the 
+    events that we have already set up*/
+    onChange = date => this.setState({ date })
+    onClickDay = value => alert('Clicked on a day')
+
     componentDidMount() {
         var allChores = []
         this.setState({ loading: false });
@@ -48,6 +61,12 @@ class Home extends Component {
                 <h2>Chores</h2>
                 {<ChoresList chores={chores} />}
                 </div>
+                {/*Rendering the calendar*/}
+                <Calendar
+                    onChange={this.onChange}
+                    value={this.state.date}
+                    onClickDay={this.onClickDay}
+                />
             </div>
         );
         
