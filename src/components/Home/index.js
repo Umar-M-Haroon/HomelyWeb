@@ -10,14 +10,13 @@ class Home extends Component {
         this.state = {
             loading: true,
             chores: [],
+            date: new Date()
         };
     }
 
     /*RUN npm i react-calendar*/
     /*Creating the state for the calendar*/
-    state = {
-        date: new Date(),
-    }
+  
     /*A couple of the functions that are listed on the website that I posted on basecamp. At the moment, 
     onClickDay is just set to pop up that you have clicked on a day as I am unsure on how to link it to the 
     events that we have already set up*/

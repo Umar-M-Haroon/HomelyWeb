@@ -40,6 +40,8 @@ class Firebase {
                 result.docs.forEach((doc) => {
                     console.log("ID:" + doc.id);
                 })
+            }).catch((error) => {
+                console.log("error");
             });
         });
         return this.db.collection('Homes').where("userIDs", "array-contains", this.auth.currentUser.uid).get();
