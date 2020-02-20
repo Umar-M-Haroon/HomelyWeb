@@ -34,9 +34,12 @@
 .item {
   font-size: 20px;
   margin-left: 8px;
-  font-weight: 600;
+  font-weight: 700;
 }
 
+li{
+  list-style-type: none;
+}
 
 .Title{
   text-align: left;

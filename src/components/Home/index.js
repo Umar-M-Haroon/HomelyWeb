@@ -22,7 +22,7 @@ class Home extends Component {
         this.props.firebase.homes()
             .then(querySnapshot => {
                 querySnapshot.forEach(doc => {
-                    
+
                     doc.data().Chores.forEach(chore => {
                         if (chore.Completed !== true) {
                             allChores.push(chore);
@@ -36,7 +36,7 @@ class Home extends Component {
                     doc.data().Payments.forEach(payment => {
                         if (payment.Completed !== true) {
                             allPayments.push(payment);
-                        } 
+                        }
                     })
                     this.setState({
                         chores: allChores,
@@ -75,11 +75,13 @@ const ChoresList = ({ chores }) => (
     <div className="categoryFrame">
         <ul className="listFrame">
             <h2 className="Title">Chores</h2>
-            {chores.map(chore => (
+            {chores.map((chore, key) => (
                 <div className="itemFrame">
-                    <span className="item">
-                        {chore.Title} <button type="button" className="options btn btn-primary">Options</button>
-                    </span>
+                    <li key={key}>
+                        <span className="item">
+                            {chore.Title} <button type="button" className="options btn btn-primary">Options</button>
+                        </span>
+                    </li>
                 </div>
             ))}
         </ul>
@@ -90,12 +92,14 @@ const SuppliesList = ({ supplies }) => (
     <div className="categoryFrame">
         <ul className="listFrame">
             <h2 className="Title">Supplies</h2>
-            {supplies.map(supply => (
+            {supplies.map((supply, key) => (
                 <div className="itemFrame">
-                    <span className="item">
-                        {supply["Supply Title"]} 
-                        <button type="button" className="options btn btn-primary">Options</button>
-                    </span>
+                    <li key={key}>
+                        <span className="item">
+                            {supply["Supply Title"]}
+                            <button type="button" className="options btn btn-primary">Options</button>
+                        </span>
+                    </li>
                 </div>
             ))}
         </ul>
@@ -105,11 +109,13 @@ const PaymentsList = ({ payments }) => (
     <div className="categoryFrame">
         <ul className="listFrame">
             <h2 className="Title">Payments</h2>
-            {payments.map(payment => (
+            {payments.map((payment, key) => (
                 <div className="itemFrame">
-                    <span className="item">
-                        {payment["Payment Title"]} <button type="button" className="options btn btn-primary">Options</button>
-                    </span>
+                    <li key={key}>
+                        <span className="item">
+                            {payment["Payment Title"]} <button type="button" className="options btn btn-primary">Options</button>
+                        </span>
+                    </li>
                 </div>
             ))}
         </ul>
