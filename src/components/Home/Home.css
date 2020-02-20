@@ -12,13 +12,16 @@
 }
 
 .itemFrame {
-  align-items: center;
-  margin: auto;
+  /* align-items: center; */
+  /* margin: auto; */
   background-color: white;
   margin-top: 8px;
-  margin-left: -40px;
+  margin-left: -20px;
   height: 70px;
   border-radius: 8px;
+  position: relative;
+  width: 100%;
+  min-width: 100%;
 }
 
 .listFrame {
