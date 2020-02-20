@@ -10,39 +10,38 @@ class Home extends Component {
         this.state = {
             loading: true,
             chores: [],
-            supplies: []
+            supplies: [],
+            payments: []
         };
     }
     componentDidMount() {
         var allChores = []
         var allSupplies = []
+        var allPayments = []
         this.setState({ loading: false });
         this.props.firebase.homes()
             .then(querySnapshot => {
                 querySnapshot.forEach(doc => {
-                    console.log(doc.data());
+                    
                     doc.data().Chores.forEach(chore => {
-                        console.log(chore.completed);
                         if (chore.Completed !== true) {
-                            allChores.push(chore.Title);
-                            return chore.Title;
+                            allChores.push(chore);
                         }
                     });
                     doc.data().Supplies.forEach(supply => {
                         if (supply.Completed !== true) {
-                            allSupplies.push(supply["Supply Title"]);
-                            return supply["Supply Title"];
+                            allSupplies.push(supply);
                         }
                     });
                     doc.data().Payments.forEach(payment => {
                         if (payment.Completed !== true) {
-                            allSupplies.push(payment["Payment Title"]);
-                            return payment["Payment Title"];
+                            allPayments.push(payment);
                         } 
                     })
                     this.setState({
                         chores: allChores,
                         supplies: allSupplies,
+                        payments: allPayments,
                         loading: false
                     })
                 })
@@ -56,7 +55,7 @@ class Home extends Component {
     }
 
     render() {
-        const { chores, supplies, loading } = this.state;
+        const { chores, supplies, payments, loading } = this.state;
         return (
             <div>
                 <h1>Home</h1>
@@ -64,7 +63,7 @@ class Home extends Component {
                 <div className="categories">
                     {<ChoresList chores={chores} />}
                     {<SuppliesList supplies={supplies} />}
-                    {<PaymentsList payments={chores} />}
+                    {<PaymentsList payments={payments} />}
                 </div>
             </div>
         );
@@ -79,7 +78,7 @@ const ChoresList = ({ chores }) => (
             {chores.map(chore => (
                 <div className="itemFrame">
                     <span className="item">
-                        {chore} <button type="button" className="options btn btn-primary">Options</button>
+                        {chore.Title} <button type="button" className="options btn btn-primary">Options</button>
                     </span>
                 </div>
             ))}
@@ -94,7 +93,7 @@ const SuppliesList = ({ supplies }) => (
             {supplies.map(supply => (
                 <div className="itemFrame">
                     <span className="item">
-                        {supply} 
+                        {supply["Supply Title"]} 
                         <button type="button" className="options btn btn-primary">Options</button>
                     </span>
                 </div>
@@ -109,7 +108,7 @@ const PaymentsList = ({ payments }) => (
             {payments.map(payment => (
                 <div className="itemFrame">
                     <span className="item">
-                        {payment} <button type="button" className="options btn btn-primary">Options</button>
+                        {payment["Payment Title"]} <button type="button" className="options btn btn-primary">Options</button>
                     </span>
                 </div>
             ))}
