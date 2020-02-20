@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withAuthorization } from '../Session';
 import { withFirebase } from '../Firebase';
 import './Home.css'
-import { ReactComponent as Options } from '../../itemOptions.svg';
+// import { ReactComponent as Options } from '../../itemOptions.svg';
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -10,24 +10,41 @@ class Home extends Component {
         this.state = {
             loading: true,
             chores: [],
+            supplies: []
         };
     }
     componentDidMount() {
         var allChores = []
+        var allSupplies = []
         this.setState({ loading: false });
         this.props.firebase.homes()
             .then(querySnapshot => {
                 querySnapshot.forEach(doc => {
+                    console.log(doc.data());
                     doc.data().Chores.forEach(chore => {
-                        allChores.push(chore.Title);
-                        return chore.Title;
+                        console.log(chore.completed);
+                        if (chore.Completed !== true) {
+                            allChores.push(chore.Title);
+                            return chore.Title;
+                        }
                     });
-                    doc.data()
+                    doc.data().Supplies.forEach(supply => {
+                        if (supply.Completed !== true) {
+                            allSupplies.push(supply["Supply Title"]);
+                            return supply["Supply Title"];
+                        }
+                    });
+                    doc.data().Payments.forEach(payment => {
+                        if (payment.Completed !== true) {
+                            allSupplies.push(payment["Payment Title"]);
+                            return payment["Payment Title"];
+                        } 
+                    })
                     this.setState({
                         chores: allChores,
-                        loading: false,
+                        supplies: allSupplies,
+                        loading: false
                     })
-                    console.log(allChores);
                 })
             }).catch(error => {
                 console.log(error);
@@ -39,14 +56,14 @@ class Home extends Component {
     }
 
     render() {
-        const { chores, loading } = this.state;
+        const { chores, supplies, loading } = this.state;
         return (
             <div>
                 <h1>Home</h1>
                 {loading && <div>Loading ...</div>}
                 <div className="categories">
                     {<ChoresList chores={chores} />}
-                    {<SuppliesList supplies={chores} />}
+                    {<SuppliesList supplies={supplies} />}
                     {<PaymentsList payments={chores} />}
                 </div>
             </div>
@@ -56,9 +73,9 @@ class Home extends Component {
 }
 
 const ChoresList = ({ chores }) => (
-    <div class="categoryFrame">
-        <h2>Chores</h2>
+    <div className="categoryFrame">
         <ul className="listFrame">
+            <h2 className="Title">Chores</h2>
             {chores.map(chore => (
                 <div className="itemFrame">
                     <span className="item">
@@ -71,9 +88,9 @@ const ChoresList = ({ chores }) => (
 );
 
 const SuppliesList = ({ supplies }) => (
-    <div class="categoryFrame">
-        <h2>Supplies</h2>
+    <div className="categoryFrame">
         <ul className="listFrame">
+            <h2 className="Title">Supplies</h2>
             {supplies.map(supply => (
                 <div className="itemFrame">
                     <span className="item">
@@ -85,9 +102,9 @@ const SuppliesList = ({ supplies }) => (
     </div >
 )
 const PaymentsList = ({ payments }) => (
-    <div class="categoryFrame">
-        <h2>Payments</h2>
+    <div className="categoryFrame">
         <ul className="listFrame">
+            <h2 className="Title">Payments</h2>
             {payments.map(payment => (
                 <div className="itemFrame">
                     <span className="item">
