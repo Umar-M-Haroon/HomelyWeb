@@ -60,10 +60,16 @@ class Home extends Component {
             <div>
                 <h1>Home</h1>
                 {loading && <div>Loading ...</div>}
-                <div className="categories">
-                    {<ChoresList chores={chores} />}
-                    {<SuppliesList supplies={supplies} />}
-                    {<PaymentsList payments={payments} />}
+                <div className="row no-gutters flex-nowrap">
+                    <div class="col">
+                        {<ChoresList chores={chores} />}
+                    </div>
+                    <div class="col">
+                        {<SuppliesList supplies={supplies} />}
+                    </div>
+                    <div class="col">
+                        {<PaymentsList payments={payments} />}
+                    </div>
                 </div>
             </div>
         );
@@ -75,13 +81,16 @@ const ChoresList = ({ chores }) => (
     <div className="categoryFrame">
         <ul className="listFrame">
             <h2 className="Title">Chores</h2>
-            {chores.map((chore, key) => (
-                <div className="itemFrame">
-                    <li key={key}>
-                        <span className="item">
-                            {chore.Title} <button type="button" className="options btn btn-primary">Options</button>
-                        </span>
-                    </li>
+            {chores.map((chore) => (
+                <div className="card itemFrame mt-1">
+                    <div className="card-body ">
+                        <li key={chore.Timestamp}>
+                            <div className="item">
+                                <button type="button" className="options btn btn-primary">Options</button>
+                                <p className="card-text">{chore.Title}</p>
+                            </div>
+                        </li>
+                    </div>
                 </div>
             ))}
         </ul>
@@ -92,14 +101,16 @@ const SuppliesList = ({ supplies }) => (
     <div className="categoryFrame">
         <ul className="listFrame">
             <h2 className="Title">Supplies</h2>
-            {supplies.map((supply, key) => (
-                <div className="itemFrame">
-                    <li key={key}>
-                        <span className="item">
-                            {supply["Supply Title"]}
-                            <button type="button" className="options btn btn-primary">Options</button>
-                        </span>
-                    </li>
+            {supplies.map((supply) => (
+                <div className="card itemFrame mt-1">
+                    <div className="card-body">
+                        <li key={supply.Timestamp}>
+                            <div className="item">
+                                {supply["Supply Title"]}
+                                <button type="button" className="options btn btn-primary">Options</button>
+                            </div>
+                        </li>
+                    </div>
                 </div>
             ))}
         </ul>
@@ -109,13 +120,15 @@ const PaymentsList = ({ payments }) => (
     <div className="categoryFrame">
         <ul className="listFrame">
             <h2 className="Title">Payments</h2>
-            {payments.map((payment, key) => (
-                <div className="itemFrame">
-                    <li key={key}>
-                        <span className="item">
-                            {payment["Payment Title"]} <button type="button" className="options btn btn-primary">Options</button>
-                        </span>
-                    </li>
+            {payments.map((payment) => (
+                <div className="card itemFrame mt-1">
+                    <div className="card-body">
+                        <li key={payment.Timestamp}>
+                            <span className="item">
+                                {payment["Payment Title"]} <button type="button" className="options btn btn-primary">Options</button>
+                            </span>
+                        </li>
+                    </div>
                 </div>
             ))}
         </ul>
