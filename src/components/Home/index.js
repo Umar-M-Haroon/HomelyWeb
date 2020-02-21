@@ -60,10 +60,16 @@ class Home extends Component {
             <div>
                 <h1>Home</h1>
                 {loading && <div>Loading ...</div>}
-                <div className="categories">
-                    {<ChoresList chores={chores} />}
-                    {<SuppliesList supplies={supplies} />}
-                    {<PaymentsList payments={payments} />}
+                <div className="row no-gutters flex-nowrap">
+                    <div class="col">
+                        {<ChoresList chores={chores} />}
+                    </div>
+                    <div class="col">
+                        {<SuppliesList supplies={supplies} />}
+                    </div>
+                    <div class="col">
+                        {<PaymentsList payments={payments} />}
+                    </div>
                 </div>
             </div>
         );
@@ -76,14 +82,11 @@ const ChoresList = ({ chores }) => (
         <ul className="listFrame">
             <h2 className="Title">Chores</h2>
             {chores.map((chore) => (
-                <div className="card itemFrame">
+                <div className="card itemFrame mt-1">
                     <div className="card-body ">
                         <li key={chore.Timestamp}>
                             <div className="item">
                                 <button type="button" className="options btn btn-primary">Options</button>
-                                <p className="card-text">{chore.Title}</p>
-                                <p className="card-text">{chore.Title}</p>
-                                <p className="card-text">{chore.Title}</p>
                                 <p className="card-text">{chore.Title}</p>
                             </div>
                         </li>
@@ -99,13 +102,15 @@ const SuppliesList = ({ supplies }) => (
         <ul className="listFrame">
             <h2 className="Title">Supplies</h2>
             {supplies.map((supply) => (
-                <div className="itemFrame">
-                    <li key={supply.Timestamp}>
-                        <span className="item">
-                            {supply["Supply Title"]}
-                            <button type="button" className="options btn btn-primary">Options</button>
-                        </span>
-                    </li>
+                <div className="card itemFrame mt-1">
+                    <div className="card-body">
+                        <li key={supply.Timestamp}>
+                            <div className="item">
+                                {supply["Supply Title"]}
+                                <button type="button" className="options btn btn-primary">Options</button>
+                            </div>
+                        </li>
+                    </div>
                 </div>
             ))}
         </ul>
@@ -116,12 +121,14 @@ const PaymentsList = ({ payments }) => (
         <ul className="listFrame">
             <h2 className="Title">Payments</h2>
             {payments.map((payment) => (
-                <div className="itemFrame">
-                    <li key={payment.Timestamp}>
-                        <span className="item">
-                            {payment["Payment Title"]} <button type="button" className="options btn btn-primary">Options</button>
-                        </span>
-                    </li>
+                <div className="card itemFrame mt-1">
+                    <div className="card-body">
+                        <li key={payment.Timestamp}>
+                            <span className="item">
+                                {payment["Payment Title"]} <button type="button" className="options btn btn-primary">Options</button>
+                            </span>
+                        </li>
+                    </div>
                 </div>
             ))}
         </ul>
