@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { PasswordForgetForm } from '../PasswordForget';
 import { AuthUserContext, withAuthorization } from '../Session'
 import PasswordChangeForm from '../PasswordChange';
 import SignOut from '../SignOut';
@@ -13,19 +12,23 @@ class AccountPage extends Component {
                 {
                     authUser => authUser.email ? (
                         <div>
-                            <h1>Account: {authUser.email}</h1>
-                            <h2>{authUser.displayName}</h2>
-                            <PasswordForgetForm />
-                            <PasswordChangeForm />
-                            <SignOut />
+                            <h1>Account</h1>
+                            <div className="Master">
+                                <div>
+                                    <img className="ProfilePhoto" src={authUser.photoURL} alt="Profile" />
+                                </div>
+                                <h2>{authUser.displayName}</h2>
+                                <PasswordChangeForm />
+                                <SignOut />
+                            </div>
                         </div>
                     ) : (
                             <div className="Master">
                                 <div>
-                                    <img className="ProfilePhoto" src={authUser.photoURL} alt="Profile"></img>
+                                    <img className="ProfilePhoto" src={authUser.photoURL} alt="Profile" />
                                 </div>
                                 <h1>{authUser.displayName}</h1>
-                                <SignOut/>
+                                <SignOut />
                             </div>
                         )
                 }
