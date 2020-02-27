@@ -86,7 +86,12 @@ const ChoresList = ({ chores }) => (
                     <div className="card-body ">
                         <li key={chore.Timestamp}>
                             <div className="item">
-                                <button type="button" className="options btn btn-primary">Options</button>
+                                <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownOptions">
+                                    <a className="dropdown-item" href="#">Complete</a>
+                                    <a className="dropdown-item" href="#">Edit</a>
+                                    <a className="dropdown-item" href="#">Add to Calender</a>
+                                </div>
                                 <p className="card-text">{chore.Title}</p>
                             </div>
                         </li>
@@ -106,8 +111,13 @@ const SuppliesList = ({ supplies }) => (
                     <div className="card-body">
                         <li key={supply.Timestamp}>
                             <div className="item">
-                                {supply["Supply Title"]}
-                                <button type="button" className="options btn btn-primary">Options</button>
+                                <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownOptions">
+                                    <a className="dropdown-item" href="#">Complete</a>
+                                    <a className="dropdown-item" href="#">Edit</a>
+                                    <a className="dropdown-item" href="#">Add to Calender</a>
+                                </div>
+                                <p className="card-text">{supply["Supply Title"]}</p>
                             </div>
                         </li>
                     </div>
@@ -125,7 +135,14 @@ const PaymentsList = ({ payments }) => (
                     <div className="card-body">
                         <li key={payment.Timestamp}>
                             <span className="item">
-                                {payment["Payment Title"]} <button type="button" className="options btn btn-primary">Options</button>
+                                
+                                <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
+                                <div class="dropdown-menu" aria-labelledby="dropdownOptions">
+                                    <a className="dropdown-item" href="#">Complete</a>
+                                    <a className="dropdown-item" href="#">Edit</a>
+                                    <a className="dropdown-item" href="#">Add to Calender</a>
+                                </div>
+                                <p className="card-text">{payment["Payment Title"]}</p>
                             </span>
                         </li>
                     </div>
