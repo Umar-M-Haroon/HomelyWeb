@@ -9,27 +9,34 @@
   margin: 20px;
   text-align: left;
 }
+
 .itemFrame {
   margin-left: -20px;
 }
+
 .card-text {
   max-width: 70%;
 }
-.options{
+
+.options {
   position: absolute;
   right: 0;
   margin-right: 20px;
 }
+
 .item {
   font-size: 20px;
   font-weight: 700;
 }
 
-li{
+li {
   list-style-type: none;
 }
 
-.Title{
+.Title {
   text-align: left;
   margin-left: -20px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 40px;
 }

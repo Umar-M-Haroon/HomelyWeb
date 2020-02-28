@@ -58,7 +58,7 @@ class Home extends Component {
         const { chores, supplies, payments, loading } = this.state;
         return (
             <div>
-                <h1>Home</h1>
+                <h1><strong>Home</strong></h1>
                 {loading && <div>Loading ...</div>}
                 <div className="row no-gutters flex-nowrap">
                     <div class="col">
@@ -88,9 +88,9 @@ const ChoresList = ({ chores }) => (
                             <div className="item">
                                 <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownOptions">
-                                    <a className="dropdown-item" href="#">Complete</a>
-                                    <a className="dropdown-item" href="#">Edit</a>
-                                    <a className="dropdown-item" href="#">Add to Calender</a>
+                                    <button className="dropdown-item">Complete</button>
+                                    <button className="dropdown-item">Edit</button>
+                                    <button className="dropdown-item">Add to Calender</button>
                                 </div>
                                 <p className="card-text">{chore.Title}</p>
                             </div>
@@ -113,9 +113,9 @@ const SuppliesList = ({ supplies }) => (
                             <div className="item">
                                 <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownOptions">
-                                    <a className="dropdown-item" href="#">Complete</a>
-                                    <a className="dropdown-item" href="#">Edit</a>
-                                    <a className="dropdown-item" href="#">Add to Calender</a>
+                                    <button className="dropdown-item">Complete</button>
+                                    <button className="dropdown-item">Edit</button>
+                                    <button className="dropdown-item">Add to Calender</button>
                                 </div>
                                 <p className="card-text">{supply["Supply Title"]}</p>
                             </div>
@@ -138,9 +138,9 @@ const PaymentsList = ({ payments }) => (
                                 
                                 <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownOptions">
-                                    <a className="dropdown-item" href="#">Complete</a>
-                                    <a className="dropdown-item" href="#">Edit</a>
-                                    <a className="dropdown-item" href="#">Add to Calender</a>
+                                    <button className="dropdown-item">Complete</button>
+                                    <button className="dropdown-item">Edit</button>
+                                    <button className="dropdown-item">Add to Calender</button>
                                 </div>
                                 <p className="card-text">{payment["Payment Title"]}</p>
                             </span>
