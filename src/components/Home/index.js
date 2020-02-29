@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { withAuthorization } from '../Session';
 import { withFirebase } from '../Firebase';
 import './Home.css'
-// import { ReactComponent as Options } from '../../itemOptions.svg';
+import { ReactComponent as Add } from '../../plus.svg';
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -80,7 +80,10 @@ class Home extends Component {
 const ChoresList = ({ chores }) => (
     <div className="categoryFrame">
         <ul className="listFrame">
-            <h2 className="Title">Chores</h2>
+            <h2 className="Title">
+                Chores
+                <button className="addButtonFrame"><Add className="addButton">A</Add></button>
+            </h2>
             {chores.map((chore) => (
                 <div className="card itemFrame mt-1">
                     <div className="card-body ">
@@ -105,7 +108,10 @@ const ChoresList = ({ chores }) => (
 const SuppliesList = ({ supplies }) => (
     <div className="categoryFrame">
         <ul className="listFrame">
-            <h2 className="Title">Supplies</h2>
+            <h2 className="Title">
+                Supplies
+                <button className="addButtonFrame"><Add className="addButton">A</Add></button>
+            </h2>
             {supplies.map((supply) => (
                 <div className="card itemFrame mt-1">
                     <div className="card-body">
@@ -129,13 +135,16 @@ const SuppliesList = ({ supplies }) => (
 const PaymentsList = ({ payments }) => (
     <div className="categoryFrame">
         <ul className="listFrame">
-            <h2 className="Title">Payments</h2>
+            <h2 className="Title">
+                Payments
+                <button className="addButtonFrame"><Add className="addButton">A</Add></button>
+            </h2>
             {payments.map((payment) => (
                 <div className="card itemFrame mt-1">
                     <div className="card-body">
                         <li key={payment.Timestamp}>
                             <span className="item">
-                                
+
                                 <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
                                 <div class="dropdown-menu" aria-labelledby="dropdownOptions">
                                     <button className="dropdown-item">Complete</button>

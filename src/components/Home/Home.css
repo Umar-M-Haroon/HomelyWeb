@@ -1,7 +1,7 @@
 .categoryFrame {
   border-radius: 20px;
   box-shadow: 5px 5px 10px grey;
-  background: linear-gradient( to bottom right, rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0)), linear-gradient(to bottom right, #0447e0, #0447e0);
+  background: linear-gradient(145.15deg, rgba(255, 255, 255, 0.62) -30.66%, rgba(255, 255, 255, 0) 115.34%), #0447E0;
   min-width: 300px;
   max-width: 600px;
   height: 600px;
@@ -39,4 +39,22 @@ li {
   font-style: normal;
   font-weight: 600;
   font-size: 40px;
+  color: white;
+}
+
+.addButton {
+  height: 35px;
+  margin-top: -8px;
+  fill: white;
+  transition-property: fill;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+.addButton:hover {
+  fill: rgb(219, 219, 219);
+}
+.addButtonFrame {
+  fill: none;
+  border: none;
+  background-color: transparent;
 }
