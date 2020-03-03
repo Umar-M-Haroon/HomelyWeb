@@ -12,39 +12,45 @@ class Home extends Component {
             loading: true,
             chores: [],
             supplies: [],
-            payments: []
+            payments: [],
+            users: []
         };
     }
     componentDidMount() {
         var allChores = []
         var allSupplies = []
         var allPayments = []
+        var allUsers = []
         this.setState({ loading: false });
         this.props.firebase.homes()
             .then(querySnapshot => {
                 querySnapshot.forEach(doc => {
-
-                    doc.data().Chores.forEach(chore => {
+                    var home = doc.data();
+                    home.Chores.forEach(chore => {
                         if (chore.Completed !== true) {
                             allChores.push(chore);
                         }
                     });
-                    doc.data().Supplies.forEach(supply => {
+                    home.Supplies.forEach(supply => {
                         if (supply.Completed !== true) {
                             allSupplies.push(supply);
                         }
                     });
-                    doc.data().Payments.forEach(payment => {
+                    home.Payments.forEach(payment => {
                         if (payment.Completed !== true) {
                             allPayments.push(payment);
                         }
+                    })
+                    home.Users.forEach(user => {
+                        allUsers.push(user);
                     })
                     this.setState({
                         chores: allChores,
                         supplies: allSupplies,
                         payments: allPayments,
+                        users: allUsers,
                         loading: false
-                    })
+                    });
                 })
             }).catch(error => {
                 console.log(error);
@@ -56,9 +62,45 @@ class Home extends Component {
     }
 
     render() {
-        const { chores, supplies, payments, loading } = this.state;
+        const { chores, supplies, payments, users, loading } = this.state;
         return (
             <div>
+                <div className="modal fade" id="myModal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel">
+                    <div className="modal-dialog" role="document">
+                        <div className="modal-content">
+                            <div className="modal-header">
+                                <h4 className="modal-title" id="myModalLabel">Add Supply</h4>
+                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                            </div>
+                            <div className="modal-body">
+                                <form>
+                                    <div className="form-group">
+                                        <label className="modal-subhead" htmlFor="exampleInputEmail1">Title</label>
+                                        <div className="form-row">
+                                            <input type="email" className="form-control col-7 mr-3 ml-1" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title"></input>
+                                            <input type="number" className="form-control col" id="inputQuantity" aria-describedby="quantityHelp" placeholder="Quantity"></input>
+                                        </div>
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="modal-subhead" htmlFor="exampleInputPassword1">Description</label>
+                                        <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                    </div>
+                                    <button className="btn btn-link addPhotoButton">
+                                        Add Photo
+                                </button>
+                                    <div className="form-group">
+                                        <label className="modal-subhead" htmlFor="exampleInputEmail1">Deadline Date</label>
+                                       {<Calendar />}
+                                    </div>
+                                    <div className="form-group">
+                                        <label className="modal-subhead" htmlFor="exampleInputEmail1">Assign Users</label>
+                                        {<AssignedUsers users={users}/>}
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <h1><strong>Home</strong></h1>
                 {loading && <div>Loading ...</div>}
                 <div className="row no-gutters flex-nowrap">
@@ -113,45 +155,6 @@ const SuppliesList = ({ supplies }) => (
                 Supplies
                 <button className="addButtonFrame" data-toggle="modal" data-target="#myModal"><Add className="addButton"></Add></button>
             </h2>
-            <div className="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-                <div className="modal-dialog" role="document">
-                    <div className="modal-content">
-                        <div className="modal-header">
-                            <h4 className="modal-title" id="myModalLabel">Add Supply</h4>
-                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                        </div>
-                        <div className="modal-body">
-                            <form>
-                                <div className="form-group">
-                                    <label className="modal-subhead" for="exampleInputEmail1">Title</label>
-                                    <div className="form-row">
-                                        <input type="email" className="form-control col-7 mr-3 ml-1" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title"></input>
-                                        <input type="number" className="form-control col" id="inputQuantity" aria-describedby="quantityHelp" placeholder="Quantity"></input>
-                                    </div>
-                                </div>
-                                <div className="form-group">
-                                    <label className="modal-subhead" for="exampleInputPassword1">Description</label>
-                                    <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                                </div>
-                                <button className="btn btn-link addPhotoButton">
-                                    Add Photo
-                                </button>
-                                <div className="form-group">
-                                    <label className="modal-subhead" for="exampleInputEmail1">Deadline Date</label>
-                                    <Calendar />
-                                </div>
-                                <div className="form-group">
-                                    <label className="modal-subhead" for="exampleInputEmail1">Assign Users</label>
-                                </div>
-                            </form>
-                        </div>
-                        <div className="modal-footer">
-                            <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
-                            <button type="button" className="btn btn-primary">Add Item</button>
-                        </div>
-                    </div>
-                </div>
-            </div>
             {supplies.map((supply) => (
                 <div className="card itemFrame mt-1">
                     <div className="card-body">
@@ -200,6 +203,13 @@ const PaymentsList = ({ payments }) => (
         </ul>
     </div >
 )
+const AssignedUsers = ({ users }) => {
+    users.map((user) => (
+        <div>
+            {user.displayName}
+        </div>
+    ))
+}
 
 const condition = authUser => !!authUser;
 export default withFirebase(withAuthorization(condition)(Home));

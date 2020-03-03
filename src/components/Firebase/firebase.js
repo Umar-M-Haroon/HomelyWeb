@@ -2,6 +2,7 @@ import app from 'firebase/app';
 import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/functions';
+import 'firebase/storage';
 const config = {
     apiKey: process.env.REACT_APP_API_KEY,
     authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -34,15 +35,11 @@ class Firebase {
 
     userID = () => this.auth.currentUser.uid;
 
-    getUserHomes = () => {
-
-    }
-
     homes = () => {
         this.auth.currentUser.providerData.forEach(element => {
             this.db.collection('Homes').where("userIDs", "array-contains", element.uid).get().then((result) => {
-                result.docs.forEach((doc) => {
-                    
+                result.docs.forEach((querySnapshot) => {
+
                 })
             }).catch((error) => {
             });
