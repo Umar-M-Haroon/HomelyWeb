@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { withAuthorization } from '../Session';
 import { withFirebase } from '../Firebase';
+import { Link } from 'react-router-dom';
+import * as ROUTES from '../../constants/routes';
 import './Home.css'
 import { ReactComponent as Add } from '../../plus.svg';
 class Home extends Component {
@@ -80,8 +82,8 @@ class Home extends Component {
 const ChoresList = ({ chores }) => (
     <div className="categoryFrame">
         <ul className="listFrame">
-            <h2 className="Title">
-                Chores
+            <h2 className="homeTitle">
+                <Link className="homeTitle" to={ROUTES.CHORES}>Chores</Link>
                 <button className="addButtonFrame"><Add className="addButton">A</Add></button>
             </h2>
             {chores.map((chore) => (
@@ -108,8 +110,8 @@ const ChoresList = ({ chores }) => (
 const SuppliesList = ({ supplies }) => (
     <div className="categoryFrame">
         <ul className="listFrame">
-            <h2 className="Title">
-                Supplies
+            <h2 className="homeTitle">
+            <Link className="homeTitle" to={ROUTES.SUPPLIES}>Supplies</Link>
                 <button className="addButtonFrame"><Add className="addButton">A</Add></button>
             </h2>
             {supplies.map((supply) => (
@@ -135,8 +137,8 @@ const SuppliesList = ({ supplies }) => (
 const PaymentsList = ({ payments }) => (
     <div className="categoryFrame">
         <ul className="listFrame">
-            <h2 className="Title">
-                Payments
+            <h2 className="homeTitle">
+            <Link className="homeTitle" to={ROUTES.PAYMENTS}>Payments</Link>
                 <button className="addButtonFrame"><Add className="addButton">A</Add></button>
             </h2>
             {payments.map((payment) => (
