@@ -3,6 +3,7 @@ import { withAuthorization } from '../Session';
 import { withFirebase } from '../Firebase';
 import './Home.css'
 import { ReactComponent as Add } from '../../plus.svg';
+import Calendar from 'react-calendar';
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -61,13 +62,13 @@ class Home extends Component {
                 <h1><strong>Home</strong></h1>
                 {loading && <div>Loading ...</div>}
                 <div className="row no-gutters flex-nowrap">
-                    <div class="col">
+                    <div className="col">
                         {<ChoresList chores={chores} />}
                     </div>
-                    <div class="col">
+                    <div className="col">
                         {<SuppliesList supplies={supplies} />}
                     </div>
-                    <div class="col">
+                    <div className="col">
                         {<PaymentsList payments={payments} />}
                     </div>
                 </div>
@@ -90,7 +91,7 @@ const ChoresList = ({ chores }) => (
                         <li key={chore.Timestamp}>
                             <div className="item">
                                 <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownOptions">
+                                <div className="dropdown-menu" aria-labelledby="dropdownOptions">
                                     <button className="dropdown-item">Complete</button>
                                     <button className="dropdown-item">Edit</button>
                                     <button className="dropdown-item">Add to Calender</button>
@@ -110,15 +111,54 @@ const SuppliesList = ({ supplies }) => (
         <ul className="listFrame">
             <h2 className="Title">
                 Supplies
-                <button className="addButtonFrame"><Add className="addButton">A</Add></button>
+                <button className="addButtonFrame" data-toggle="modal" data-target="#myModal"><Add className="addButton"></Add></button>
             </h2>
+            <div className="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div className="modal-dialog" role="document">
+                    <div className="modal-content">
+                        <div className="modal-header">
+                            <h4 className="modal-title" id="myModalLabel">Add Supply</h4>
+                            <button type="button" className="close" data-dismiss="modal" aria-label="Close">&times;</button>
+                        </div>
+                        <div className="modal-body">
+                            <form>
+                                <div className="form-group">
+                                    <label className="modal-subhead" for="exampleInputEmail1">Title</label>
+                                    <div className="form-row">
+                                        <input type="email" className="form-control col-7 mr-3 ml-1" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title"></input>
+                                        <input type="number" className="form-control col" id="inputQuantity" aria-describedby="quantityHelp" placeholder="Quantity"></input>
+                                    </div>
+                                </div>
+                                <div className="form-group">
+                                    <label className="modal-subhead" for="exampleInputPassword1">Description</label>
+                                    <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                </div>
+                                <button className="btn btn-link addPhotoButton">
+                                    Add Photo
+                                </button>
+                                <div className="form-group">
+                                    <label className="modal-subhead" for="exampleInputEmail1">Deadline Date</label>
+                                    <Calendar />
+                                </div>
+                                <div className="form-group">
+                                    <label className="modal-subhead" for="exampleInputEmail1">Assign Users</label>
+                                </div>
+                            </form>
+                        </div>
+                        <div className="modal-footer">
+                            <button type="button" className="btn btn-default" data-dismiss="modal">Close</button>
+                            <button type="button" className="btn btn-primary">Add Item</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
             {supplies.map((supply) => (
                 <div className="card itemFrame mt-1">
                     <div className="card-body">
                         <li key={supply.Timestamp}>
                             <div className="item">
                                 <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownOptions">
+                                <div className="dropdown-menu" aria-labelledby="dropdownOptions">
                                     <button className="dropdown-item">Complete</button>
                                     <button className="dropdown-item">Edit</button>
                                     <button className="dropdown-item">Add to Calender</button>
@@ -146,7 +186,7 @@ const PaymentsList = ({ payments }) => (
                             <span className="item">
 
                                 <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownOptions">
+                                <div className="dropdown-menu" aria-labelledby="dropdownOptions">
                                     <button className="dropdown-item">Complete</button>
                                     <button className="dropdown-item">Edit</button>
                                     <button className="dropdown-item">Add to Calender</button>

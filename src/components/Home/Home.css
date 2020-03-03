@@ -58,3 +58,16 @@ li {
   border: none;
   background-color: transparent;
 }
+.modal-title {
+  font-weight: 600;
+  font-size: 30px;
+  line-height: 75px;
+}
+
+.modal-subhead {
+  font-weight: 500;
+  color: #595959;
+}
+.addPhotoButton {
+  width: 100%;
+}

@@ -34,14 +34,17 @@ class Firebase {
 
     userID = () => this.auth.currentUser.uid;
 
+    getUserHomes = () => {
+
+    }
+
     homes = () => {
         this.auth.currentUser.providerData.forEach(element => {
             this.db.collection('Homes').where("userIDs", "array-contains", element.uid).get().then((result) => {
                 result.docs.forEach((doc) => {
-                    console.log("ID:" + doc.id);
+                    
                 })
             }).catch((error) => {
-                console.log(error);
             });
         });
         return this.db.collection('Homes').where("userIDs", "array-contains", this.auth.currentUser.uid).get();
