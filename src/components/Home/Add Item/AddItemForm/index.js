@@ -103,14 +103,5 @@ class AddItemForm extends Component {
         )
     }
 }
-const formSupply = () => {
-
-}
-const form = () => {
-
-}
-const formBase = () => {
-
-}
 const condition = authUser => !!authUser;
 export default withFirebase(withAuthorization(condition)(AddItemForm));
