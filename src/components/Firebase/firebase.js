@@ -39,10 +39,6 @@ class Firebase {
     getImage = (userID) => {
         var reference = this.storage.ref('images/' + userID + ".png");
         return reference.getDownloadURL()
-        // var promise = new Promise( (resolve, reject) => {
-        //     resolve("https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fupload.wikimedia.org%2Fwikipedia%2Fcommons%2Fthumb%2Fe%2Fec%2FSoccer_ball.svg%2F1024px-Soccer_ball.svg.png&f=1&nofb=1")
-        // })
-        // return promise
     }
 
     homes = () => {

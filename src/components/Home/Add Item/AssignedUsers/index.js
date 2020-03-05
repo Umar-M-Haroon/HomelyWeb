@@ -2,13 +2,15 @@ import React, { Component } from 'react';
 import { withAuthorization } from '../../../Session';
 import { withFirebase } from '../../../Firebase';
 import './AssignedUsers.css'
+import { ReactComponent as Check } from '../../../../check.svg';
 class AssignedUsers extends Component {
     constructor(props) {
         super(props)
         this.state = {
-            users: []
+            users: [],
+            assignedUsers: []
         }
-         this.buttonClick = this.buttonClick.bind(this);
+        this.buttonClick = this.buttonClick.bind(this);
     }
     componentDidMount() {
         this.updateUsers()
@@ -46,7 +48,18 @@ class AssignedUsers extends Component {
         }
     }
     buttonClick(id, e) {
-        document.getElementById(id);
+        var person = document.getElementById(id);
+        var users = this.state.assignedUsers;
+        if (person.children[1].style.visibility === "visible") {
+            person.children[1].style.visibility = "hidden"
+            users.splice(users.indexOf(id), 1)
+        } else {
+            person.children[1].style.visibility = "visible"
+            users.push(id)
+        }
+        this.setState({
+            assignedUsers: users
+        })
     }
     render() {
         if (this.state.users.length === 0) { return (<div>No Users!</div>) }
@@ -55,6 +68,7 @@ class AssignedUsers extends Component {
                 {this.props.users.map(user => (
                     <div className="profile" id={user["User ID"]}>
                         <img src={user.imageURL} alt="Profile" className="profileImage" onClick={(e) => this.buttonClick(user["User ID"], e)}></img>
+                        <Check className="Check" />
                         <p>{user["Display Name"]}</p>
                     </div>
                 ))}

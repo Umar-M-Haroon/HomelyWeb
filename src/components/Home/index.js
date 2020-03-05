@@ -3,9 +3,7 @@ import { withAuthorization } from '../Session';
 import { withFirebase } from '../Firebase';
 import './Home.css'
 import { ReactComponent as Add } from '../../plus.svg';
-import Calendar from 'react-calendar';
-import AssignedUsers from './Add Item/AssignedUsers/index'
-import 'react-calendar/dist/Calendar.css';
+import AddItem from './Add Item/AddItemForm'
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -70,62 +68,21 @@ class Home extends Component {
         const { chores, supplies, payments, loading } = this.state;
         return (
             <div>
-                <div className="modal fade" id="myModal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel">
-                    <div className="modal-dialog" role="document">
-                        <div className="modal-content">
-                            <div className="modal-header">
-                                <h4 className="modal-title" id="myModalLabel">Add Supply</h4>
-                                <button type="button" className="close" data-dismiss="modal" aria-label="Close">&times;</button>
-                            </div>
-                            <div className="modal-body">
-                                <form>
-                                    <div className="form-group">
-                                        <label className="modal-subhead" htmlFor="exampleInputEmail1">Title</label>
-                                        <div className="form-row">
-                                            <input type="email" className="form-control col-7 mr-3 ml-1" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter title"></input>
-                                            <input type="number" className="form-control col" id="inputQuantity" aria-describedby="quantityHelp" placeholder="Quantity"></input>
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="modal-subhead" htmlFor="exampleInputPassword1">Description</label>
-                                        <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-                                    </div>
-                                    <button className="btn btn-link addPhotoButton">
-                                        Add Photo
-                                </button>
-                                    <div className="form-group">
-                                        <label className="modal-subhead" htmlFor="exampleInputEmail1">Deadline Date</label>
-                                        <div className="calendarGroup">
-                                            {<Calendar minDate={new Date()}/>}
-                                        </div>
-                                    </div>
-                                    <div className="form-group">
-                                        <label className="modal-subhead" htmlFor="exampleInputEmail1">Assign Users</label>
-                                        {<AssignedUsers users={this.state.users} />}
-                                    </div>
-                                </form>
-                                <div className="modal-footer">
-                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
-                                    <button type="button" className="btn btn-primary" data-dismiss="modal">Add Item</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <h1><strong>Home</strong></h1>
                 {loading && <div>Loading ...</div>}
                 <div className="row no-gutters flex-nowrap">
                     <div className="col">
+                        <AddItem users={this.state.users} type="Chores" />
                         {<ChoresList chores={chores} />}
                     </div>
                     <div className="col">
+                        <AddItem users={this.state.users} type="Supplies" />
                         {<SuppliesList supplies={supplies} />}
                     </div>
                     <div className="col">
                         {<PaymentsList payments={payments} />}
                     </div>
                 </div>
-            </div>
+            </div >
         );
 
     }
@@ -136,7 +93,7 @@ const ChoresList = ({ chores }) => (
         <ul className="listFrame">
             <h2 className="Title">
                 Chores
-                <button className="addButtonFrame"><Add className="addButton">A</Add></button>
+                <button className="addButtonFrame" data-toggle="modal" data-target="#addItemModal"><Add className="addButton"></Add></button>
             </h2>
             {chores.map((chore) => (
                 <div className="card itemFrame mt-1">
@@ -164,7 +121,7 @@ const SuppliesList = ({ supplies }) => (
         <ul className="listFrame">
             <h2 className="Title">
                 Supplies
-                <button className="addButtonFrame" data-toggle="modal" data-target="#myModal"><Add className="addButton"></Add></button>
+                <button className="addButtonFrame" data-toggle="modal" data-target="#addItemModal"><Add className="addButton"></Add></button>
             </h2>
             {supplies.map((supply) => (
                 <div className="card itemFrame mt-1">
@@ -191,7 +148,7 @@ const PaymentsList = ({ payments }) => (
         <ul className="listFrame">
             <h2 className="Title">
                 Payments
-                <button className="addButtonFrame"><Add className="addButton">A</Add></button>
+                <button className="addButtonFrame" data-toggle="modal" data-target="#addItemModal"><Add className="addButton"></Add></button>
             </h2>
             {payments.map((payment) => (
                 <div className="card itemFrame mt-1">
