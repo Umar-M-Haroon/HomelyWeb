@@ -1,0 +1,8 @@
+.profile {
+    display: inline-block;
+    margin-right: 20px;
+    text-align: center;
+}
+.profileImage {
+    width: 100px;
+}
