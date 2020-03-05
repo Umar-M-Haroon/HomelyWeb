@@ -4,6 +4,7 @@ import { withFirebase } from '../Firebase';
 import './Home.css'
 import { ReactComponent as Add } from '../../plus.svg';
 import Calendar from 'react-calendar';
+import AssignedUsers from './Add Item/AssignedUsers/index'
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -13,7 +14,8 @@ class Home extends Component {
             chores: [],
             supplies: [],
             payments: [],
-            users: []
+            users: [],
+            home: ""
         };
     }
     componentDidMount() {
@@ -49,8 +51,10 @@ class Home extends Component {
                         supplies: allSupplies,
                         payments: allPayments,
                         users: allUsers,
+                        home: home,
                         loading: false
                     });
+
                 })
             }).catch(error => {
                 console.log(error);
@@ -62,7 +66,7 @@ class Home extends Component {
     }
 
     render() {
-        const { chores, supplies, payments, users, loading } = this.state;
+        const { chores, supplies, payments, loading } = this.state;
         return (
             <div>
                 <div className="modal fade" id="myModal" tabIndex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -90,11 +94,11 @@ class Home extends Component {
                                 </button>
                                     <div className="form-group">
                                         <label className="modal-subhead" htmlFor="exampleInputEmail1">Deadline Date</label>
-                                       {<Calendar />}
+                                        {<Calendar />}
                                     </div>
                                     <div className="form-group">
                                         <label className="modal-subhead" htmlFor="exampleInputEmail1">Assign Users</label>
-                                        {<AssignedUsers users={users}/>}
+                                        {<AssignedUsers users={this.state.users} />}
                                     </div>
                                 </form>
                             </div>
@@ -203,13 +207,6 @@ const PaymentsList = ({ payments }) => (
         </ul>
     </div >
 )
-const AssignedUsers = ({ users }) => {
-    users.map((user) => (
-        <div>
-            {user.displayName}
-        </div>
-    ))
-}
 
 const condition = authUser => !!authUser;
 export default withFirebase(withAuthorization(condition)(Home));
