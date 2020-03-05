@@ -79,6 +79,7 @@ class Home extends Component {
                         {<SuppliesList supplies={supplies} />}
                     </div>
                     <div className="col">
+                        <AddItem users={this.state.users} type="Payments" />
                         {<PaymentsList payments={payments} />}
                     </div>
                 </div>
@@ -93,7 +94,7 @@ const ChoresList = ({ chores }) => (
         <ul className="listFrame">
             <h2 className="Title">
                 Chores
-                <button className="addButtonFrame" data-toggle="modal" data-target="#addItemModal"><Add className="addButton"></Add></button>
+                <button className="addButtonFrame" data-toggle="modal" data-target="#Chores"><Add className="addButton"></Add></button>
             </h2>
             {chores.map((chore) => (
                 <div className="card itemFrame mt-1">
@@ -121,7 +122,7 @@ const SuppliesList = ({ supplies }) => (
         <ul className="listFrame">
             <h2 className="Title">
                 Supplies
-                <button className="addButtonFrame" data-toggle="modal" data-target="#addItemModal"><Add className="addButton"></Add></button>
+                <button className="addButtonFrame" data-toggle="modal" data-target="#Supplies"><Add className="addButton"></Add></button>
             </h2>
             {supplies.map((supply) => (
                 <div className="card itemFrame mt-1">
@@ -148,7 +149,7 @@ const PaymentsList = ({ payments }) => (
         <ul className="listFrame">
             <h2 className="Title">
                 Payments
-                <button className="addButtonFrame" data-toggle="modal" data-target="#addItemModal"><Add className="addButton"></Add></button>
+                <button className="addButtonFrame" data-toggle="modal" data-target="#Payments"><Add className="addButton"></Add></button>
             </h2>
             {payments.map((payment) => (
                 <div className="card itemFrame mt-1">
