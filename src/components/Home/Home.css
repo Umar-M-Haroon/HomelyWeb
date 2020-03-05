@@ -1,7 +1,12 @@
 .categoryFrame {
   border-radius: 20px;
   box-shadow: 5px 5px 10px grey;
-  background: linear-gradient(145.15deg, rgba(255, 255, 255, 0.62) -30.66%, rgba(255, 255, 255, 0) 115.34%), #0447E0;
+  background: linear-gradient(
+      145.15deg,
+      rgba(255, 255, 255, 0.62) -30.66%,
+      rgba(255, 255, 255, 0) 115.34%
+    ),
+    #0447e0;
   min-width: 300px;
   max-width: 600px;
   height: 600px;
@@ -71,8 +76,8 @@ li {
 .addPhotoButton {
   width: 100%;
 }
-/* .calendarGroup {
-  text-align: center;
-  align-items: center;
-  /* background-color: red; */
-/* }  */
+.react-calendar {
+  display: inline;
+  border: none;
+  border-color: rebeccapurple;
+}

@@ -96,7 +96,7 @@ class Home extends Component {
                                     <div className="form-group">
                                         <label className="modal-subhead" htmlFor="exampleInputEmail1">Deadline Date</label>
                                         <div className="calendarGroup">
-                                        {<Calendar />}
+                                            {<Calendar minDate={new Date()}/>}
                                         </div>
                                     </div>
                                     <div className="form-group">
@@ -104,6 +104,10 @@ class Home extends Component {
                                         {<AssignedUsers users={this.state.users} />}
                                     </div>
                                 </form>
+                                <div className="modal-footer">
+                                    <button type="button" className="btn btn-secondary" data-dismiss="modal">Close</button>
+                                    <button type="button" className="btn btn-primary" data-dismiss="modal">Add Item</button>
+                                </div>
                             </div>
                         </div>
                     </div>

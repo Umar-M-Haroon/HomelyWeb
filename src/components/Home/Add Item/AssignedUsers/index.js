@@ -8,6 +8,7 @@ class AssignedUsers extends Component {
         this.state = {
             users: []
         }
+         this.buttonClick = this.buttonClick.bind(this);
     }
     componentDidMount() {
         this.updateUsers()
@@ -44,13 +45,16 @@ class AssignedUsers extends Component {
             this.updateUsers()
         }
     }
+    buttonClick(id, e) {
+        document.getElementById(id);
+    }
     render() {
         if (this.state.users.length === 0) { return (<div>No Users!</div>) }
         return (
             <div>
                 {this.props.users.map(user => (
-                    <div className="profile">
-                        <img src={user.imageURL} alt="Profile" className="profileImage"></img>
+                    <div className="profile" id={user["User ID"]}>
+                        <img src={user.imageURL} alt="Profile" className="profileImage" onClick={(e) => this.buttonClick(user["User ID"], e)}></img>
                         <p>{user["Display Name"]}</p>
                     </div>
                 ))}
