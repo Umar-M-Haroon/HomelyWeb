@@ -5,6 +5,7 @@ import './Home.css'
 import { ReactComponent as Add } from '../../plus.svg';
 import Calendar from 'react-calendar';
 import AssignedUsers from './Add Item/AssignedUsers/index'
+import 'react-calendar/dist/Calendar.css';
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -94,7 +95,9 @@ class Home extends Component {
                                 </button>
                                     <div className="form-group">
                                         <label className="modal-subhead" htmlFor="exampleInputEmail1">Deadline Date</label>
+                                        <div className="calendarGroup">
                                         {<Calendar />}
+                                        </div>
                                     </div>
                                     <div className="form-group">
                                         <label className="modal-subhead" htmlFor="exampleInputEmail1">Assign Users</label>
