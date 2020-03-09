@@ -1,6 +1,75 @@
-.frame {
-    border-radius: 25px;
-    background-image: linear-gradient(to bottom right, darkgreen, lightgreen);
-    width: 300px;
-    padding: 10px;
-  }
+.categoryFrame {
+  border-radius: 20px;
+  box-shadow: 5px 5px 10px grey;
+  background: linear-gradient(145.15deg, rgba(255, 255, 255, 0.62) -30.66%, rgba(255, 255, 255, 0) 115.34%), #0447E0;
+  min-width: 300px;
+  max-width: 600px;
+  height: 600px;
+  padding: 10px;
+  margin: 20px;
+  text-align: left;
+}
+
+.itemFrame {
+  margin-left: -20px;
+}
+
+.card-text {
+  max-width: 70%;
+}
+
+.options {
+  position: absolute;
+  right: 0;
+  margin-right: 20px;
+}
+
+.item {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+li {
+  list-style-type: none;
+}
+
+.homeTitle {
+  text-align: left;
+  margin-left: -20px;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 40px;
+  color: white;
+}
+.homeTitle:hover {
+  color:  rgb(219, 219, 219);
+  text-decoration: none;
+}
+
+.addButton {
+  height: 35px;
+  margin-top: -8px;
+  fill: white;
+  transition-property: fill;
+  transition-duration: 200ms;
+  transition-timing-function: cubic-bezier(0.455, 0.03, 0.515, 0.955);
+}
+.addButton:hover {
+  fill: rgb(219, 219, 219);
+}
+.addButtonFrame {
+  fill: none;
+  border: none;
+  background-color: transparent;
+}
+
+.react-calendar {
+  width: max-content !important;
+  height: 600px !important;
+  margin: auto;
+  margin-bottom: 25px;
+}
+
+.react-calendar__tile {
+  height: 84.5px;
+}
