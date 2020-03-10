@@ -3,6 +3,9 @@ import 'firebase/auth';
 import 'firebase/firestore';
 import 'firebase/functions';
 import 'firebase/storage';
+import Chore from '../../Model/Chore';
+import Supply from '../../Model/Supply';
+import Payment from '../../Model/Payment';
 const config = {
     apiKey: process.env.REACT_APP_API_KEY,
     authDomain: process.env.REACT_APP_AUTH_DOMAIN,
@@ -13,16 +16,21 @@ const config = {
 }
 class Firebase {
     constructor() {
-        app.initializeApp(config);
-        this.auth = app.auth();
-        this.db = app.firestore();
-        this.functions = app.functions();
-        this.storage = app.storage();
-        this.db.enablePersistence()
-            .catch(err => {
-                console.log("Error setting persistence");
-                console.log(err);
-            });
+        if (!app.apps.length) {
+            app.initializeApp(config);
+            this.auth = app.auth();
+            this.db = app.firestore();
+            this.functions = app.functions();
+            this.storage = app.storage();
+            this.db.enablePersistence()
+                .catch(err => {
+                    console.log("Error setting persistence");
+                    console.log(err);
+                });
+            this.defaultHome = null
+        } else {
+            return
+        }
     }
 
     doCreateUserWithEmailAndPassword = (email, password) => this.auth.createUserWithEmailAndPassword(email, password);
@@ -34,7 +42,9 @@ class Firebase {
 
     doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
 
-    userID = () => this.auth.currentUser.uid;
+    userData = () => {
+        return 
+    };
 
     getImage = (userID) => {
         var reference = this.storage.ref('images/' + userID + ".png");
@@ -84,6 +94,48 @@ class Firebase {
                 });
             }
         })
+    }
+    addItem(state, type) {
+        const { title, quantity } = state
+        if (title == null || title === "") {
+            console.log("Title is null or empty")
+            return
+        }
+        if (type !== "Chores" && quantity == null) {
+            return
+        }
+        var firebaseFriendlyItem, historyItem;
+
+        switch (type) {
+            case "Chores":
+                var chore = new Chore(state.title, state.choreDeadlineDate, state.choreUsers, false, null);
+                firebaseFriendlyItem = chore.toFirestore()
+                historyItem = chore.toHistory(this.auth.currentUser.uid, false)
+                break;
+            case "Supplies":
+                var supply = new Supply(state.title, state.supplyQuantity, state.supplyDescription, false, null, null);
+                firebaseFriendlyItem = supply.toFirestore()
+                historyItem = supply.toHistory(this.auth.currentUser.uid, false)
+                break
+            case "Payments":
+                var payment = new Payment(state.title, state.paymentDeadlineDate, state.paymentQuantity, state.paymentUsers, state.paymentDescription, false, null, null)
+                firebaseFriendlyItem = payment.toFirestore()
+                historyItem = payment.toHistory(this.auth.currentUser.uid, false)
+                break
+            default:
+                break;
+        }
+        var typeString = type.toString()
+        var homeData = {}
+        homeData[typeString] = app.firestore.FieldValue.arrayUnion(firebaseFriendlyItem)
+        homeData.History = app.firestore.FieldValue.arrayUnion(historyItem)
+        this.db.collection("Homes").doc(this.defaultHome).update(homeData).then(function() {
+            console.log("Document successfully updated!");
+        })
+        .catch(function(error) {
+            // The document probably doesn't exist.
+            console.error("Error updating document: ", error);
+        });
     }
 }
 export default Firebase

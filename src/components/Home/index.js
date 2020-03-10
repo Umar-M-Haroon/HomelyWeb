@@ -53,7 +53,8 @@ class Home extends Component {
                         home: home,
                         loading: false
                     });
-
+                    this.props.firebase.defaultHome = doc.id
+                    console.log(this.props.firebase.defaultHome)
                 })
             }).catch(error => {
                 console.log(error);
