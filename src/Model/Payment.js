@@ -16,9 +16,9 @@ class Payment {
             this.id = firestore.Timestamp.fromDate(new Date())
         }
         var historyItem = {}
-        historyItem.author = auth.currentUser.uid;
-        historyItem.completed = completed
-        historyItem.itemID = this.id
+        historyItem.Author = auth.currentUser.uid;
+        historyItem.Completed = completed
+        historyItem["Item ID"] = this.id
         historyItem.Timestamp = firestore.Timestamp.fromDate(new Date())
         return historyItem
     }

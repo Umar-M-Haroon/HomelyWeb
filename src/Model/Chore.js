@@ -13,9 +13,9 @@ class Chore {
             this.id = firestore.Timestamp.fromDate(new Date())
         }
         var historyItem = {}
-        historyItem.author = author;
-        historyItem.completed = completed
-        historyItem.itemID = this.id
+        historyItem.Author = author;
+        historyItem.Aompleted = completed
+        historyItem["Item ID"] = this.id
         historyItem.Timestamp = firestore.Timestamp.fromDate(new Date())
         return historyItem
     }
