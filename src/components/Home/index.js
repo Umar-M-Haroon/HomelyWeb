@@ -54,7 +54,7 @@ class Home extends Component {
                         loading: false
                     });
                     this.props.firebase.defaultHome = doc.id
-                    console.log(this.props.firebase.defaultHome)
+                    this.props.firebase.defaultHomeData = home
                 })
             }).catch(error => {
                 console.log(error);

@@ -14,10 +14,10 @@ class Supply {
             this.id = firestore.Timestamp.fromDate(new Date())
         }
         var historyItem = {}
-        historyItem.author = auth.currentUser.uid;
-        historyItem.completed = completed
-        historyItem.itemID = this.id
+        historyItem.Author = auth.currentUser.uid;
+        historyItem.Completed = completed
         historyItem.Timestamp = firestore.Timestamp.fromDate(new Date())
+        historyItem["Item ID"] = this.id
         return historyItem
     }
     toFirestore() {

@@ -43,7 +43,7 @@ class Firebase {
     doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
 
     userData = () => {
-        return 
+        return this.auth.currentUser.uid
     };
 
     getImage = (userID) => {
