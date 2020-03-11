@@ -16,7 +16,10 @@ const Navigation = ({ authUser }) => (
 const NavigationAuth = () => (
     <div>
         <nav className="navbar navbar-light">
-            <Link className="navbar-brand" to={ROUTES.HOME}>Homely</Link>
+            <Link className="navbar-brand" to={ROUTES.HOME}> Homely </Link>
+            <Link className="navbar-brand" to={ROUTES.CHORES}>Chores</Link>
+            <Link className="navbar-brand" to={ROUTES.SUPPLIES}>Supplies</Link>
+            <Link className="navbar-brand" to={ROUTES.PAYMENTS}>Payments</Link>
             <Link className="navbar" to={ROUTES.ACCOUNT}>Account</Link>
         </nav>
     </div>

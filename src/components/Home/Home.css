@@ -38,13 +38,17 @@ li {
   list-style-type: none;
 }
 
-.Title {
+.homeTitle {
   text-align: left;
   margin-left: -20px;
   font-style: normal;
   font-weight: 600;
   font-size: 40px;
   color: white;
+}
+.homeTitle:hover {
+  color:  rgb(219, 219, 219);
+  text-decoration: none;
 }
 
 .addButton {
