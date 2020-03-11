@@ -13,7 +13,7 @@ class AccountPage extends Component {
         }
     }
     componentDidMount() {
-        if (this.props.firebase.defaultHomeData == null || this.props.firebase.defaultHomeData == undefined) {
+        if (this.props.firebase.defaultHomeData == null || this.props.firebase.defaultHomeData === undefined) {
             this.props.firebase.homes()
                 .then(querySnapshot => {
                     querySnapshot.forEach(doc => {
