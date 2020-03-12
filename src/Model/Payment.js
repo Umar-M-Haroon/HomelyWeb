@@ -53,40 +53,4 @@ class Payment {
     }
 }
 
-const paymentConverter = {
-    toFirestore: function (payment) {
-        var firestoreData = {}
-        if (payment.title !== null && payment.title !== "") {
-            firestoreData["Payment Title"] = payment.title
-        }
-        if (payment.deadline !== null) {
-            firestoreData["Payment Deadline"] = payment.deadline
-        }
-        if (payment.amount !== null && payment.amount > 0) {
-            firestoreData["Payment Amount"] = payment.amount
-        }
-        if (payment.users !== null && payment.users !== []) {
-            firestoreData["Assigned Users"] = payment.users
-        }
-        if (payment.photo !== null && payment.photo !== "") {
-            firestoreData["Image Link"] = payment.photo
-        }
-        if (payment.description !== null && payment.description !== "") {
-            firestoreData["Payment Description"] = payment.description
-        }
-        firestoreData.Completed = payment.completed
-
-        if (payment.id === null) {
-            payment.id = firestore.Timestamp.fromDate(new Date())
-        }
-        firestoreData.Timestamp = payment.id
-
-        return firestoreData
-
-    }, fromFirestore: function snapshot(options) {
-        const data = snapshot.data(options)
-        return new Payment(data["Payment Title"], data["Payment Deadline"].toDate(), data["Payment Amount"], data["Assigned Users"], data["Payment Description"], data.Completed, data["Image Link"], data.Timestamp)
-    }
-}
-var model = { Payment, paymentConverter }
 export default Payment 

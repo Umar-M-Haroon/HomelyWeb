@@ -6,7 +6,6 @@ class Chore {
         this.users = users
         this.completed = completed
         this.id = id
-        console.log("Created Chore Object")
     }
     toHistory(author, completed) {
         if (this.id === null){
@@ -42,31 +41,4 @@ class Chore {
     }
 }
 
-const choreConverter = {
-    toFirestore: function(chore) {
-        var firestoreData = {}
-        if (chore.title !== null && chore.title !== "") {
-            firestoreData.Title = chore.title
-        }
-        if (chore.deadline !== null) {
-            firestoreData.Deadline = chore.deadline
-        }
-        if (chore.users !== null && chore.users !== []) {
-            firestoreData["Assigned Users"] = chore.users
-        }
-        firestoreData.Completed = chore.completed
-
-        if (chore.id === null){
-            chore.id = firestore.Timestamp.fromDate(new Date())
-        }
-
-        firestoreData.Timestamp = chore.id
-
-        return firestoreData
-
-    }, fromFirestore: function snapshot(options) {
-       const data = snapshot.data(options)
-       return new Chore(data.Title, data.Deadline.toDate(), data["Assigned Users"], data.Completed, data.Timestamp)
-    }
-}
 export default Chore

@@ -50,39 +50,4 @@ class Supply {
     }
 }
 
-const supplyConverter = {
-    toFirestore: function (supply) {
-        var firestoreData = {}
-        if (supply.title !== null && supply.title !== "") {
-            firestoreData["Supply Title"] = supply.title
-        }
-        if (supply.amount !== null && supply.amount > 0) {
-            firestoreData["Supply Amount"] = supply.amount
-        }
-        if (supply.photo !== null && supply.photo !== "") {
-            firestoreData["Image Link"] = supply.photo
-        }
-
-        if (supply.description !== null && supply.description !== "") {
-            firestoreData["Payment Description"] = supply.description
-        }
-
-        if (supply.id === null) {
-            supply.id = firestore.Timestamp.fromDate(new Date())
-        }
-
-
-        firestoreData.Completed = supply.completed
-
-        firestoreData.Timestamp = supply.id
-        firestoreData.Preset = false
-        supply.toHistory()
-        return firestoreData
-    }, fromFirestore: function snapshot(options) {
-        const data = snapshot.data(options)
-        return new Supply(data["Supply Title"], data["Supply Amount"], data["Supply Description"], data.Completed, data["Image Link"], data.Timestamp)
-    }
-}
-
-var model = {Supply, supplyConverter}
 export default Supply
