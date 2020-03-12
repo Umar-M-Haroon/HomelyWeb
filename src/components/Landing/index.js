@@ -25,9 +25,7 @@ class SignUpLanding extends Component {
 
     render() {
         return (<div className="Main">
-            <h1 className="Title">Welcome to Homely!</h1>
             <Logo className="Homely-Logo">Homely Logo</Logo>
-            <h3 className="Title">Sign in or sign up to get started</h3>
             <SignIn />
         </div>)
     }

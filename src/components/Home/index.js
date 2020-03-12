@@ -71,6 +71,7 @@ class Home extends Component {
         const { chores, supplies, payments, loading } = this.state;
         return (
             <div>
+                <h1><strong>Home</strong></h1>
                 {loading && <div>Loading ...</div>}
                 <div className="row no-gutters flex-nowrap">
                     <div className="col">
