@@ -6,6 +6,7 @@ import 'firebase/storage';
 import Chore from '../../Model/Chore';
 import Supply from '../../Model/Supply';
 import Payment from '../../Model/Payment';
+
 const config = {
     apiKey: process.env.REACT_APP_API_KEY,
     authDomain: process.env.REACT_APP_AUTH_DOMAIN,

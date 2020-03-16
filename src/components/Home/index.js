@@ -81,7 +81,6 @@ class Home extends Component {
             <div>
                 <h1><strong>Home</strong></h1>
                 {loading && <div>Loading ...</div>}
-                <h1><strong>Home</strong></h1>
                 <div className="row no-gutters flex-nowrap">
                     <div className="col">
                         <AddItem users={this.state.users} type="Chores" />
