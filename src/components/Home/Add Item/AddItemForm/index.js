@@ -124,7 +124,7 @@ class AddItemForm extends Component {
                                                 <label className="modal-subhead col-7 mr-3 ml-1" htmlFor={"title" + this.props.type}>Title</label>
                                             </div>
                                             <div className="form-row">
-                                                <input type="text" className="form-control col-7 mr-3 ml-1" id={"title" + this.props.type} aria-describedby="Title Help" placeholder="Enter title" required></input>
+                                                <input type="text" className="form-control col-7 mr-3 ml-1" id={"title" + this.props.type} aria-describedby="Title Help" placeholder="Enter title"></input>
                                             </div>
 
                                         </div>

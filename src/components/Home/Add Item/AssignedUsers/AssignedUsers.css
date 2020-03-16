@@ -17,3 +17,8 @@
     margin-top: 15%;
     visibility: hidden;
 }
+button{
+    padding: 0;
+    border: none;
+    background: none;
+}

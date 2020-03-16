@@ -67,11 +67,13 @@ class AssignedUsers extends Component {
         return (
             <div>
                 {this.props.users.map(user => (
-                    <div className="profile" id={user["User ID"] + this.props.id}>
-                        <img src={user.imageURL} alt="Profile" className="profileImage" onClick={(e) => this.buttonClick(user["User ID"], e)}></img>
-                        <Check className="Check" />
-                        <p>{user["Display Name"]}</p>
-                    </div>
+                    <button type="button" name="Select User">
+                        <div className="profile" id={user["User ID"] + this.props.id}>
+                            <img src={user.imageURL} alt="Profile" className="profileImage" onClick={(e) => this.buttonClick(user["User ID"], e)}></img>
+                            <Check className="Check" />
+                            <p>{user["Display Name"]}</p>
+                        </div>
+                    </button>
                 ))}
             </div >
         )
