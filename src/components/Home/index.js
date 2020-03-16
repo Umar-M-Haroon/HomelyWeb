@@ -20,15 +20,21 @@ class Home extends Component {
         };
     }
     componentDidMount() {
+        //Set up home page with appropriate data
         var allChores = []
         var allSupplies = []
         var allPayments = []
         var allUsers = []
         this.setState({ loading: false });
+        //calls the homes function to get the current homes the user has
+        //it then iterates through each home which is a document in firebase terms and will get the data which is a javascript object
+        //as it iterates through it adds to a generic home
         this.props.firebase.homes()
             .then(querySnapshot => {
                 querySnapshot.forEach(doc => {
                     var home = doc.data();
+                    //iterates through the document's chores and adds to an array that the home page can read
+                    //repeated with supplies and payments
                     home.Chores.forEach(chore => {
                         if (chore.Completed !== true) {
                             allChores.push(chore);
@@ -55,6 +61,8 @@ class Home extends Component {
                         home: home,
                         loading: false
                     });
+                    //while also getting the categories, it also gets the users and sets a default home.
+                    //These are needed for assigning users.
                     this.props.firebase.defaultHome = doc.id
                     this.props.firebase.defaultHomeData = home
                 })

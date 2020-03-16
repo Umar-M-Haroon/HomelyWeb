@@ -51,6 +51,12 @@ class Firebase {
         return reference.getDownloadURL()
     }
 
+
+    /**
+     *
+     *
+     * @memberof Firebase
+     */
     homes = () => {
         this.auth.currentUser.providerData.forEach(element => {
             this.db.collection('Homes').where("userIDs", "array-contains", element.uid).get().then((result) => {
@@ -62,6 +68,11 @@ class Firebase {
         });
         return this.db.collection('Homes').where("userIDs", "array-contains", this.auth.currentUser.uid).get();
     }
+    /**
+     *
+     *
+     * @memberof Firebase
+     */
     handleSignInWithApple = () => {
         var provider = new app.auth.OAuthProvider('apple.com');
         provider.addScope('name');
@@ -85,6 +96,11 @@ class Firebase {
                 console.log(error)
             });
     }
+    /**
+     *
+     *
+     * @memberof Firebase
+     */
     migrateUserToSignInWithApple = () => {
         var provider = new app.auth.OAuthProvider('apple.com');
         provider.addScope('name');
@@ -95,8 +111,20 @@ class Firebase {
             }
         })
     }
+    /**
+     *
+     *
+     * @param {*} state state is the add item form's state, 
+     * a state for a chore form is a title, deadline, and assigned users
+     * a state for a supply form is a title, quantity, and a description
+     * a state for a payment is a title, amount/quantity, deadline, assigned users, and description
+     * the only required values are the title and a quantity if it is a supply or payment
+     * @param {*} type this is the item category, which can be a chore, supply, or payment
+     * @memberof Firebase
+     */
     addItem(state, type) {
         const { title, quantity } = state
+        //checks if values fit the requirements of a valid item (aka valid title and non-empty quanity for supplies/payments)
         if (title == null || title === "") {
             console.log("Title is null or empty")
             return
@@ -105,7 +133,9 @@ class Firebase {
             return
         }
         var firebaseFriendlyItem, historyItem;
-
+        //depending on the category we have to create the correct model object. 
+        //Each model object will then be converted to a firestore friendly object
+        //A history object is also made from a model object
         switch (type) {
             case "Chores":
                 var chore = new Chore(state.title, state.choreDeadlineDate, state.choreUsers, false, null);
@@ -129,13 +159,14 @@ class Firebase {
         var homeData = {}
         homeData[typeString] = app.firestore.FieldValue.arrayUnion(firebaseFriendlyItem)
         homeData.History = app.firestore.FieldValue.arrayUnion(historyItem)
-        this.db.collection("Homes").doc(this.defaultHome).update(homeData).then(function() {
+        //once the correct objects are made, a final object is created and sent to firebase, and the success of it is logged.
+        this.db.collection("Homes").doc(this.defaultHome).update(homeData).then(function () {
             console.log("Document successfully updated!");
         })
-        .catch(function(error) {
-            // The document probably doesn't exist.
-            console.error("Error updating document: ", error);
-        });
+            .catch(function (error) {
+                // The document probably doesn't exist.
+                console.error("Error updating document: ", error);
+            });
     }
 }
 export default Firebase
