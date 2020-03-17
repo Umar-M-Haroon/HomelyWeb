@@ -1,4 +1,4 @@
-import { firestore, auth } from "firebase"
+import { firestore } from "firebase"
 
 class Supply {
     constructor(title, amount, description, completed, photo, id) {

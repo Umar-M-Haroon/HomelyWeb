@@ -70,7 +70,7 @@ class Home extends Component {
     }
 
     componentWillUnmount() {
-        this.listener.unsubscribe()
+        this.listener()
     }
 
     render() {

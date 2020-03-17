@@ -52,15 +52,23 @@ class AddItemForm extends Component {
                                     <div className="form-row">
                                         <label className="modal-subhead col-7 mr-3 ml-1" htmlFor={"title" + this.props.type}>Title</label>
                                         {
-                                            this.props.type !== "Chores" &&
+                                            this.props.type === "Supplies" &&
                                             <label className="modal-subhead col" htmlFor={"inputQuantity" + this.props.type}>Quantity</label>
+                                        }
+                                        {
+                                            this.props.type === "Payments" &&
+                                            <label className="modal-subhead col" htmlFor={"inputQuantity" + this.props.type}>Amount</label>
                                         }
                                     </div>
                                     <div className="form-row">
                                         <input type="text" className="form-control col-7 mr-3 ml-1" id={"title" + this.props.type} aria-describedby="Title Help" placeholder="Enter title" required></input>
                                         {
-                                            this.props.type !== "Chores" &&
+                                            this.props.type === "Supplies" &&
                                             <input type="number" className="form-control col" id={"inputQuantity" + this.props.type} aria-describedby="quantityHelp" placeholder="Quantity" required></input>
+                                        }
+                                        {
+                                            this.props.type === "Payments" &&
+                                            <input type="number" className="form-control col" id={"inputQuantity" + this.props.type} aria-describedby="Amount Help" placeholder="Amount" required></input>
                                         }
                                     </div>
                                 </div>
