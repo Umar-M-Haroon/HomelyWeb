@@ -67,7 +67,7 @@ class Firebase {
             }).catch((error) => {
             });
         });
-        return this.db.collection('Homes').where("userIDs", "array-contains", this.auth.currentUser.uid).get();
+        return this.db.collection('Homes').where("userIDs", "array-contains", this.auth.currentUser.uid)
     }
     /**
      *
@@ -145,7 +145,7 @@ class Firebase {
                 historyItem = chore.toHistory(this.auth.currentUser.uid, false)
                 break;
             case "Supplies":
-                var supply = new Supply(state.title, state.Quantity, state.Description, false, null, null);
+                var supply = new Supply(state.title, parseFloat(state.Quantity).toFixed(2), state.Description, false, null, null);
                 firebaseFriendlyItem = supply.toFirestore()
                 historyItem = supply.toHistory(this.auth.currentUser.uid, false)
                 break

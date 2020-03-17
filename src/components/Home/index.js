@@ -21,17 +21,17 @@ class Home extends Component {
     }
     componentDidMount() {
         //Set up home page with appropriate data
-        var allChores = []
-        var allSupplies = []
-        var allPayments = []
-        var allUsers = []
         this.setState({ loading: false });
         //calls the homes function to get the current homes the user has
         //it then iterates through each home which is a document in firebase terms and will get the data which is a javascript object
         //as it iterates through it adds to a generic home
-        this.props.firebase.homes()
-            .then(querySnapshot => {
-                querySnapshot.forEach(doc => {
+        this.listener = this.props.firebase.homes().onSnapshot({ includeMetadataChanges: true }, (
+            snapshot => {
+                snapshot.forEach(doc => {
+                    var allChores = []
+                    var allSupplies = []
+                    var allPayments = []
+                    var allUsers = []
                     var home = doc.data();
                     //iterates through the document's chores and adds to an array that the home page can read
                     //repeated with supplies and payments
@@ -66,13 +66,11 @@ class Home extends Component {
                     this.props.firebase.defaultHome = doc.id
                     this.props.firebase.defaultHomeData = home
                 })
-            }).catch(error => {
-                console.log(error);
-            });
+            }))
     }
 
     componentWillUnmount() {
-        // this.props.firebase.users().off();
+        this.listener.unsubscribe()
     }
 
     render() {
@@ -133,7 +131,7 @@ const SuppliesList = ({ supplies }) => (
     <div className="categoryFrame">
         <ul className="listFrame">
             <h2 className="homeTitle">
-            <Link className="homeTitle" to={ROUTES.SUPPLIES}>Supplies</Link>
+                <Link className="homeTitle" to={ROUTES.SUPPLIES}>Supplies</Link>
                 <button className="addButtonFrame" data-toggle="modal" data-target="#Supplies"><Add className="addButton"></Add></button>
             </h2>
             {supplies.map((supply) => (
@@ -160,7 +158,7 @@ const PaymentsList = ({ payments }) => (
     <div className="categoryFrame">
         <ul className="listFrame">
             <h2 className="homeTitle">
-            <Link className="homeTitle" to={ROUTES.PAYMENTS}>Payments</Link>
+                <Link className="homeTitle" to={ROUTES.PAYMENTS}>Payments</Link>
                 <button className="addButtonFrame" data-toggle="modal" data-target="#Payments"><Add className="addButton"></Add></button>
             </h2>
             {payments.map((payment) => (

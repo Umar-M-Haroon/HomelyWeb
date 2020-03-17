@@ -26,7 +26,7 @@ class Supply {
             firestoreData["Supply Title"] = this.title
         }
         if (this.amount !== null && this.amount > 0) {
-            firestoreData["Supply Amount"] = this.amount
+            firestoreData["Supply Amount"] = Number(parseFloat(this.amount).toFixed(2))
         }
         if (this.photo !== null && this.photo !== "") {
             firestoreData["Image Link"] = this.photo

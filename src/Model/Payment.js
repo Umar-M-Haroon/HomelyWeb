@@ -1,10 +1,10 @@
-import { firestore, auth } from "firebase"
+import { firestore } from "firebase"
 
 class Payment {
     constructor(title, deadline, amount, users, description, completed, photo, id) {
         this.title = title
         this.deadline = deadline
-        this.amount = amount
+        this.amount = parseFloat(amount).toFixed(2)
         this.users = users
         this.description = description
         this.completed = completed
@@ -31,7 +31,7 @@ class Payment {
             firestoreData["Payment Deadline"] = this.deadline
         }
         if (this.amount !== null && this.amount > 0) {
-            firestoreData["Payment Amount"] = this.amount
+            firestoreData["Payment Amount"] = Number(this.amount)
         }
         if (this.users !== null && this.users !== []) {
             firestoreData["Assigned Users"] = this.users
