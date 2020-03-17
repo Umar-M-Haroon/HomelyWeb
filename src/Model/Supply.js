@@ -9,12 +9,12 @@ class Supply {
         this.id = id
         this.description = description
     }
-    toHistory(completed) {
+    toHistory(author, completed) {
         if (this.id === null){
             this.id = firestore.Timestamp.fromDate(new Date())
         }
         var historyItem = {}
-        historyItem.Author = auth.currentUser.uid;
+        historyItem.Author = author;
         historyItem.Completed = completed
         historyItem.Timestamp = firestore.Timestamp.fromDate(new Date())
         historyItem["Item ID"] = this.id

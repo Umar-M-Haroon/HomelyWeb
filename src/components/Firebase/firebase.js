@@ -116,7 +116,7 @@ class Firebase {
      *
      *
      * @param {*} state state is the add item form's state, 
-     * a state for a chore form is a title, deadline, and assigned users
+     * for a chore form is a title, deadline, and assigned users
      * a state for a supply form is a title, quantity, and a description
      * a state for a payment is a title, amount/quantity, deadline, assigned users, and description
      * the only required values are the title and a quantity if it is a supply or payment
@@ -130,7 +130,8 @@ class Firebase {
             console.log("Title is null or empty")
             return
         }
-        if (type !== "Chores" && quantity == null) {
+        if (type !== "Chores" && parseFloat(quantity).toFixed(2) === null) {
+            console.log("Quantity is invalid")
             return
         }
         var firebaseFriendlyItem, historyItem;
@@ -139,17 +140,17 @@ class Firebase {
         //A history object is also made from a model object
         switch (type) {
             case "Chores":
-                var chore = new Chore(state.title, state.choreDeadlineDate, state.choreUsers, false, null);
+                var chore = new Chore(state.title, state.DeadlineDate, state.assignedUsers, false, null);
                 firebaseFriendlyItem = chore.toFirestore()
                 historyItem = chore.toHistory(this.auth.currentUser.uid, false)
                 break;
             case "Supplies":
-                var supply = new Supply(state.title, state.supplyQuantity, state.supplyDescription, false, null, null);
+                var supply = new Supply(state.title, state.Quantity, state.Description, false, null, null);
                 firebaseFriendlyItem = supply.toFirestore()
                 historyItem = supply.toHistory(this.auth.currentUser.uid, false)
                 break
             case "Payments":
-                var payment = new Payment(state.title, state.paymentDeadlineDate, state.paymentQuantity, state.paymentUsers, state.paymentDescription, false, null, null)
+                var payment = new Payment(state.title, state.DeadlineDate, state.Quantity, state.assignedUsers, state.Description, false, null, null)
                 firebaseFriendlyItem = payment.toFirestore()
                 historyItem = payment.toHistory(this.auth.currentUser.uid, false)
                 break

@@ -11,49 +11,31 @@ class AddItemForm extends Component {
         this.handleCalendarChange = this.handleCalendarChange.bind(this)
         this.handleUserChange = this.handleUserChange.bind(this)
         this.state = {
-            choreUsers: [],
-            choreDeadlineDate: null,
-            paymentUsers: [],
-            paymentDeadlineDate: null,
-            supplyDescription: null,
-            paymentDescription: null,
-            supplyQuantity: null,
-            paymentQuantity: null,
+            assignedUsers: [],
+            DeadlineDate: null,
+            Description: null,
             title: null,
         }
     }
     addButtonPressed() {
-        var title, paymentDescription, supplyDescription
-        title = document.getElementById("title" + this.props.type).value
+        var title = document.getElementById("title" + this.props.type).value
         this.setState({
             title: title,
-            paymentDescription: paymentDescription,
-            supplyDescription: supplyDescription
+            Description: document.getElementById("Description" + this.props.type).value,
+            Quantity: document.getElementById("inputQuantity" + this.props.type).value
         }, () => {
             this.props.firebase.addItem(this.state, this.props.type)
         })
     }
     handleCalendarChange(event) {
-        if (this.props.type === "Chores") {
-            this.setState({
-                choreDeadlineDate: event
-            })
-        } else {
-            this.setState({
-                paymentDeadlineDate: event
-            })
-        }
+        this.setState({
+            DeadlineDate: event
+        })
     }
     handleUserChange(users) {
-        if (this.props.type === "Chores") {
-            this.setState({
-                choreUsers: users
-            })
-        } else {
-            this.setState({
-                paymentUsers: users
-            })
-        }
+        this.setState({
+            assignedUsers: users
+        })
     }
     render() {
         return (
@@ -86,7 +68,7 @@ class AddItemForm extends Component {
                                     this.props.type !== "Chores" &&
                                     <div className="form-group">
                                         <label className="modal-subhead" htmlFor="exampleInputPassword1">Description</label>
-                                        <textarea className="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
+                                        <textarea className="form-control" id={"Description" + this.props.type} rows="3"></textarea>
                                     </div>
                                 }
 

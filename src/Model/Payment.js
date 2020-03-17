@@ -11,12 +11,12 @@ class Payment {
         this.photo = photo
         this.id = id
     }
-    toHistory(completed) {
+    toHistory(author, completed) {
         if (this.id === null) {
             this.id = firestore.Timestamp.fromDate(new Date())
         }
         var historyItem = {}
-        historyItem.Author = auth.currentUser.uid;
+        historyItem.Author = author;
         historyItem.Completed = completed
         historyItem["Item ID"] = this.id
         historyItem.Timestamp = firestore.Timestamp.fromDate(new Date())
