@@ -1,11 +1,11 @@
 import app from 'firebase/app';
-import 'firebase/auth';
-import 'firebase/firestore';
-import 'firebase/functions';
-import 'firebase/storage';
-import Chore from '../../Model/Chore';
 import Supply from '../../Model/Supply';
 import Payment from '../../Model/Payment';
+import Chore from '../../Model/Chore';
+import 'firebase/storage';
+import 'firebase/functions';
+import 'firebase/firestore';
+import 'firebase/auth';
 
 const config = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -16,6 +16,10 @@ const config = {
     messagingSenderId: process.env.REACT_APP_MESSAGING_SENDER_ID,
 }
 class Firebase {
+    /**
+     * initial constructor initializes firebase and the default home. 
+     * The if ensures it Doesn't reinitialize firebase and cause issues
+     */
     constructor() {
         if (!app.apps.length) {
             app.initializeApp(config);
@@ -42,12 +46,19 @@ class Firebase {
     doPasswordReset = email => this.auth.sendPasswordResetEmail(email);
 
     doPasswordUpdate = password => this.auth.currentUser.updatePassword(password);
-
+    /**
+     * @returns {string}
+     */
     userData = () => {
         return this.auth.currentUser.uid
     };
 
+    /**
+     * @param {string} userID the userID that we want to get the image for
+     * @returns {Promise<String, Error>}
+     */
     getImage = (userID) => {
+        //images are stored under a 'images' folder with the extension {userID}.png
         var reference = this.storage.ref('images/' + userID + ".png");
         return reference.getDownloadURL()
     }
@@ -55,7 +66,8 @@ class Firebase {
 
     /**
      *
-     *
+     * get the user's homes. Since users can be in multiple homes, we use the query ("where") clause
+     * I havent implemented the multiple homes per provider id yet, but thats what all but the return does
      * @memberof Firebase
      */
     homes = () => {
@@ -71,7 +83,8 @@ class Firebase {
     }
     /**
      *
-     *
+     * Signs in a person with apple and just in case they've already signed in before, 
+     * migrate them to the new id
      * @memberof Firebase
      */
     handleSignInWithApple = () => {
@@ -98,7 +111,7 @@ class Firebase {
             });
     }
     /**
-     *
+     * For previous firebase instances, people can sign in with apple with a different id. If it does, then it migrates the id and links it with the new id
      *
      * @memberof Firebase
      */
