@@ -1,24 +1,21 @@
 import React from 'react';
-import {
-    BrowserRouter as Router,
-    Route,
-} from 'react-router-dom';
-
-import Navigation from '../Navigation';
-import LandingPage from '../Landing';
-import SignUpPage from '../SignUp';
-import SignInPage from '../SignIn';
-import PasswordForgetPage from '../PasswordForget';
-import HomePage from '../Home';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
+import * as ROUTES from '../../constants/routes';
 import AccountPage from '../Account';
 import AdminPage from '../Admin';
 import ChoresPage from '../Chores';
-import SuppliesPage from '../Supplies';
+import HomePage from '../Home';
+import LandingPage from '../Landing';
+import Navigation from '../Navigation';
+import PasswordForgetPage from '../PasswordForget';
 import PaymentsPage from '../Payments';
-
-
-import * as ROUTES from '../../constants/routes';
 import { withAuthentication } from '../Session';
+import SignInPage from '../SignIn';
+import SignUpPage from '../SignUp';
+import SuppliesPage from '../Supplies';
+
+
+
 const App = () => (
     <Router>
         <div>

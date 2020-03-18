@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import './Landing.css';
+import * as ROUTES from '../../constants/routes';
 import { ReactComponent as Logo } from '../../homely-logo.svg';
 import { AuthUserContext } from '../Session';
-import * as ROUTES from '../../constants/routes';
 import SignIn from '../SignIn';
+import './Landing.css';
 class Landing extends Component {
     render() {
         return (

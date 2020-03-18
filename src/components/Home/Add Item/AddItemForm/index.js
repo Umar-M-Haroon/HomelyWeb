@@ -1,8 +1,8 @@
-import AssignedUsers from '../AssignedUsers'
-import Calendar from 'react-calendar';
 import React, { Component } from "react";
-import { withAuthorization } from '../../../Session';
+import Calendar from 'react-calendar';
 import { withFirebase } from '../../../Firebase';
+import { withAuthorization } from '../../../Session';
+import AssignedUsers from '../AssignedUsers';
 
 class AddItemForm extends Component {
     constructor(props) {

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { withAuthorization } from '../Session';
-import { withFirebase } from '../Firebase';
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
-import './Home.css'
 import { ReactComponent as Add } from '../../plus.svg';
-import AddItem from './Add Item/AddItemForm'
+import { withFirebase } from '../Firebase';
+import { withAuthorization } from '../Session';
+import AddItem from './Add Item/AddItemForm';
+import './Home.css';
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -19,6 +19,7 @@ class Home extends Component {
             home: ""
         };
     }
+    
     componentDidMount() {
         //Set up home page with appropriate data
         this.setState({ loading: false });

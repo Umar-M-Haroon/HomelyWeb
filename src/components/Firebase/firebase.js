@@ -1,11 +1,11 @@
 import app from 'firebase/app';
-import Supply from '../../Model/Supply';
-import Payment from '../../Model/Payment';
-import Chore from '../../Model/Chore';
-import 'firebase/storage';
-import 'firebase/functions';
-import 'firebase/firestore';
 import 'firebase/auth';
+import 'firebase/firestore';
+import 'firebase/functions';
+import 'firebase/storage';
+import Chore from '../../Model/Chore';
+import Payment from '../../Model/Payment';
+import Supply from '../../Model/Supply';
 
 const config = {
     apiKey: process.env.REACT_APP_API_KEY,

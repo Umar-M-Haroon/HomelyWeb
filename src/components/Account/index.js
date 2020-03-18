@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { AuthUserContext, withAuthorization } from '../Session'
 import { withFirebase } from '../Firebase';
 import PasswordChangeForm from '../PasswordChange';
+import { AuthUserContext, withAuthorization } from '../Session';
 import SignOut from '../SignOut';
-import './Account.css'
+import './Account.css';
 class AccountPage extends Component {
     constructor(props) {
         super(props)

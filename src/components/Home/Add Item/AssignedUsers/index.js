@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { withAuthorization } from '../../../Session';
-import { withFirebase } from '../../../Firebase';
-import './AssignedUsers.css'
 import { ReactComponent as Check } from '../../../../check.svg';
+import { withFirebase } from '../../../Firebase';
+import { withAuthorization } from '../../../Session';
+import './AssignedUsers.css';
 class AssignedUsers extends Component {
     constructor(props) {
         super(props)
