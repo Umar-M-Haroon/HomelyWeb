@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
-import { withAuthorization } from '../Session';
-import { withFirebase } from '../Firebase';
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
-import './Home.css'
 import { ReactComponent as Add } from '../../plus.svg';
+import { withFirebase } from '../Firebase';
+import { withAuthorization } from '../Session';
+import AddItem from './Add Item/AddItemForm';
+import './Home.css';
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -13,67 +14,87 @@ class Home extends Component {
             loading: true,
             chores: [],
             supplies: [],
-            payments: []
+            payments: [],
+            users: [],
+            home: ""
         };
     }
+    
     componentDidMount() {
-        var allChores = []
-        var allSupplies = []
-        var allPayments = []
+        //Set up home page with appropriate data
         this.setState({ loading: false });
-        this.props.firebase.homes()
-            .then(querySnapshot => {
-                querySnapshot.forEach(doc => {
-
-                    doc.data().Chores.forEach(chore => {
+        //calls the homes function to get the current homes the user has
+        //it then iterates through each home which is a document in firebase terms and will get the data which is a javascript object
+        //as it iterates through it adds to a generic home
+        this.listener = this.props.firebase.homes().onSnapshot({ includeMetadataChanges: true }, (
+            snapshot => {
+                snapshot.forEach(doc => {
+                    var allChores = []
+                    var allSupplies = []
+                    var allPayments = []
+                    var allUsers = []
+                    var home = doc.data();
+                    //iterates through the document's chores and adds to an array that the home page can read
+                    //repeated with supplies and payments
+                    home.Chores.forEach(chore => {
                         if (chore.Completed !== true) {
                             allChores.push(chore);
                         }
                     });
-                    doc.data().Supplies.forEach(supply => {
+                    home.Supplies.forEach(supply => {
                         if (supply.Completed !== true) {
                             allSupplies.push(supply);
                         }
                     });
-                    doc.data().Payments.forEach(payment => {
+                    home.Payments.forEach(payment => {
                         if (payment.Completed !== true) {
                             allPayments.push(payment);
                         }
+                    })
+                    home.Users.forEach(user => {
+                        allUsers.push(user);
                     })
                     this.setState({
                         chores: allChores,
                         supplies: allSupplies,
                         payments: allPayments,
+                        users: allUsers,
+                        home: home,
                         loading: false
-                    })
+                    });
+                    //while also getting the categories, it also gets the users and sets a default home.
+                    //These are needed for assigning users.
+                    this.props.firebase.defaultHome = doc.id
+                    this.props.firebase.defaultHomeData = home
                 })
-            }).catch(error => {
-                console.log(error);
-            });
+            }))
     }
 
     componentWillUnmount() {
-        // this.props.firebase.users().off();
+        this.listener()
     }
 
     render() {
         const { chores, supplies, payments, loading } = this.state;
         return (
             <div>
-                <h1 align="center"><strong>Home</strong></h1>
+                <h1><strong>Home</strong></h1>
                 {loading && <div>Loading ...</div>}
                 <div className="row no-gutters flex-nowrap">
-                    <div class="col">
+                    <div className="col">
+                        <AddItem users={this.state.users} type="Chores" />
                         {<ChoresList chores={chores} />}
                     </div>
-                    <div class="col">
+                    <div className="col">
+                        <AddItem users={this.state.users} type="Supplies" />
                         {<SuppliesList supplies={supplies} />}
                     </div>
-                    <div class="col">
+                    <div className="col">
+                        <AddItem users={this.state.users} type="Payments" />
                         {<PaymentsList payments={payments} />}
                     </div>
                 </div>
-            </div>
+            </div >
         );
 
     }
@@ -84,7 +105,7 @@ const ChoresList = ({ chores }) => (
         <ul className="listFrame">
             <h2 className="homeTitle">
                 <Link className="homeTitle" to={ROUTES.CHORES}>Chores</Link>
-                <button className="addButtonFrame"><Add className="addButton">A</Add></button>
+                <button className="addButtonFrame" data-toggle="modal" data-target="#Chores"><Add className="addButton"></Add></button>
             </h2>
             {chores.map((chore) => (
                 <div className="card itemFrame mt-1">
@@ -92,7 +113,7 @@ const ChoresList = ({ chores }) => (
                         <li key={chore.Timestamp}>
                             <div className="item">
                                 <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownOptions">
+                                <div className="dropdown-menu" aria-labelledby="dropdownOptions">
                                     <button className="dropdown-item">Complete</button>
                                     <button className="dropdown-item">Edit</button>
                                     <button className="dropdown-item">Add to Calender</button>
@@ -111,8 +132,8 @@ const SuppliesList = ({ supplies }) => (
     <div className="categoryFrame">
         <ul className="listFrame">
             <h2 className="homeTitle">
-            <Link className="homeTitle" to={ROUTES.SUPPLIES}>Supplies</Link>
-                <button className="addButtonFrame"><Add className="addButton">A</Add></button>
+                <Link className="homeTitle" to={ROUTES.SUPPLIES}>Supplies</Link>
+                <button className="addButtonFrame" data-toggle="modal" data-target="#Supplies"><Add className="addButton"></Add></button>
             </h2>
             {supplies.map((supply) => (
                 <div className="card itemFrame mt-1">
@@ -120,7 +141,7 @@ const SuppliesList = ({ supplies }) => (
                         <li key={supply.Timestamp}>
                             <div className="item">
                                 <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownOptions">
+                                <div className="dropdown-menu" aria-labelledby="dropdownOptions">
                                     <button className="dropdown-item">Complete</button>
                                     <button className="dropdown-item">Edit</button>
                                     <button className="dropdown-item">Add to Calender</button>
@@ -138,8 +159,8 @@ const PaymentsList = ({ payments }) => (
     <div className="categoryFrame">
         <ul className="listFrame">
             <h2 className="homeTitle">
-            <Link className="homeTitle" to={ROUTES.PAYMENTS}>Payments</Link>
-                <button className="addButtonFrame"><Add className="addButton">A</Add></button>
+                <Link className="homeTitle" to={ROUTES.PAYMENTS}>Payments</Link>
+                <button className="addButtonFrame" data-toggle="modal" data-target="#Payments"><Add className="addButton"></Add></button>
             </h2>
             {payments.map((payment) => (
                 <div className="card itemFrame mt-1">
@@ -148,7 +169,7 @@ const PaymentsList = ({ payments }) => (
                             <span className="item">
 
                                 <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
-                                <div class="dropdown-menu" aria-labelledby="dropdownOptions">
+                                <div className="dropdown-menu" aria-labelledby="dropdownOptions">
                                     <button className="dropdown-item">Complete</button>
                                     <button className="dropdown-item">Edit</button>
                                     <button className="dropdown-item">Add to Calender</button>

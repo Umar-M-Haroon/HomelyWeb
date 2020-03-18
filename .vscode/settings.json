@@ -1,4 +1,7 @@
 {
     "terminal.external.osxExec": "iTerm.app",
-    "terminal.explorerKind": "external"
+    "terminal.explorerKind": "external",
+    "editor.codeActionsOnSave": {
+        "source.organizeImports": true
+    }
 }
