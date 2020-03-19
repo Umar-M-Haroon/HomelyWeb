@@ -183,5 +183,16 @@ class Firebase {
                 console.error("Error updating document: ", error);
             });
     }
+    getUserForItem(users, history, original) {
+        var userID = this.getAuthorOfItem(history, original)
+        var user = users.find(user => user["User ID"] === userID)
+        return user
+    }
+    getAuthorOfItem(history, original) {
+        var foundItem = history.find(item =>
+            item["Item ID"].isEqual(original.Timestamp)
+        )
+        return foundItem.Author
+    }
 }
 export default Firebase

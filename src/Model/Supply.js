@@ -33,7 +33,7 @@ class Supply {
         }
 
         if (this.description !== null && this.description !== "") {
-            firestoreData["Payment Description"] = this.description
+            firestoreData["Supply Description"] = this.description
         }
 
         if (this.id === null) {

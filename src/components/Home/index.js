@@ -19,7 +19,7 @@ class Home extends Component {
             home: ""
         };
     }
-    
+
     componentDidMount() {
         //Set up home page with appropriate data
         this.setState({ loading: false });
@@ -33,7 +33,10 @@ class Home extends Component {
                     var allSupplies = []
                     var allPayments = []
                     var allUsers = []
+                    var venmoUsers = []
                     var home = doc.data();
+                    this.props.firebase.defaultHomeData = home
+                    this.props.firebase.defaultHome = doc.id
                     //iterates through the document's chores and adds to an array that the home page can read
                     //repeated with supplies and payments
                     home.Chores.forEach(chore => {
@@ -48,10 +51,15 @@ class Home extends Component {
                     });
                     home.Payments.forEach(payment => {
                         if (payment.Completed !== true) {
+                            payment.User = this.props.firebase.getUserForItem(home.Users, home.History, payment)
                             allPayments.push(payment);
                         }
                     })
                     home.Users.forEach(user => {
+                        if (user["Venmo ID"] !== undefined && user["Venmo ID"] !== "") {
+                            console.log(user["Venmo ID"])
+                        }
+                        venmoUsers.push(user)
                         allUsers.push(user);
                     })
                     this.setState({
@@ -60,12 +68,11 @@ class Home extends Component {
                         payments: allPayments,
                         users: allUsers,
                         home: home,
+                        venmoUsers: venmoUsers,
                         loading: false
                     });
                     //while also getting the categories, it also gets the users and sets a default home.
                     //These are needed for assigning users.
-                    this.props.firebase.defaultHome = doc.id
-                    this.props.firebase.defaultHomeData = home
                 })
             }))
     }
@@ -91,7 +98,7 @@ class Home extends Component {
                     </div>
                     <div className="col">
                         <AddItem users={this.state.users} type="Payments" />
-                        {<PaymentsList payments={payments} />}
+                        {<PaymentsList users={this.state.venmoUsers} payments={payments} />}
                     </div>
                 </div>
             </div >
@@ -105,7 +112,7 @@ const ChoresList = ({ chores }) => (
         <ul className="listFrame">
             <h2 className="homeTitle">
                 <Link className="homeTitle" to={ROUTES.CHORES}>Chores</Link>
-                <button className="addButtonFrame" data-toggle="modal" data-target="#Chores"><Add className="addButton"></Add></button>
+                <button className="addButtonFrame" data-toggle="modal" data-target="#Chores" aria-labelledby="addChore"><Add className="addButton"></Add></button>
             </h2>
             {chores.map((chore) => (
                 <div className="card itemFrame mt-1">
@@ -133,7 +140,7 @@ const SuppliesList = ({ supplies }) => (
         <ul className="listFrame">
             <h2 className="homeTitle">
                 <Link className="homeTitle" to={ROUTES.SUPPLIES}>Supplies</Link>
-                <button className="addButtonFrame" data-toggle="modal" data-target="#Supplies"><Add className="addButton"></Add></button>
+                <button className="addButtonFrame" data-toggle="modal" data-target="#Supplies" aria-labelledby="AddSupply"><Add className="addButton"></Add></button>
             </h2>
             {supplies.map((supply) => (
                 <div className="card itemFrame mt-1">
@@ -155,7 +162,7 @@ const SuppliesList = ({ supplies }) => (
         </ul>
     </div >
 )
-const PaymentsList = ({ payments }) => (
+const PaymentsList = ({ users, payments }) => (
     <div className="categoryFrame">
         <ul className="listFrame">
             <h2 className="homeTitle">
@@ -173,6 +180,13 @@ const PaymentsList = ({ payments }) => (
                                     <button className="dropdown-item">Complete</button>
                                     <button className="dropdown-item">Edit</button>
                                     <button className="dropdown-item">Add to Calender</button>
+                                    {/* Payment dropdown. Inactive due to venmo shutting off support :/ */}
+                                    {/* <div class="dropdown-divider"></div>
+                                    <h6 className="dropdown-header">Pay Users</h6>
+                                    {users.map((user) => (
+                                        <a href="https://venmo.com" key={user["User ID"]} className="dropdown-item">{"Pay " + user["Display Name"]}</a>
+                                    ))} */}
+
                                 </div>
                                 <p className="card-text">{payment["Payment Title"]}</p>
                             </span>
