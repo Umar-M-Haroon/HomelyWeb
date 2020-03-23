@@ -5,11 +5,11 @@ import { ReactComponent as Add } from '../../plus.svg';
 import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../Session';
 import AddItem from './Add Item/AddItemForm';
+import Toast from 'react-bootstrap/Toast';
 import './Home.css';
 class Home extends Component {
     constructor(props) {
         super(props);
-
         this.state = {
             loading: true,
             chores: [],
@@ -19,93 +19,95 @@ class Home extends Component {
             home: ""
         };
     }
-
     componentDidMount() {
         //Set up home page with appropriate data
         this.setState({ loading: false });
         //calls the homes function to get the current homes the user has
         //it then iterates through each home which is a document in firebase terms and will get the data which is a javascript object
         //as it iterates through it adds to a generic home
-        this.listener = this.props.firebase.homes().onSnapshot({ includeMetadataChanges: true }, (
-            snapshot => {
-                snapshot.forEach(doc => {
-                    var allChores = []
-                    var allSupplies = []
-                    var allPayments = []
-                    var allUsers = []
-                    var venmoUsers = []
-                    var home = doc.data();
-                    this.props.firebase.defaultHomeData = home
-                    this.props.firebase.defaultHome = doc.id
-                    //iterates through the document's chores and adds to an array that the home page can read
-                    //repeated with supplies and payments
-                    home.Chores.forEach(chore => {
-                        if (chore.Completed !== true) {
-                            allChores.push(chore);
-                        }
-                    });
-                    home.Supplies.forEach(supply => {
-                        if (supply.Completed !== true) {
-                            allSupplies.push(supply);
-                        }
-                    });
-                    home.Payments.forEach(payment => {
-                        if (payment.Completed !== true) {
-                            payment.User = this.props.firebase.getUserForItem(home.Users, home.History, payment)
-                            allPayments.push(payment);
-                        }
-                    })
-                    home.Users.forEach(user => {
-                        if (user["Venmo ID"] !== undefined && user["Venmo ID"] !== "") {
-                            console.log(user["Venmo ID"])
-                        }
-                        venmoUsers.push(user)
-                        allUsers.push(user);
-                    })
-                    this.setState({
-                        chores: allChores,
-                        supplies: allSupplies,
-                        payments: allPayments,
-                        users: allUsers,
-                        home: home,
-                        venmoUsers: venmoUsers,
-                        loading: false
-                    });
-                    //while also getting the categories, it also gets the users and sets a default home.
-                    //These are needed for assigning users.
-                })
-            }))
+        this.listener = this.props.firebase.homes().onSnapshot({ includeMetadataChanges: true }, (snapshot => {
+            snapshot.forEach(doc => {
+                var allChores = [];
+                var allSupplies = [];
+                var allPayments = [];
+                var allUsers = [];
+                var venmoUsers = [];
+                var home = doc.data();
+                this.props.firebase.defaultHomeData = home;
+                this.props.firebase.defaultHome = doc.id;
+                //iterates through the document's chores and adds to an array that the home page can read
+                //repeated with supplies and payments
+                home.Chores.forEach(chore => {
+                    if (chore.Completed !== true) {
+                        allChores.push(chore);
+                    }
+                });
+                home.Supplies.forEach(supply => {
+                    if (supply.Completed !== true) {
+                        allSupplies.push(supply);
+                    }
+                });
+                home.Payments.forEach(payment => {
+                    if (payment.Completed !== true) {
+                        payment.User = this.props.firebase.getUserForItem(home.Users, home.History, payment);
+                        allPayments.push(payment);
+                    }
+                });
+                home.Users.forEach(user => {
+                    if (user["Venmo ID"] !== undefined && user["Venmo ID"] !== "") {
+                        console.log(user["Venmo ID"]);
+                    }
+                    venmoUsers.push(user);
+                    allUsers.push(user);
+                });
+                this.setState({
+                    chores: allChores,
+                    supplies: allSupplies,
+                    payments: allPayments,
+                    users: allUsers,
+                    home: home,
+                    venmoUsers: venmoUsers,
+                    loading: false
+                });
+                //while also getting the categories, it also gets the users and sets a default home.
+                //These are needed for assigning users.
+            });
+        }));
     }
-
     componentWillUnmount() {
-        this.listener()
+        this.listener();
     }
-
+    setShow(show) {
+        this.setState({ show: show })
+    }
     render() {
         const { chores, supplies, payments, loading } = this.state;
-        return (
-            <div>
-                <h1><strong>Home</strong></h1>
-                {loading && <div>Loading ...</div>}
-                <div className="row no-gutters flex-nowrap">
-                    <div className="col">
-                        <AddItem users={this.state.users} type="Chores" />
-                        {<ChoresList chores={chores} />}
-                    </div>
-                    <div className="col">
-                        <AddItem users={this.state.users} type="Supplies" />
-                        {<SuppliesList supplies={supplies} />}
-                    </div>
-                    <div className="col">
-                        <AddItem users={this.state.users} type="Payments" />
-                        {<PaymentsList users={this.state.venmoUsers} payments={payments} />}
-                    </div>
+        return (<div>
+            <h1><strong>Home</strong></h1>
+            {loading && <div>Loading ...</div>}
+            <Toast show={this.state.show} onClose={() => this.setShow(false)} delay={2000} autohide>
+                        <Toast.Header>
+                            <div id="lottie" className="lottie" />
+                            <strong>Successfully added item!</strong>
+                        </Toast.Header>
+                    </Toast>
+            <div className="row no-gutters flex-nowrap">
+                <div className="col">
+                    <AddItem users={this.state.users} type="Chores" />
+                    {<ChoresList id="Chores" chores={chores} />}
                 </div>
-            </div >
-        );
-
+                <div className="col">
+                    <AddItem users={this.state.users} type="Supplies" />
+                    {<SuppliesList supplies={supplies} />}
+                </div>
+                <div className="col">
+                    <AddItem users={this.state.users} type="Payments" />
+                    {<PaymentsList users={this.state.venmoUsers} payments={payments} />}
+                </div>
+            </div>
+        </div>);
     }
-}
+};
 
 const ChoresList = ({ chores }) => (
     <div className="categoryFrame">
