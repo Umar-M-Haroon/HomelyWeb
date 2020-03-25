@@ -57,9 +57,8 @@ class Home extends Component {
                     })
                     home.Users.forEach(user => {
                         if (user["Venmo ID"] !== undefined && user["Venmo ID"] !== "") {
-                            console.log(user["Venmo ID"])
+                            venmoUsers.push(user)
                         }
-                        venmoUsers.push(user)
                         allUsers.push(user);
                     })
                     this.setState({
@@ -115,9 +114,9 @@ const ChoresList = ({ chores }) => (
                 <button className="addButtonFrame" data-toggle="modal" data-target="#Chores" aria-labelledby="addChore"><Add className="addButton"></Add></button>
             </h2>
             {chores.map((chore) => (
-                <div className="card itemFrame mt-1">
+                <div className="card itemFrame mt-1" key={chore.Timestamp}>
                     <div className="card-body ">
-                        <li key={chore.Timestamp}>
+                        <li>
                             <div className="item">
                                 <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
                                 <div className="dropdown-menu" aria-labelledby="dropdownOptions">
@@ -143,17 +142,17 @@ const SuppliesList = ({ supplies }) => (
                 <button className="addButtonFrame" data-toggle="modal" data-target="#Supplies" aria-labelledby="AddSupply"><Add className="addButton"></Add></button>
             </h2>
             {supplies.map((supply) => (
-                <div className="card itemFrame mt-1">
-                    <div className="card-body">
-                        <li key={supply.Timestamp}>
-                            <div className="item">
+                <div className="card itemFrame mt-1" key={supply.Timestamp}>
+                    <div className="card-body" > 
+                        <li>
+                            <div className="item" >
                                 <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
                                 <div className="dropdown-menu" aria-labelledby="dropdownOptions">
                                     <button className="dropdown-item">Complete</button>
                                     <button className="dropdown-item">Edit</button>
                                     <button className="dropdown-item">Add to Calender</button>
                                 </div>
-                                <p className="card-text">{supply["Supply Title"]}</p>
+                                <p className="card-text" >{supply["Supply Title"]}</p>
                             </div>
                         </li>
                     </div>
@@ -170,7 +169,7 @@ const PaymentsList = ({ users, payments }) => (
                 <button className="addButtonFrame" data-toggle="modal" data-target="#Payments"><Add className="addButton"></Add></button>
             </h2>
             {payments.map((payment) => (
-                <div className="card itemFrame mt-1">
+                <div className="card itemFrame mt-1" key={payment.Timestamp}>
                     <div className="card-body">
                         <li key={payment.Timestamp}>
                             <span className="item">

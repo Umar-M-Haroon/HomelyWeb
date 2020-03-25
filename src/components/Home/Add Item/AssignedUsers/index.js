@@ -67,7 +67,7 @@ class AssignedUsers extends Component {
         return (
             <div>
                 {this.props.users.map(user => (
-                    <button type="button" name="Select User">
+                    <button type="button" name="Select User" key={user["User ID"]}>
                         <div className="profile" id={user["User ID"] + this.props.id}>
                             <img src={user.imageURL} alt="Profile" className="profileImage" onClick={(e) => this.buttonClick(user["User ID"], e)}></img>
                             <Check className="Check" />
