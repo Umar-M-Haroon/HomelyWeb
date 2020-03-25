@@ -18,12 +18,19 @@ class AddItemForm extends Component {
         }
     }
     addButtonPressed() {
+        var stateObject = {}
         var title = document.getElementById("title" + this.props.type).value
-        this.setState({
-            title: title,
-            Description: document.getElementById("Description" + this.props.type).value,
-            Quantity: document.getElementById("inputQuantity" + this.props.type).value
-        }, () => {
+        if (document.getElementById("Description" + this.props.type) !== null) {
+            var description = document.getElementById("Description" + this.props.type).value
+                stateObject.Description = description
+        }
+        if (document.getElementById("inputQuantity" + this.props.type) !== null) {
+            var quantity = document.getElementById("inputQuantity" + this.props.type).value
+                stateObject.Quantity = quantity
+        }
+        stateObject.title = title
+
+        this.setState(stateObject, () => {
             this.props.firebase.addItem(this.state, this.props.type)
         })
     }
