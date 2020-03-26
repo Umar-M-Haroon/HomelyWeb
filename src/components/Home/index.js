@@ -22,11 +22,6 @@ class Home extends Component {
     }
 
     componentDidMount() {
-        var allChores = []
-        var allSupplies = []
-        var allPayments = []
-        var allHistory = []
-        var allUsers = []
         //Set up home page with appropriate data
         this.setState({ loading: false });
         //calls the homes function to get the current homes the user has
@@ -39,6 +34,7 @@ class Home extends Component {
                     var allSupplies = []
                     var allPayments = []
                     var allUsers = []
+                    var allHistory = []
                     var venmoUsers = []
                     var home = doc.data();
                     this.props.firebase.defaultHomeData = home
@@ -225,7 +221,7 @@ const HistoryList = ({ history }) => (
             <div className="card-body">
                 <li key={historyItem.Timestamp}>
                     <span className="item">
-                        <p className="card-text">{historyItem["Item ID"]}</p>
+                        <p className="card-text">{historyItem.Author}</p>
                     </span>
                 </li>
             </div>
