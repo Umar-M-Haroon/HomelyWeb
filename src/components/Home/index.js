@@ -14,6 +14,7 @@ class Home extends Component {
             supplies: [],
             payments: [],
             users: [],
+            history: [],
             home: ""
         };
     }
@@ -21,6 +22,7 @@ class Home extends Component {
         var allChores = []
         var allSupplies = []
         var allPayments = []
+        var allHistory = []
         var allUsers = []
         this.setState({ loading: false });
         this.props.firebase.homes()
@@ -42,6 +44,15 @@ class Home extends Component {
                             allPayments.push(payment);
                         }
                     })
+                    //add each payment, supply, and chore that is finished to the allHistory list
+                    //iterates through the document's chores/supplies/payments and adds to an array that the home page can read
+                    home.History.forEach(historyItem => {
+                        if (historyItem.Completed === true) {
+                            allHistory.push(historyItem);
+                        }
+                    })
+                   
+
                     home.Users.forEach(user => {
                         allUsers.push(user);
                     })
@@ -49,6 +60,7 @@ class Home extends Component {
                         chores: allChores,
                         supplies: allSupplies,
                         payments: allPayments,
+                        history: allHistory,
                         users: allUsers,
                         home: home,
                         loading: false
@@ -65,7 +77,7 @@ class Home extends Component {
     }
 
     render() {
-        const { chores, supplies, payments, loading } = this.state;
+        const { chores, supplies, payments, loading, history } = this.state;
         return (
             <div>
                 {loading && <div>Loading ...</div>}
@@ -83,6 +95,11 @@ class Home extends Component {
                         {<PaymentsList payments={payments} />}
                     </div>
                 </div>
+                <center><div className="row no-gutters flex-nowrap">
+                    <div className="col">
+                        {<HistoryList history={history} />}
+                    </div>  
+                </div></center>   
             </div >
         );
 
@@ -171,6 +188,30 @@ const PaymentsList = ({ payments }) => (
             ))}
         </ul>
     </div >
+)
+
+const HistoryList = ({ history }) => (
+    
+    <div className="historyFrame">
+    <ul className="listFrame">
+        <h2 className="Title">
+            History
+        </h2>
+    {history.map((historyItem) => (
+        <div className="card itemFrame mt-1">
+            <div className="card-body">
+                <li key={historyItem.Timestamp}>
+                    <span className="item">
+                        <p className="card-text">{historyItem["Item ID"]}</p>
+                    </span>
+                </li>
+            </div>
+        </div>
+    ))}
+        
+        
+    </ul>
+    </div>
 )
 
 const condition = authUser => !!authUser;
