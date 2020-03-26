@@ -16,11 +16,17 @@ class Home extends Component {
             supplies: [],
             payments: [],
             users: [],
+            history: [],
             home: ""
         };
     }
 
     componentDidMount() {
+        var allChores = []
+        var allSupplies = []
+        var allPayments = []
+        var allHistory = []
+        var allUsers = []
         //Set up home page with appropriate data
         this.setState({ loading: false });
         //calls the homes function to get the current homes the user has
@@ -37,30 +43,28 @@ class Home extends Component {
                     var home = doc.data();
                     this.props.firebase.defaultHomeData = home
                     this.props.firebase.defaultHome = doc.id
-                    //iterates through the document's chores and adds to an array that the home page can read
-                    //repeated with supplies and payments
-                    if (home.Chores) {
-                        home.Chores.forEach(chore => {
-                            if (chore.Completed !== true) {
-                                allChores.push(chore);
-                            }
-                        });
-                    }
-                    if (home.Supplies) {
-                        home.Supplies.forEach(supply => {
-                            if (supply.Completed !== true) {
-                                allSupplies.push(supply);
-                            }
-                        });
-                    }
-                    if (home.Payments) {
-                        home.Payments.forEach(payment => {
-                            if (payment.Completed !== true) {
-                                payment.User = this.props.firebase.getUserForItem(home.Users, home.History, payment)
-                                allPayments.push(payment);
-                            }
-                        })
-                    }
+                    home.Chores.forEach(chore => {
+                        if (chore.Completed !== true) {
+                            allChores.push(chore);
+                        }
+                    });
+                    home.Supplies.forEach(supply => {
+                        if (supply.Completed !== true) {
+                            allSupplies.push(supply);
+                        }
+                    });
+                    home.Payments.forEach(payment => {
+                        if (payment.Completed !== true) {
+                            allPayments.push(payment);
+                        }
+                    })
+                    //add each payment, supply, and chore that is finished to the allHistory list
+                    //iterates through the document's chores/supplies/payments and adds to an array that the home page can read
+                    home.History.forEach(historyItem => {
+                      allHistory.push(historyItem);
+                    })
+                   
+
                     home.Users.forEach(user => {
                         if (user["Venmo ID"] !== undefined && user["Venmo ID"] !== "") {
                             venmoUsers.push(user)
@@ -71,6 +75,7 @@ class Home extends Component {
                         chores: allChores,
                         supplies: allSupplies,
                         payments: allPayments,
+                        history: allHistory,
                         users: allUsers,
                         home: home,
                         venmoUsers: venmoUsers,
@@ -87,7 +92,7 @@ class Home extends Component {
     }
 
     render() {
-        const { chores, supplies, payments, loading } = this.state;
+        const { chores, supplies, payments, loading, history } = this.state;
         return (
             <div>
                 <h1><strong>Home</strong></h1>
@@ -106,6 +111,11 @@ class Home extends Component {
                         {<PaymentsList users={this.state.venmoUsers} payments={payments} />}
                     </div>
                 </div>
+                <center><div className="row no-gutters flex-nowrap">
+                    <div className="col">
+                        {<HistoryList history={history} />}
+                    </div>  
+                </div></center>   
             </div >
         );
 
@@ -201,6 +211,30 @@ const PaymentsList = ({ users, payments }) => (
             ))}
         </ul>
     </div >
+)
+
+const HistoryList = ({ history }) => (
+    
+    <div className="historyFrame">
+    <ul className="listFrame">
+        <h2 className="Title">
+            History
+        </h2>
+    {history.map((historyItem) => (
+        <div className="card itemFrame mt-1">
+            <div className="card-body">
+                <li key={historyItem.Timestamp}>
+                    <span className="item">
+                        <p className="card-text">{historyItem["Item ID"]}</p>
+                    </span>
+                </li>
+            </div>
+        </div>
+    ))}
+        
+        
+    </ul>
+    </div>
 )
 
 const condition = authUser => !!authUser;
