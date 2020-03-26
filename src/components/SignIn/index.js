@@ -9,7 +9,7 @@ import './SignIn.css';
 
 const SignIn = () => (
     <div className="SignInFrame">
-        
+
         <SignInForm />
         <br></br>
         <PasswordForgetLink />
@@ -53,31 +53,35 @@ class SignInFormBase extends Component {
         const isInvalid = password === '' || email === '';
         return (
             <div className="SignInFrame">
-                <form className="text-center p5" onSubmit={this.onSubmit}>
+                <form className="p5" onSubmit={this.onSubmit}>
                     <br></br>
-                    <div class="form-group">
-                    <input
-                        name="email"
-                        className="form-control form-control-lg mb-4"
-                        value={email}
-                        onChange={this.onChange}
-                        type="text"
-                        placeholder="Email Address"
-                    />
+                    <div className="form-group">
+                        <label for="EmailAddress" className="">Email Address</label>
+                        <input
+                            name="email"
+                            className="form-control form-control-lg mb-4"
+                            value={email}
+                            onChange={this.onChange}
+                            type="email"
+                            placeholder="Email Address"
+                            id="EmailAddress"
+                        />
                     </div>
-                    <div class="form-group">
-                    <input
-                        name="password"
-                        className="form-control form-control-lg mb-4"
-                        value={password}
-                        onChange={this.onChange}
-                        type="password"
-                        placeholder="Password"
-                    />
+                    <div className="form-group">
+                        <label for="password">Password</label>
+                        <input
+                            name="password"
+                            className="form-control form-control-lg mb-4"
+                            value={password}
+                            onChange={this.onChange}
+                            type="password"
+                            placeholder="Password"
+                            id="Password"
+                        />
                     </div>
-                    <div class="form-group">
-                    <button disabled={isInvalid} className="btn btn-dark btn-lg" type="submit">
-                        Sign In
+                    <div className="form-group text-center">
+                        <button disabled={isInvalid} className="btn btn-dark btn-lg center" type="submit">
+                            Sign In
                     </button>
                     </div>
                     {error && <p>{error.message}</p>}
@@ -98,3 +102,4 @@ const SignInForm = compose(
 )(SignInFormBase);
 export default SignIn;
 export { SignInForm };
+
