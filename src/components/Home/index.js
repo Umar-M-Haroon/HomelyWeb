@@ -39,22 +39,28 @@ class Home extends Component {
                     this.props.firebase.defaultHome = doc.id
                     //iterates through the document's chores and adds to an array that the home page can read
                     //repeated with supplies and payments
-                    home.Chores.forEach(chore => {
-                        if (chore.Completed !== true) {
-                            allChores.push(chore);
-                        }
-                    });
-                    home.Supplies.forEach(supply => {
-                        if (supply.Completed !== true) {
-                            allSupplies.push(supply);
-                        }
-                    });
-                    home.Payments.forEach(payment => {
-                        if (payment.Completed !== true) {
-                            payment.User = this.props.firebase.getUserForItem(home.Users, home.History, payment)
-                            allPayments.push(payment);
-                        }
-                    })
+                    if (home.Chores) {
+                        home.Chores.forEach(chore => {
+                            if (chore.Completed !== true) {
+                                allChores.push(chore);
+                            }
+                        });
+                    }
+                    if (home.Supplies) {
+                        home.Supplies.forEach(supply => {
+                            if (supply.Completed !== true) {
+                                allSupplies.push(supply);
+                            }
+                        });
+                    }
+                    if (home.Payments) {
+                        home.Payments.forEach(payment => {
+                            if (payment.Completed !== true) {
+                                payment.User = this.props.firebase.getUserForItem(home.Users, home.History, payment)
+                                allPayments.push(payment);
+                            }
+                        })
+                    }
                     home.Users.forEach(user => {
                         if (user["Venmo ID"] !== undefined && user["Venmo ID"] !== "") {
                             venmoUsers.push(user)
@@ -143,7 +149,7 @@ const SuppliesList = ({ supplies }) => (
             </h2>
             {supplies.map((supply) => (
                 <div className="card itemFrame mt-1" key={supply.Timestamp}>
-                    <div className="card-body" > 
+                    <div className="card-body" >
                         <li>
                             <div className="item" >
                                 <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>

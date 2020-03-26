@@ -1,0 +1,16 @@
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /Homes/{home} {
+      function userIsInHome(id){
+				return id in resource.data.userIDs;
+      }
+      function userHasValidShareID(){
+      // checks if the shareID is there and valid. Comes from the shareable links.
+					return request.resource.data.shareID == resource.data.shareID;
+      }
+      allow read, write: if userIsInHome(request.auth.uid) || userHasValidShareID() || userIsInHome(request.auth.token.firebase.identities["apple.com"][0]) || userIsInHome(request.auth.token.firebase.identities["firebase"][0]);
+      allow create: if request.auth.uid != null;
+			
+    }
+  }
+}
