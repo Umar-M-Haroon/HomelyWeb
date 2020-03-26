@@ -1,15 +1,14 @@
 import React, { Component } from 'react';
 import { Link, withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-
-import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
-
+import { withFirebase } from '../Firebase';
 import './SignUp.css';
+
+
 
 const SignUpPage = () => (
     <div>
-        <h4>Sign Up</h4>
         <SignUpForm />
     </div>
 );
@@ -63,46 +62,53 @@ class SignUpFormBase extends Component {
             this.validateEmail(email) ||
             username === '';
         return (
-            <div>
-                <form onSubmit={this.onSubmit}>
-                    <div className="form-group">
-                        <input className="form-control"
-                            name="username"
-                            value={username}
-                            onChange={this.onChange}
-                            type="text"
-                            placeholder="Display Name"
-                        />
+            <container>
+                <div class="Absolute-Center is-Responsive">
+                    <h1 align="center">Sign Up</h1>
+                    <br></br>
+                    <form class="text-center p5" onSubmit={this.onSubmit}>
+                        <div className="form-group">
+                            <input className="form-control form-control-lg  mb-4"
+                                name="username"
+                                value={username}
+                                onChange={this.onChange}
+                                type="text"
+                                placeholder="Display Name"
+                            />
+                        </div>
+                        <div className="form-group">
+                            <input className="form-control form-control-lg  mb-4"
+                                name="email"
+                                value={email}
+                                onChange={this.onChange}
+                                type="text"
+                                placeholder="Email Address"
+                            />
+                        </div>
+                        <div className="form-group">
+                            <input className="form-control form-control-lg  mb-4"
+                                name="passwordOne"
+                                value={passwordOne}
+                                onChange={this.onChange}
+                                type="password"
+                                placeholder="Password"
+                            />
+                            <small className="form-text text-muted">Passwords must be at least 8 characters long</small>
+                        </div>
+                        <button disabled={isInvalid} type="submit" className="btn btn-dark btn-lg">Sign Up</button>
+                        {error && <p>{error.message}</p>}
+                    </form>
+                    <div>
+                        <h5 className="signin-button">or</h5>
                     </div>
-                    <div className="form-group">
-                        <input className="form-control"
-                            name="email"
-                            value={email}
-                            onChange={this.onChange}
-                            type="text"
-                            placeholder="Email Address"
-                        />
+                    
+                    <div className="signin-button">
+                        <button id="Apple-Sign-In" className="btn btn-link">
+                            <img className="signin-button" src="https://appleid.cdn-apple.com/appleid/button?height=64&width=300&type=continue" alt="Sign In With Apple" />
+                        </button>
                     </div>
-                    <div className="form-group">
-                        <input className="form-control"
-                            name="passwordOne"
-                            value={passwordOne}
-                            onChange={this.onChange}
-                            type="password"
-                            placeholder="Password"
-                        />
-                        <small className="form-text text-muted">Passwords must be at least 8 characters long</small>
-                    </div>
-                    <button disabled={isInvalid} type="submit" className="btn btn-primary">Sign Up</button>
-                    {error && <p>{error.message}</p>}
-                </form>
-                <h6 className="signin-button">or </h6>
-                <div className="signin-button">
-                    <button id="Apple-Sign-In" className="btn btn-link">
-                        <img className="signin-button" src="https://appleid.cdn-apple.com/appleid/button?height=64&width=300&type=continue" alt="Sign In With Apple" />
-                    </button>
                 </div>
-            </div>
+            </container>
         );
     }
 }
