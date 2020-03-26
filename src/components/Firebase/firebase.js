@@ -27,6 +27,8 @@ class Firebase {
             this.db = app.firestore();
             this.functions = app.functions();
             this.storage = app.storage();
+            //emulator setup. If you want to use firebase emulators, use the ./dir folder and keep this if statement in
+            //if you dont, comment out this if statement and uncomment the persistence lines.
             if (window.location.hostname === "localhost") {
                 this.db.settings({
                     host: "localhost:8080",
