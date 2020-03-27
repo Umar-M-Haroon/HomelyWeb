@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import Calendar from 'react-calendar';
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
 import { ReactComponent as Add } from '../../plus.svg';
@@ -57,9 +58,9 @@ class Home extends Component {
                     //add each payment, supply, and chore that is finished to the allHistory list
                     //iterates through the document's chores/supplies/payments and adds to an array that the home page can read
                     home.History.forEach(historyItem => {
-                      allHistory.push(historyItem);
+                        allHistory.push(historyItem);
                     })
-                   
+
 
                     home.Users.forEach(user => {
                         if (user["Venmo ID"] !== undefined && user["Venmo ID"] !== "") {
@@ -110,11 +111,41 @@ class Home extends Component {
                 <center><div className="row no-gutters flex-nowrap">
                     <div className="col">
                         {<HistoryList history={history} />}
-                    </div>  
-                </div></center>   
+                    </div>
+                </div></center>
+                <div>
+                    <Calendar tileClassName="CalendarTileName" tileContent={({ activeStartDate, date, view }) => <TotalItems date={date} homeData={this.props.firebase.defaultHomeData} />} />
+                </div>
             </div >
         );
+    }
+}
 
+class TotalItems extends Component {
+    render() {
+        if (!this.props.homeData) { return (<div></div>) }
+        var deadlines = 0
+        this.props.homeData.Chores.forEach(element => {
+            if (element.Deadline) {
+                if (element.Deadline.toDate().getMonth() === this.props.date.getMonth() && element.Deadline.toDate().getDate() === this.props.date.getDate()) {
+                    deadlines += 1
+                }
+            }
+        });
+        this.props.homeData.Payments.forEach(element => {
+            if (element.Deadline) {
+                if (element.Deadline.toDate().getMonth() === this.props.date.getMonth() && element.Deadline.toDate().getDate() === this.props.date.getDate()) {
+                    deadlines += 1
+                }
+            }
+        })
+        if (deadlines <= 0) {
+            return (<div />)
+        }
+
+        return (
+            <div><br /><div className="itemsBadge">{deadlines}</div></div>
+        )
     }
 }
 
@@ -210,26 +241,26 @@ const PaymentsList = ({ users, payments }) => (
 )
 
 const HistoryList = ({ history }) => (
-    
+
     <div className="historyFrame">
-    <ul className="listFrame">
-        <h2 className="Title">
-            History
+        <ul className="listFrame">
+            <h2 className="Title">
+                History
         </h2>
-    {history.map((historyItem) => (
-        <div className="card itemFrame mt-1">
-            <div className="card-body">
-                <li key={historyItem.Timestamp}>
-                    <span className="item">
-                        <p className="card-text">{historyItem.Author}</p>
-                    </span>
-                </li>
-            </div>
-        </div>
-    ))}
-        
-        
-    </ul>
+            {history.map((historyItem) => (
+                <div className="card itemFrame mt-1" key={historyItem.Timestamp}>
+                    <div className="card-body">
+                        <li>
+                            <span className="item">
+                                <p className="card-text">{historyItem.Author}</p>
+                            </span>
+                        </li>
+                    </div>
+                </div>
+            ))}
+
+
+        </ul>
     </div>
 )
 

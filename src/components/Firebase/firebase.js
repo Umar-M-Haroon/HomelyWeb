@@ -182,8 +182,6 @@ class Firebase {
         homeData[typeString] = app.firestore.FieldValue.arrayUnion(firebaseFriendlyItem)
         homeData.History = app.firestore.FieldValue.arrayUnion(historyItem)
         //once the correct objects are made, a final object is created and sent to firebase, and the success of it is logged.
-        console.log(this.defaultHome)
-        console.log(this.auth.currentUser)
         this.db.collection("Homes").doc(this.defaultHome).set(homeData).then(function () {
             console.log("Document successfully updated!");
         })

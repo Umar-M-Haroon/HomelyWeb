@@ -1,12 +1,7 @@
 .categoryFrame {
   border-radius: 20px;
   box-shadow: 5px 5px 10px grey;
-  background: linear-gradient(
-      145.15deg,
-      rgba(255, 255, 255, 0.62) -30.66%,
-      rgba(255, 255, 255, 0) 115.34%
-    ),
-    #0447e0;
+  background: linear-gradient( 145.15deg, rgba(255, 255, 255, 0.62) -30.66%, rgba(255, 255, 255, 0) 115.34%), #0447e0;
   min-width: 300px;
   max-width: 600px;
   height: 600px;
@@ -15,22 +10,18 @@
   text-align: left;
   overflow: auto;
 }
+
 .historyFrame {
   border-radius: 20px;
   box-shadow: 5px 5px 10px grey;
-  background: linear-gradient(
-      145.15deg,
-      rgba(255, 255, 255, 0.62) -30.66%,
-      rgba(255, 255, 255, 0) 115.34%
-    ),
-    #595959;
-    min-width: 300px;
-    max-width: 900px;
-    height: 300px;
-    padding: 10px;
-    margin: 20px;
-    text-align: left;
-    overflow: auto;
+  background: linear-gradient( 145.15deg, rgba(255, 255, 255, 0.62) -30.66%, rgba(255, 255, 255, 0) 115.34%), #595959;
+  min-width: 300px;
+  max-width: 900px;
+  height: 300px;
+  padding: 10px;
+  margin: 20px;
+  text-align: left;
+  overflow: auto;
 }
 
 .itemFrame {
@@ -65,8 +56,9 @@ li {
   color: white;
   margin-right: 4px;
 }
+
 .homeTitle:hover {
-  color:  rgb(219, 219, 219);
+  color: rgb(219, 219, 219);
   text-decoration: none;
 }
 
@@ -78,14 +70,17 @@ li {
   transition-duration: 200ms;
   transition-timing-function: cubic-bezier(0.455, 0.03, 0.515, 0.955);
 }
+
 .addButton:hover {
   fill: rgb(219, 219, 219);
 }
+
 .addButtonFrame {
   fill: none;
   border: none;
   background-color: transparent;
 }
+
 .modal-title {
   font-weight: 600;
   font-size: 30px;
@@ -96,11 +91,31 @@ li {
   font-weight: 500;
   color: #595959;
 }
+
 .addPhotoButton {
   width: 100%;
 }
+
 .react-calendar {
   display: inline;
   border: none;
   border-color: rebeccapurple;
+}
+
+.itemsBadge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background-color: red;
+  color: white;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  vertical-align: middle;
+  font-size: 15px;
+  margin-top: -30px;
+}
+
+.CalendarTileName {
+  box-shadow: black;
 }
