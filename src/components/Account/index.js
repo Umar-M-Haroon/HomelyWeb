@@ -14,21 +14,21 @@ class AccountPage extends Component {
     }
     componentDidMount() {
         if (this.props.firebase.defaultHomeData == null || this.props.firebase.defaultHomeData === undefined) {
-            this.props.firebase.homes()
-                .then(querySnapshot => {
-                    querySnapshot.forEach(doc => {
-                        var home = doc.data();
-                        this.props.firebase.defaultHome = doc.id
-                        this.props.firebase.defaultHomeData = home
-                        var users = this.props.firebase.defaultHomeData.Users;
-                        var user = users.find(user => user["User ID"] === this.props.firebase.userData())
-                        this.setState({
-                            venmoID: user["Venmo ID"]
-                        })
-                    })
-                }).catch(error => {
-                    console.log(error);
-                });
+            // this.props.firebase.homes()
+            //     .then(querySnapshot => {
+            //         querySnapshot.forEach(doc => {
+            //             var home = doc.data();
+            //             this.props.firebase.defaultHome = doc.id
+            //             this.props.firebase.defaultHomeData = home
+            //             var users = this.props.firebase.defaultHomeData.Users;
+            //             var user = users.find(user => user["User ID"] === this.props.firebase.userData())
+            //             this.setState({
+            //                 venmoID: user["Venmo ID"]
+            //             })
+            //         })
+            //     }).catch(error => {
+            //         console.log(error);
+            //     });
         } else {
             var users = this.props.firebase.defaultHomeData.Users;
             var user = users.find(user => user["User ID"] === this.props.firebase.userData())
