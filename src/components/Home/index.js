@@ -244,7 +244,7 @@ const HistoryList = ({ history }) => (
 
     <div className="historyFrame">
         <ul className="listFrame">
-            <h2 className="Title">
+            <h2 className="homeTitle">
                 History
         </h2>
             {history.map((historyItem) => (
@@ -252,6 +252,7 @@ const HistoryList = ({ history }) => (
                     <div className="card-body">
                         <li>
                             <span className="item">
+                            {/* <p className="card-text">Completed By: {historyItem.Author}<br></br>{historyItem["Item ID"]}<br></br>Completed At: {historyItem.Timestamp}</p> */}
                                 <p className="card-text">{historyItem.Author}</p>
                             </span>
                         </li>
