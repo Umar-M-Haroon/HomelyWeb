@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { withAuthorization } from '../../../Session';
-import { withFirebase } from '../../../Firebase';
-import './AssignedUsers.css'
 import { ReactComponent as Check } from '../../../../check.svg';
+import { withFirebase } from '../../../Firebase';
+import { withAuthorization } from '../../../Session';
+import './AssignedUsers.css';
 class AssignedUsers extends Component {
     constructor(props) {
         super(props)
@@ -48,7 +48,7 @@ class AssignedUsers extends Component {
         }
     }
     buttonClick(id, e) {
-        var person = document.getElementById(id);
+        var person = document.getElementById(id + this.props.id);
         var users = this.state.assignedUsers;
         if (person.children[1].style.visibility === "visible") {
             person.children[1].style.visibility = "hidden"
@@ -60,17 +60,20 @@ class AssignedUsers extends Component {
         this.setState({
             assignedUsers: users
         })
+        this.props.handleUserChange(users);
     }
     render() {
         if (this.state.users.length === 0) { return (<div>No Users!</div>) }
         return (
             <div>
                 {this.props.users.map(user => (
-                    <div className="profile" id={user["User ID"]}>
-                        <img src={user.imageURL} alt="Profile" className="profileImage" onClick={(e) => this.buttonClick(user["User ID"], e)}></img>
-                        <Check className="Check" />
-                        <p>{user["Display Name"]}</p>
-                    </div>
+                    <button type="button" name="Select User" key={user["User ID"]}>
+                        <div className="profile" id={user["User ID"] + this.props.id}>
+                            <img src={user.imageURL} alt="Profile" className="profileImage" onClick={(e) => this.buttonClick(user["User ID"], e)}></img>
+                            <Check className="Check" />
+                            <p>{user["Display Name"]}</p>
+                        </div>
+                    </button>
                 ))}
             </div >
         )

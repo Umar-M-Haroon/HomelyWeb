@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import './Landing.css';
+import * as ROUTES from '../../constants/routes';
 import { ReactComponent as Logo } from '../../homely-logo.svg';
 import { AuthUserContext } from '../Session';
-import * as ROUTES from '../../constants/routes';
 import SignIn from '../SignIn';
+import './Landing.css';
 class Landing extends Component {
     render() {
         return (
@@ -25,9 +25,7 @@ class SignUpLanding extends Component {
 
     render() {
         return (<div className="Main">
-            <h1 className="Title">Welcome to Homely!</h1>
             <Logo className="Homely-Logo">Homely Logo</Logo>
-            <h3 className="Title">Sign in or sign up to get started</h3>
             <SignIn />
         </div>)
     }

@@ -13,6 +13,7 @@
   padding: 10px;
   margin: 20px;
   text-align: left;
+  overflow: auto;
 }
 .historyFrame {
   border-radius: 20px;
@@ -54,13 +55,18 @@ li {
   list-style-type: none;
 }
 
-.Title {
+.homeTitle {
   text-align: left;
   margin-left: -20px;
   font-style: normal;
   font-weight: 600;
   font-size: 40px;
   color: white;
+  margin-right: 4px;
+}
+.homeTitle:hover {
+  color:  rgb(219, 219, 219);
+  text-decoration: none;
 }
 
 .addButton {
