@@ -202,7 +202,8 @@ const HistoryList = ({ history }) => (
             <div className="card-body">
                 <li key={historyItem.Timestamp}>
                     <span className="item">
-                        <p className="card-text">{historyItem["Item ID"]}</p>
+                        <p className="card-text">Completed By: {historyItem.Author}<br></br>{historyItem["Item ID"]}<br></br>Completed At: {historyItem.Timestamp}</p>
+                        {/* <p className="card-text">{historyItem["Item ID"]}</p> */}
                     </span>
                 </li>
             </div>
