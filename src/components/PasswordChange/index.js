@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
+import './PasswordChange.css';
 const INITIAL_STATE = {
   passwordOne: '',
   passwordTwo: '',
@@ -30,8 +31,8 @@ class PasswordChangeForm extends Component {
     const isInvalid =
       passwordOne !== passwordTwo || passwordOne === '';
     return (
-      <div className="form-group">
-        <form onSubmit={this.onSubmit} >
+      <div className="form-group PasswordChangeFrame">
+        <form className="p5" onSubmit={this.onSubmit} >
           <div className="form-row">
             <div className="col">
               <div>
@@ -42,7 +43,7 @@ class PasswordChangeForm extends Component {
                   onChange={this.onChange}
                   type="password"
                   placeholder="New Password"
-                  className="form-control"
+                  className="form-control mb-4"
                 />
               </div>
               <div>
@@ -53,7 +54,7 @@ class PasswordChangeForm extends Component {
                   onChange={this.onChange}
                   type="password"
                   placeholder="Confirm New Password"
-                  className="form-control"
+                  className="form-control mb-4"
                 />
               </div>
               <button disabled={isInvalid} type="submit" className="btn btn-primary">Set New Password </button>

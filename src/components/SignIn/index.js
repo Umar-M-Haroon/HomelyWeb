@@ -1,15 +1,17 @@
 import React, { Component } from 'react';
 import { withRouter } from 'react-router-dom';
 import { compose } from 'recompose';
-import { SignUpLink } from '../SignUp';
-import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
+import { withFirebase } from '../Firebase';
 import { PasswordForgetLink } from '../PasswordForget';
+import { SignUpLink } from '../SignUp';
+import './SignIn.css';
 
 const SignIn = () => (
-    <div>
-        <h1>SignIn</h1>
+    <div className="SignInFrame">
+
         <SignInForm />
+        <br></br>
         <PasswordForgetLink />
         <SignUpLink />
     </div>
@@ -50,28 +52,41 @@ class SignInFormBase extends Component {
         const { email, password, error } = this.state;
         const isInvalid = password === '' || email === '';
         return (
-            <div>
-                <form onSubmit={this.onSubmit}>
-                    <input
-                        name="email"
-                        value={email}
-                        onChange={this.onChange}
-                        type="text"
-                        placeholder="Email Address"
-                    />
-                    <input
-                        name="password"
-                        value={password}
-                        onChange={this.onChange}
-                        type="password"
-                        placeholder="Password"
-                    />
-                    <button disabled={isInvalid} type="submit">
-                        Sign In
-            </button>
+            <div className="SignInFrame">
+                <form className="p5" onSubmit={this.onSubmit}>
+                    <br></br>
+                    <div className="form-group">
+                        <label for="EmailAddress" className="">Email Address</label>
+                        <input
+                            name="email"
+                            className="form-control form-control-lg mb-4"
+                            value={email}
+                            onChange={this.onChange}
+                            type="email"
+                            placeholder="Email Address"
+                            id="EmailAddress"
+                        />
+                    </div>
+                    <div className="form-group">
+                        <label for="password">Password</label>
+                        <input
+                            name="password"
+                            className="form-control form-control-lg mb-4"
+                            value={password}
+                            onChange={this.onChange}
+                            type="password"
+                            placeholder="Password"
+                            id="Password"
+                        />
+                    </div>
+                    <div className="form-group text-center">
+                        <button disabled={isInvalid} className="btn btn-dark btn-lg center" type="submit">
+                            Sign In
+                    </button>
+                    </div>
                     {error && <p>{error.message}</p>}
                 </form>
-                <h6 className="signin-button">or </h6>
+                <h5 className="signin-button">or </h5>
                 <div className="signin-button">
                     <button id="Apple-Sign-In" className="btn btn-link">
                         <img className="signin-button" src="https://appleid.cdn-apple.com/appleid/button?height=64&width=300&type=continue" alt="Sign In With Apple" />
@@ -87,3 +102,4 @@ const SignInForm = compose(
 )(SignInFormBase);
 export default SignIn;
 export { SignInForm };
+
