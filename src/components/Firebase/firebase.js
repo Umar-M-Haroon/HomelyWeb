@@ -182,9 +182,10 @@ class Firebase {
         homeData[typeString] = app.firestore.FieldValue.arrayUnion(firebaseFriendlyItem)
         homeData.History = app.firestore.FieldValue.arrayUnion(historyItem)
         //once the correct objects are made, a final object is created and sent to firebase, and the success of it is logged.
-        this.db.collection("Homes").doc(this.defaultHome).set(homeData).then(function () {
-            console.log("Document successfully updated!");
-        })
+        this.db.collection("Homes").doc(this.defaultHome).update(homeData)
+            .then(function () {
+                console.log("Document successfully updated!");
+            })
             .catch(function (error) {
                 // The document probably doesn't exist.
                 console.error("Error updating document: ", error);
