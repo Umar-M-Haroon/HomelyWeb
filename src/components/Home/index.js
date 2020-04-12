@@ -126,13 +126,13 @@ class Home extends Component {
                         {<PaymentsList users={this.state.venmoUsers} payments={payments} />}
                     </div>
                 </div>
-                <center><div className="row no-gutters flex-nowrap">
+                <div className="row no-gutters flex-nowrap">
                     <div className="col">
                         {<HistoryList history={history} home={this.state.home} imageURLs={this.state.userURLs} />}
                     </div>
-                </div></center>
-                <div>
-                    <Calendar tileClassName="CalendarTileName" tileContent={({ activeStartDate, date, view }) => <TotalItems date={date} homeData={this.props.firebase.defaultHomeData} />} />
+                    <div className="col">
+                        <Calendar tileClassName="CalendarTileName" tileContent={({ activeStartDate, date, view }) => <TotalItems date={date} homeData={this.props.firebase.defaultHomeData} />} />
+                    </div>
                 </div>
             </div >
         );
