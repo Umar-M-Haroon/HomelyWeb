@@ -244,15 +244,15 @@ class HistoryList extends Component {
     updateHistoryInfo(historyItem) {
         historyItem.displayName = this.props.home.Users.find(user => user["User ID"] === historyItem.Author)["Display Name"]
         var itemTitle
-        if (this.props.home.Chores.find(chore => chore.Timestamp === historyItem["Item ID"]) !== undefined) {
-            itemTitle = this.props.home.Chores.find(chore => chore.Timestamp !== historyItem["Item ID"]).Title
+        if (this.props.home.Chores.find(chore => chore.Timestamp.isEqual(historyItem["Item ID"])) !== undefined) {
+            itemTitle = this.props.home.Chores.find(chore => chore.Timestamp.isEqual(historyItem["Item ID"])).Title
         }
-        if (this.props.home.Supplies.find(supply => supply.Timestamp === historyItem["Item ID"]) !== undefined) {
-            itemTitle = this.props.home.Supplies.find(supply => supply.Timestamp === historyItem["Item ID"])["Supply Title"]
+        if (this.props.home.Supplies.find(supply => supply.Timestamp.isEqual(historyItem["Item ID"])) !== undefined) {
+            itemTitle = this.props.home.Supplies.find(supply => supply.Timestamp.isEqual(historyItem["Item ID"]))["Supply Title"]
         }
 
-        if (this.props.home.Payments.find(payment => payment.Timestamp === historyItem["Item ID"]) !== undefined) {
-            itemTitle = this.props.home.Payments.find(chore => chore.Timestamp === historyItem["Item ID"])["Payment Title"]
+        if (this.props.home.Payments.find(payment => payment.Timestamp.isEqual(historyItem["Item ID"])) !== undefined) {
+            itemTitle = this.props.home.Payments.find(chore => chore.Timestamp.isEqual(historyItem["Item ID"]))["Payment Title"]
         }
         historyItem.itemTitle = itemTitle
         return historyItem
@@ -261,6 +261,7 @@ class HistoryList extends Component {
         const history = this.props.history.map((historyItem) => {
             return this.updateHistoryInfo(historyItem)
         })
+        console.log(history)
         return (
             <div className="historyFrame">
                 <ul className="listFrame">
@@ -274,12 +275,17 @@ class HistoryList extends Component {
                                 <li>
                                     <span className="item">
                                         {historyItem.Completed &&
-                                            <p className="card-text">{historyItem.Author} completed {}</p>
+                                            <div>
+                                                <p className="card-text">{historyItem.Author} completed {historyItem.itemTitle}</p>
+                                                <p className="card-text">Completed: {historyItem.Timestamp.toDate().toDateString()}</p>
+                                            </div>
                                         }
                                         {!historyItem.Completed &&
-                                            <p className="card-text">{historyItem.displayName} created {} </p>
+                                            <div>
+                                                <p className="card-text">{historyItem.displayName} created {historyItem.itemTitle} </p>
+                                                <p className="card-text">Created: {historyItem.Timestamp.toDate().toDateString()}</p>
+                                            </div>
                                         }
-                                        <p className="card-text">Completed By: {historyItem["Item ID"].toDate().toDateString()}</p>
                                     </span>
                                 </li>
                             </div>
