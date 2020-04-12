@@ -110,7 +110,7 @@ class Home extends Component {
                 </div>
                 <center><div className="row no-gutters flex-nowrap">
                     <div className="col">
-                        {<HistoryList history={history} />}
+                        {<HistoryList history={history} home={this.state.home} />}
                     </div>
                 </div></center>
                 <div>
@@ -240,30 +240,58 @@ const PaymentsList = ({ users, payments }) => (
     </div >
 )
 
-const HistoryList = ({ history }) => (
+class HistoryList extends Component {
+    updateHistoryInfo(historyItem) {
+        historyItem.displayName = this.props.home.Users.find(user => user["User ID"] === historyItem.Author)["Display Name"]
+        var itemTitle
+        if (this.props.home.Chores.find(chore => chore.Timestamp === historyItem["Item ID"]) !== undefined) {
+            itemTitle = this.props.home.Chores.find(chore => chore.Timestamp !== historyItem["Item ID"]).Title
+        }
+        if (this.props.home.Supplies.find(supply => supply.Timestamp === historyItem["Item ID"]) !== undefined) {
+            itemTitle = this.props.home.Supplies.find(supply => supply.Timestamp === historyItem["Item ID"])["Supply Title"]
+        }
 
-    <div className="historyFrame">
-        <ul className="listFrame">
-            <h2 className="homeTitle">
-                History
-        </h2>
-            {history.map((historyItem) => (
-                <div className="card itemFrame mt-1" key={historyItem.Timestamp}>
-                    <div className="card-body">
-                        <li>
-                            <span className="item">
-                            {/* <p className="card-text">Completed By: {historyItem.Author}<br></br>{historyItem["Item ID"]}<br></br>Completed At: {historyItem.Timestamp}</p> */}
-                                <p className="card-text">{historyItem.Author}</p>
-                            </span>
-                        </li>
-                    </div>
-                </div>
-            ))}
+        if (this.props.home.Payments.find(payment => payment.Timestamp === historyItem["Item ID"]) !== undefined) {
+            itemTitle = this.props.home.Payments.find(chore => chore.Timestamp === historyItem["Item ID"])["Payment Title"]
+        }
+        historyItem.itemTitle = itemTitle
+        return historyItem
+    }
+    render() {
+        const history = this.props.history.map((historyItem) => {
+            return this.updateHistoryInfo(historyItem)
+        })
+        return (
+            <div className="historyFrame">
+                <ul className="listFrame">
+                    <h2 className="homeTitle">
+                        History
+                    </h2>
+                    {history.map((historyItem) => (
+
+                        <div className="card itemFrame mt-1" key={historyItem.Timestamp} >
+                            <div className="card-body">
+                                <li>
+                                    <span className="item">
+                                        {historyItem.Completed &&
+                                            <p className="card-text">{historyItem.Author} completed {}</p>
+                                        }
+                                        {!historyItem.Completed &&
+                                            <p className="card-text">{historyItem.displayName} created {} </p>
+                                        }
+                                        <p className="card-text">Completed By: {historyItem["Item ID"].toDate().toDateString()}</p>
+                                    </span>
+                                </li>
+                            </div>
+                        </div>
+                    ))}
 
 
-        </ul>
-    </div>
-)
+                </ul>
+            </div >
+        )
+    }
+}
 
 const condition = authUser => !!authUser;
 export default withFirebase(withAuthorization(condition)(Home));
