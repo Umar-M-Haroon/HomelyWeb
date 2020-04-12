@@ -119,3 +119,18 @@ li {
 .CalendarTileName {
   box-shadow: black;
 }
+
+.historyProfileContainer {
+  float: left;
+}
+
+.historyProfilePhoto {
+  width: 60px;
+  height: 60px;
+  margin-top: 15%;
+  border-radius: 50%;
+}
+
+.historyContent {
+  margin-left: 70px;
+}

@@ -202,5 +202,6 @@ class Firebase {
         )
         return foundItem.Author
     }
+
 }
 export default Firebase

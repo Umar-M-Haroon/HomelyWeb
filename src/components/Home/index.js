@@ -67,6 +67,24 @@ class Home extends Component {
                             venmoUsers.push(user)
                         }
                         allUsers.push(user);
+                        this.props.firebase.getImage(user["User ID"])
+                            .then((url) => {
+
+                                var userURLs = {}
+                                if (this.state.userURLs !== undefined) {
+                                    userURLs = this.state.userURLs
+                                }
+                                if (url === undefined) { return }
+                                var userID = user["User ID"]
+                                userURLs[userID] = url
+
+                                this.setState({
+                                    userURLs: userURLs
+                                })
+                            })
+                            .catch((error) => {
+                                console.error(`Error getting URL ${error}`)
+                            })
                     })
                     this.setState({
                         chores: allChores,
@@ -76,7 +94,7 @@ class Home extends Component {
                         users: allUsers,
                         home: home,
                         venmoUsers: venmoUsers,
-                        loading: false
+                        loading: false,
                     });
                     //while also getting the categories, it also gets the users and sets a default home.
                     //These are needed for assigning users.
@@ -110,7 +128,7 @@ class Home extends Component {
                 </div>
                 <center><div className="row no-gutters flex-nowrap">
                     <div className="col">
-                        {<HistoryList history={history} home={this.state.home} />}
+                        {<HistoryList history={history} home={this.state.home} imageURLs={this.state.userURLs} />}
                     </div>
                 </div></center>
                 <div>
@@ -255,13 +273,21 @@ class HistoryList extends Component {
             itemTitle = this.props.home.Payments.find(chore => chore.Timestamp.isEqual(historyItem["Item ID"]))["Payment Title"]
         }
         historyItem.itemTitle = itemTitle
+
+        if (this.props.imageURLs === undefined) {
+            return historyItem
+        }
+        if (this.props.imageURLs[historyItem.Author] === undefined) {
+            return historyItem
+        }
+
+        historyItem.imageURL = this.props.imageURLs[historyItem.Author]
         return historyItem
     }
     render() {
         const history = this.props.history.map((historyItem) => {
             return this.updateHistoryInfo(historyItem)
         })
-        console.log(history)
         return (
             <div className="historyFrame">
                 <ul className="listFrame">
@@ -272,22 +298,27 @@ class HistoryList extends Component {
 
                         <div className="card itemFrame mt-1" key={historyItem.Timestamp} >
                             <div className="card-body">
-                                <li>
-                                    <span className="item">
-                                        {historyItem.Completed &&
-                                            <div>
-                                                <p className="card-text">{historyItem.Author} completed {historyItem.itemTitle}</p>
-                                                <p className="card-text">Completed: {historyItem.Timestamp.toDate().toDateString()}</p>
-                                            </div>
-                                        }
-                                        {!historyItem.Completed &&
-                                            <div>
-                                                <p className="card-text">{historyItem.displayName} created {historyItem.itemTitle} </p>
-                                                <p className="card-text">Created: {historyItem.Timestamp.toDate().toDateString()}</p>
-                                            </div>
-                                        }
-                                    </span>
-                                </li>
+                                <div className="historyProfileContainer">
+                                    <img className="historyProfilePhoto" src={historyItem.imageURL} alt={historyItem.displayName}></img>
+                                </div>
+                                <div className="historyContent">
+                                    <li>
+                                        <span className="item">
+                                            {historyItem.Completed &&
+                                                <div>
+                                                    <p className="card-text">{historyItem.Author} completed {historyItem.itemTitle}</p>
+                                                    <p className="card-text">Completed: {historyItem.Timestamp.toDate().toDateString()}</p>
+                                                </div>
+                                            }
+                                            {!historyItem.Completed &&
+                                                <div>
+                                                    <p className="card-text">{historyItem.displayName} created {historyItem.itemTitle} </p>
+                                                    <p className="card-text">Created: {historyItem.Timestamp.toDate().toDateString()}</p>
+                                                </div>
+                                            }
+                                        </span>
+                                    </li>
+                                </div>
                             </div>
                         </div>
                     ))}
