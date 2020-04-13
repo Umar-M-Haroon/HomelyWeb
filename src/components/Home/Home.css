@@ -17,11 +17,11 @@
   background: linear-gradient( 145.15deg, rgba(255, 255, 255, 0.62) -30.66%, rgba(255, 255, 255, 0) 115.34%), #595959;
   min-width: 300px;
   max-width: 900px;
-  /* height: 300px; */
+  height: 600px;
   padding: 10px;
   margin: 20px;
   text-align: left;
-  /* overflow: auto; */
+  overflow: auto;
 }
 
 .itemFrame {
@@ -99,7 +99,10 @@ li {
 .react-calendar {
   display: inline;
   border: none;
-  border-color: rebeccapurple;
+}
+
+.homeCalendar .react-calendar__month-view__days {
+  height: 600px;
 }
 
 .itemsBadge {

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
 import { ReactComponent as Add } from '../../plus.svg';
@@ -131,7 +132,7 @@ class Home extends Component {
                         {<HistoryList history={history} home={this.state.home} imageURLs={this.state.userURLs} />}
                     </div>
                     <div className="col">
-                        <Calendar tileClassName="CalendarTileName" tileContent={({ activeStartDate, date, view }) => <TotalItems date={date} homeData={this.props.firebase.defaultHomeData} />} />
+                        <Calendar className="homeCalendar" tileClassName="CalendarTileName" tileContent={({ activeStartDate, date, view }) => <TotalItems date={date} homeData={this.props.firebase.defaultHomeData} />} />
                     </div>
                 </div>
             </div >
