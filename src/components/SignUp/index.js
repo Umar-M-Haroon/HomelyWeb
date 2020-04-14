@@ -35,7 +35,12 @@ class SignUpFormBase extends Component {
             .doCreateUserWithEmailAndPassword(email, passwordOne)
             .then(authUser => {
                 this.setState({ ...INITIAL_STATE });
-                this.props.history.push(ROUTES.HOME);
+                // this.props.firebase.homes().get().then((snapshots) => {
+                //     if (!snapshots.isEmpty) {
+                //         this.props.history.push(ROUTES.HOME);
+                //     }
+                // })
+                this.props.history.push(ROUTES.CREATE_HOME)
             })
             .catch(error => {
                 this.setState({ error });
@@ -120,3 +125,4 @@ const SignUpLink = () => (
 const SignUpForm = compose(withRouter, withFirebase)(SignUpFormBase);
 export default SignUpPage;
 export { SignUpForm, SignUpLink };
+

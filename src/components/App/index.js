@@ -4,6 +4,7 @@ import * as ROUTES from '../../constants/routes';
 import AccountPage from '../Account';
 import AdminPage from '../Admin';
 import ChoresPage from '../Chores';
+import CreateHome from '../CreateHome';
 import HomePage from '../Home';
 import LandingPage from '../Landing';
 import Navigation from '../Navigation';
@@ -31,6 +32,7 @@ const App = () => (
             <Route path={ROUTES.CHORES} component={ChoresPage} />
             <Route path={ROUTES.SUPPLIES} component={SuppliesPage} />
             <Route path={ROUTES.PAYMENTS} component={PaymentsPage} />
+            <Route path={ROUTES.CREATE_HOME} component={CreateHome} />
         </div>
     </Router>
 );
