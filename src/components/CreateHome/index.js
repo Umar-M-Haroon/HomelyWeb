@@ -28,20 +28,22 @@ class CreateHomeBase extends Component {
 
     render() {
         return (
-            <div id="CreateHomeContainer">
-                <button type="button" onClick={() => { this.joinHomeButtonPressed() }} className="btn btn-primary">
-                    Join Home
+           <center>
+               <div id="CreateHomeContainer"> <br></br>
+                <button type="button" onClick={() => { this.joinHomeButtonPressed() }} className="btn btn-link">
+                    Toggle Home
                 </button>
-                <br></br>
+                <br></br><br></br>
                 <form id="JoinHomeForm" hidden={false} onSubmit={this.joinHomeFormButtonPressed}>
                     <div className="form-group">
                         <label >
-                            Enter a Home ID to join a home.
+                            Enter a Home ID to join a home
                             <input type="text" className="form-control" id="homeIDInput" aria-describedby="homeID Help" placeholder="Home ID"></input>
                         </label>
+                        <p><small><small>Put in the Home ID given to you by your roommate in order to connect to the Home.</small></small></p>
                     </div>
-                    <input className="btn btn-primary" type="submit" value="Join Home" />
-                </form >
+                    <input className="buttonStyle" type="submit" value="Join Home" />
+                </form > <br></br><br></br>
                 <button type="button" className="btn btn-link">
                     Create a New Home
                 </button>
@@ -52,11 +54,12 @@ class CreateHomeBase extends Component {
                             Home Name (Optional)
                         <input type="email" className="form-control" id="HomeNameInput" aria-describedby="Home Name" placeholder="P. Sherman 42 Wallaby Way"></input>
                         </label>
+                        <p><small><small>Input must be an email.</small></small></p>
                     </div>
-                    <input className="btn btn-primary" type="submit" value="Submit" />
+                    <input className="buttonStyle" type="submit" value="Submit" />
                 </form >
                 <Link to={ROUTES.HOME}>Home</Link>
-            </div >
+            </div ></center>
         )
     }
 }
