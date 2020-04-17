@@ -1,0 +1,27 @@
+.homeFrame{
+    text-align: center;
+    margin-left: -20px;
+    font-style: normal;
+    font-weight: 600;
+    font-size: 40px;
+    color: white;
+    margin-right: 4px;
+}
+
+
+  .buttonStyle {
+    background-color: rgb(76, 122, 175);
+    border: none;
+    color: black;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+  }
+
+  .smallerFont {
+      font-size: 10px;
+  }
