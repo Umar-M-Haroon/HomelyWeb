@@ -202,6 +202,54 @@ class Firebase {
         )
         return foundItem.Author
     }
+    completeItem(itemID, type) {
+        let completeItemPromise = new Promise((resolve, reject) => {
+            if (this.defaultHomeData === undefined) {
+                reject("No Home Data")
+            }
+            if (this.defaultHome === undefined) {
+                reject("No Home Data")
+            }
+            this.defaultHomeData.Users = this.defaultHomeData.Users.map((user) => {
+                if (user["User ID"] === this.auth.currentUser.uid) {
+                    user["Completed Items"].push(itemID)
+                }
+                return user
+            })
+            switch (type) {
+                case "Chores":
+                    this.defaultHomeData.Chores = this.defaultHomeData.Chores.map((chore) => {
+                        if (chore.Timestamp === itemID) {
+                            chore.Completed = true
+                            var x = new Chore(chore)
+                            var newHistory = x.toHistory(this.auth.currentUser.uid, true)
+                            newHistory.displayName = this.auth.currentUser.displayName
+                            newHistory.itemTitle = chore.Title
+                            // this.defaultHomeData.History.push(newHistory)
+                        }
+                        return chore
+                    })
+                    break
+                case "Supplies":
+                    this.defaultHomeData.Supplies.find(supply => supply.Timestamp === itemID).Completed = true
+                    break
+                case "Payments":
+                    this.defaultHomeData.Payments.find(payment => payment.Timestamp === itemID).Completed = true
+                    break
+                default:
+                    break
+            }
+            this.db.collection("Homes").doc(this.defaultHome).update(this.defaultHomeData).then(() => {
+                resolve("Successfully Completed Item")
+            }).catch((err) => {
+                console.log("Test Completion Failed")
+                console.log(err)
+                reject(err)
+            })
+        }
+        )
+        return completeItemPromise
+    }
 
 }
 export default Firebase

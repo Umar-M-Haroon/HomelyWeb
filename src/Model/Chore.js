@@ -8,7 +8,7 @@ class Chore {
         this.id = id
     }
     toHistory(author, completed) {
-        if (this.id === null){
+        if (this.id === null || this.id === undefined) {
             this.id = firestore.Timestamp.fromDate(new Date())
         }
         var historyItem = {}
@@ -31,13 +31,13 @@ class Chore {
         }
         firestoreData.Completed = this.completed
 
-        if (this.id === null){
+        if (this.id === null) {
             this.id = firestore.Timestamp.fromDate(new Date())
         }
 
         firestoreData.Timestamp = this.id
 
-        return firestoreData 
+        return firestoreData
     }
 }
 
