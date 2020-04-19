@@ -3,6 +3,7 @@ import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
+import { ReactComponent as Logo } from '../../homely-logo.svg';
 import { ReactComponent as Add } from '../../plus.svg';
 import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../Session';
@@ -111,9 +112,15 @@ class Home extends Component {
         const { chores, supplies, payments, loading, history } = this.state;
         return (
             <div>
-                <h1><strong>Home</strong></h1>
                 {loading && <div>Loading ...</div>}
                 <div className="row no-gutters flex-nowrap">
+                    <div className="col">
+                        <div className="center-Logo">
+                        <Logo className="Homely-Logo">Homely Logo</Logo>
+                        <p className="bottom-one"></p>
+                        <h1 align="center"> <strong>Home</strong></h1>
+                        </div>
+                    </div>
                     <div className="col">
                         <AddItem users={this.state.users} type="Chores" />
                         {<ChoresList chores={chores} />}
