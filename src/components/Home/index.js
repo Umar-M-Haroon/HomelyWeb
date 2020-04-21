@@ -6,9 +6,9 @@ import { ReactComponent as Add } from '../../plus.svg';
 import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../Session';
 import AddItem from './Add Item/AddItemForm';
-import ViewItem from './View Items/ViewItemList';
-
 import './Home.css';
+import ViewItem from './View Items/';
+
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -255,7 +255,7 @@ const HistoryList = ({ history }) => (
                     <div className="card-body">
                         <li>
                             <span className="item">
-                            {/* <p className="card-text">Completed By: {historyItem.Author}<br></br>{historyItem["Item ID"]}<br></br>Completed At: {historyItem.Timestamp}</p> */}
+                                {/* <p className="card-text">Completed By: {historyItem.Author}<br></br>{historyItem["Item ID"]}<br></br>Completed At: {historyItem.Timestamp}</p> */}
                                 <p className="card-text">{historyItem.Author}</p>
                             </span>
                         </li>
