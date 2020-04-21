@@ -116,10 +116,28 @@ class Home extends Component {
                     </div>
                 </div></center>
                 <div>
-                    <Calendar tileClassName="CalendarTileName" onClickDay={(date, event) => alert("Clicked Day ", date)} tileContent={({ activeStartDate, date, view }) => <TotalItems date={date} homeData={this.props.firebase.defaultHomeData} />} />
-                    <ViewItem users={this.state.users} type="Payments" />
+                    <CalendarItem homeData={this.props.firebase.defaultHomeData}/>
                 </div>
             </div >
+        );
+    }
+}
+
+class CalendarItem extends Component {
+
+    constructor(props) {
+        super(props);
+
+        console.log(props.homeData)
+    }
+
+    testClick(date) {
+        console.log('day clicked', date)
+    }
+
+    render() {
+        return (
+            <Calendar tileClassName="CalendarTileName" onClickDay={(date, event) => this.testClick(date)} tileContent={({ activeStartDate, date, view }) => <TotalItems date={date} homeData={this.props.homeData} />} />
         );
     }
 }
