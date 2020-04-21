@@ -15,17 +15,19 @@
   border-radius: 20px;
   box-shadow: 5px 5px 10px grey;
   background: linear-gradient( 145.15deg, rgba(255, 255, 255, 0.62) -30.66%, rgba(255, 255, 255, 0) 115.34%), #595959;
-  min-width: 300px;
-  max-width: 900px;
-  height: 300px;
+  min-width: 600px;
+  width: 90%;
+  height: 600px;
   padding: 10px;
   margin: 20px;
+  margin-left: 5%;
+  margin-right: 5%;
   text-align: left;
   overflow: auto;
 }
 
 .itemFrame {
-  margin-left: -20px;
+  margin-left: -38px;
 }
 
 .card-text {
@@ -110,9 +112,62 @@ li {
 }
 
 .react-calendar {
-  display: inline;
+  border-radius: 20px;
+  width: 90%;
+  min-width: 600px;
+  background: white;
   border: none;
-  border-color: rebeccapurple;
+  box-shadow: 5px 5px 40px grey;
+  line-height: 1.125em;
+  margin: 20px;
+  margin-left: 5%;
+  margin-right: 5%;
+}
+.react-calendar__navigation {
+  height: 60px;
+  margin-bottom: 1em;
+}
+
+.homeCalender .react-calendar__navigation__arrow {
+  display: none;
+  font-size: 20px;
+}
+
+.homeCalendar .react-calendar__navigation__label {
+    font-size: 25px;
+}
+
+.homeCalendar .react-calendar__tile {
+  height: 20%;
+}
+
+.homeCalendar .react-calendar__month-view__weekdays{
+   margin-bottom: 1em;
+}
+
+.homeCalendar .react-calendar__month-view__weekdays__weekday {
+  font-size: 20px;
+  color: rgb(0, 14, 212);
+}
+
+.homeCalendar .react-calendar__tile--active {
+  background: #e70220;
+  color: white;
+}
+
+.homeCalendar .react-calendar__tile--active:enabled:hover,
+.homeCalendar .react-calendar__tile--active:enabled:focus {
+  background: #e70220;
+}
+
+.homeCalendar .react-calendar__tile,
+.homeCalendar .react-calendar__month-view__days__day {
+  font-size: 25px;
+}
+
+.homeCalendar .react-calendar__month-view__days {
+  height: 475px;
+  background-color: white;
 }
 
 .itemsBadge {
@@ -131,4 +186,38 @@ li {
 
 .CalendarTileName {
   box-shadow: black;
+}
+
+.historyProfileContainer {
+  float: left;
+}
+
+.historyProfilePhoto {
+  width: 60px;
+  height: 60px;
+  margin-top: 15%;
+  border-radius: 50%;
+}
+
+.historyContent {
+  margin-left: 70px;
+}
+
+.Homely-Logo {
+  fill: #2b2b2b;
+  display: block;
+  width: 300px;
+  margin: auto;
+}
+
+.center-Logo {
+  padding: 100px 0;
+}
+
+.bottom-one {
+  margin-bottom: 20px;
+}
+
+.MinWidth {
+  min-width: 600;
 }

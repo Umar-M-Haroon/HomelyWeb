@@ -6,6 +6,8 @@ import { ReactComponent as Add } from '../../plus.svg';
 import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../Session';
 import AddItem from './Add Item/AddItemForm';
+import ViewItem from './View Items/ViewItemList';
+
 import './Home.css';
 class Home extends Component {
     constructor(props) {
@@ -114,7 +116,8 @@ class Home extends Component {
                     </div>
                 </div></center>
                 <div>
-                    <Calendar tileClassName="CalendarTileName" tileContent={({ activeStartDate, date, view }) => <TotalItems date={date} homeData={this.props.firebase.defaultHomeData} />} />
+                    <Calendar tileClassName="CalendarTileName" onClickDay={(date, event) => alert("Clicked Day ", date)} tileContent={({ activeStartDate, date, view }) => <TotalItems date={date} homeData={this.props.firebase.defaultHomeData} />} />
+                    <ViewItem users={this.state.users} type="Payments" />
                 </div>
             </div >
         );
