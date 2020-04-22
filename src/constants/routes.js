@@ -8,3 +8,4 @@ export const PASSWORD_FORGET = '/pw-forget';
 export const CHORES = '/chores';
 export const SUPPLIES = '/supplies';
 export const PAYMENTS = '/payments';
+export const CREATE_HOME = '/new_user';
