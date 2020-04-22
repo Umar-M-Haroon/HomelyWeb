@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
 import { ReactComponent as Add } from '../../plus.svg';
@@ -7,8 +8,6 @@ import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../Session';
 import AddItem from './Add Item/AddItemForm';
 import './Home.css';
-import ViewItem from './View Items/';
-
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -69,6 +68,24 @@ class Home extends Component {
                             venmoUsers.push(user)
                         }
                         allUsers.push(user);
+                        this.props.firebase.getImage(user["User ID"])
+                            .then((url) => {
+
+                                var userURLs = {}
+                                if (this.state.userURLs !== undefined) {
+                                    userURLs = this.state.userURLs
+                                }
+                                if (url === undefined) { return }
+                                var userID = user["User ID"]
+                                userURLs[userID] = url
+
+                                this.setState({
+                                    userURLs: userURLs
+                                })
+                            })
+                            .catch((error) => {
+                                console.error(`Error getting URL ${error}`)
+                            })
                     })
                     this.setState({
                         chores: allChores,
@@ -78,7 +95,7 @@ class Home extends Component {
                         users: allUsers,
                         home: home,
                         venmoUsers: venmoUsers,
-                        loading: false
+                        loading: false,
                     });
                     //while also getting the categories, it also gets the users and sets a default home.
                     //These are needed for assigning users.
@@ -94,7 +111,6 @@ class Home extends Component {
         const { chores, supplies, payments, loading, history } = this.state;
         return (
             <div>
-                <h1><strong>Home</strong></h1>
                 {loading && <div>Loading ...</div>}
                 <div>
                     <h1><strong>  Homely</strong></h1>
@@ -120,32 +136,15 @@ class Home extends Component {
                         {<PaymentsList users={this.state.venmoUsers} payments={payments} />}
                     </div>
                 </div>
-                <center><div className="row no-gutters flex-nowrap">
+                <div className="row no-gutters flex-nowrap">
                     <div className="col">
-                        {<HistoryList history={history} />}
+                        {<HistoryList history={history} home={this.state.home} imageURLs={this.state.userURLs} />}
                     </div>
-                </div></center>
-                <div>
-                    <CalendarItem homeData={this.props.firebase.defaultHomeData}/>
+                    <div className="col">
+                        <Calendar className="homeCalendar" tileClassName="CalendarTileName" tileContent={({ activeStartDate, date, view }) => <TotalItems date={date} homeData={this.props.firebase.defaultHomeData} />} />
+                    </div>
                 </div>
             </div >
-        );
-    }
-}
-
-class CalendarItem extends Component {
-
-    constructor(props) {
-        super(props);
-    }
-
-    testClick(date) {
-        console.log('day clicked', date)
-    }
-
-    render() {
-        return (
-            <Calendar tileClassName="CalendarTileName" onClickDay={(date, event) => this.testClick(date)} tileContent={({ activeStartDate, date, view }) => <TotalItems date={date} homeData={this.props.homeData} />} />
         );
     }
 }
@@ -354,4 +353,3 @@ class HistoryList extends Component {
 
 const condition = authUser => !!authUser;
 export default withFirebase(withAuthorization(condition)(Home));
-
