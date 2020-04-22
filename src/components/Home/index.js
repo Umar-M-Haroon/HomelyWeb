@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import Calendar from 'react-calendar';
+import 'react-calendar/dist/Calendar.css';
 import { Link } from 'react-router-dom';
 import * as ROUTES from '../../constants/routes';
 import { ReactComponent as Add } from '../../plus.svg';
@@ -7,8 +8,6 @@ import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../Session';
 import AddItem from './Add Item/AddItemForm';
 import './Home.css';
-import ViewItem from './View Items/';
-
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -69,6 +68,24 @@ class Home extends Component {
                             venmoUsers.push(user)
                         }
                         allUsers.push(user);
+                        this.props.firebase.getImage(user["User ID"])
+                            .then((url) => {
+
+                                var userURLs = {}
+                                if (this.state.userURLs !== undefined) {
+                                    userURLs = this.state.userURLs
+                                }
+                                if (url === undefined) { return }
+                                var userID = user["User ID"]
+                                userURLs[userID] = url
+
+                                this.setState({
+                                    userURLs: userURLs
+                                })
+                            })
+                            .catch((error) => {
+                                console.error(`Error getting URL ${error}`)
+                            })
                     })
                     this.setState({
                         chores: allChores,
@@ -78,7 +95,7 @@ class Home extends Component {
                         users: allUsers,
                         home: home,
                         venmoUsers: venmoUsers,
-                        loading: false
+                        loading: false,
                     });
                     //while also getting the categories, it also gets the users and sets a default home.
                     //These are needed for assigning users.
@@ -94,12 +111,21 @@ class Home extends Component {
         const { chores, supplies, payments, loading, history } = this.state;
         return (
             <div>
-                <h1><strong>Home</strong></h1>
                 {loading && <div>Loading ...</div>}
+                <div>
+                    <h1><strong>  Homely</strong></h1>
+                </div>
                 <div className="row no-gutters flex-nowrap">
+                    {/* <div className="col">
+                        <div className="center-Logo">
+                        <Logo className="Homely-Logo">Homely Logo</Logo>
+                        <p className="bottom-one"></p>
+                        <h1 align="center"> <strong>Home</strong></h1>
+                        </div>
+                    </div> */}
                     <div className="col">
                         <AddItem users={this.state.users} type="Chores" />
-                        {<ChoresList chores={chores} />}
+                        {<ChoresList chores={chores} firebase={this.props.firebase} />}
                     </div>
                     <div className="col">
                         <AddItem users={this.state.users} type="Supplies" />
@@ -110,32 +136,15 @@ class Home extends Component {
                         {<PaymentsList users={this.state.venmoUsers} payments={payments} />}
                     </div>
                 </div>
-                <center><div className="row no-gutters flex-nowrap">
+                <div className="row no-gutters flex-nowrap">
                     <div className="col">
-                        {<HistoryList history={history} />}
+                        {<HistoryList history={history} home={this.state.home} imageURLs={this.state.userURLs} />}
                     </div>
-                </div></center>
-                <div>
-                    <CalendarItem homeData={this.props.firebase.defaultHomeData}/>
+                    <div className="col">
+                        <Calendar className="homeCalendar" tileClassName="CalendarTileName" tileContent={({ activeStartDate, date, view }) => <TotalItems date={date} homeData={this.props.firebase.defaultHomeData} />} />
+                    </div>
                 </div>
             </div >
-        );
-    }
-}
-
-class CalendarItem extends Component {
-
-    constructor(props) {
-        super(props);
-    }
-
-    testClick(date) {
-        console.log('day clicked', date)
-    }
-
-    render() {
-        return (
-            <Calendar tileClassName="CalendarTileName" onClickDay={(date, event) => this.testClick(date)} tileContent={({ activeStartDate, date, view }) => <TotalItems date={date} homeData={this.props.homeData} />} />
         );
     }
 }
@@ -168,33 +177,44 @@ class TotalItems extends Component {
     }
 }
 
-const ChoresList = ({ chores }) => (
-    <div className="categoryFrame">
-        <ul className="listFrame">
-            <h2 className="homeTitle">
-                <Link className="homeTitle" to={ROUTES.CHORES}>Chores</Link>
-                <button className="addButtonFrame" data-toggle="modal" data-target="#Chores" aria-labelledby="addChore"><Add className="addButton"></Add></button>
-            </h2>
-            {chores.map((chore) => (
-                <div className="card itemFrame mt-1" key={chore.Timestamp}>
-                    <div className="card-body ">
-                        <li>
-                            <div className="item">
-                                <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
-                                <div className="dropdown-menu" aria-labelledby="dropdownOptions">
-                                    <button className="dropdown-item">Complete</button>
-                                    <button className="dropdown-item">Edit</button>
-                                    <button className="dropdown-item">Add to Calender</button>
-                                </div>
-                                <p className="card-text">{chore.Title}</p>
+class ChoresList extends Component {
+    constructor(props) {
+        super(props)
+        this.handleCompleteButton = this.handleCompleteButton.bind(this)
+    }
+    handleCompleteButton(e) {
+        this.props.firebase.completeItem(e, "Chores")
+    }
+    render() {
+        return (
+            <div className="categoryFrame">
+                <ul className="listFrame">
+                    <h2 className="homeTitle">
+                        <Link className="homeTitle" to={ROUTES.CHORES}>Chores</Link>
+                        <button className="addButtonFrame" data-toggle="modal" data-target="#Chores" aria-labelledby="addChore"><Add className="addButton"></Add></button>
+                    </h2>
+                    {this.props.chores.map((chore) => (
+                        <div className="card itemFrame mt-1" key={chore.Timestamp}>
+                            <div className="card-body ">
+                                <li>
+                                    <div className="item">
+                                        <button type="button" className="options btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
+                                        <div className="dropdown-menu" aria-labelledby="dropdownOptions">
+                                            <button className="dropdown-item" onClick={() => { this.handleCompleteButton(chore.Timestamp) }}> Complete</button>
+                                            <button className="dropdown-item">Edit</button>
+                                            <button className="dropdown-item">Add to Calender</button>
+                                        </div>
+                                        <p className="card-text">{chore.Title}</p>
+                                    </div>
+                                </li>
                             </div>
-                        </li>
-                    </div>
-                </div>
-            ))}
-        </ul>
-    </div >
-);
+                        </div>
+                    ))}
+                </ul>
+            </div >
+        )
+    }
+}
 
 const SuppliesList = ({ supplies }) => (
     <div className="categoryFrame">
@@ -259,31 +279,77 @@ const PaymentsList = ({ users, payments }) => (
     </div >
 )
 
-const HistoryList = ({ history }) => (
+class HistoryList extends Component {
+    updateHistoryInfo(historyItem) {
+        historyItem.displayName = this.props.home.Users.find(user => user["User ID"] === historyItem.Author)["Display Name"]
+        var itemTitle
+        if (this.props.home.Chores.find(chore => chore.Timestamp.isEqual(historyItem["Item ID"])) !== undefined) {
+            itemTitle = this.props.home.Chores.find(chore => chore.Timestamp.isEqual(historyItem["Item ID"])).Title
+        }
+        if (this.props.home.Supplies.find(supply => supply.Timestamp.isEqual(historyItem["Item ID"])) !== undefined) {
+            itemTitle = this.props.home.Supplies.find(supply => supply.Timestamp.isEqual(historyItem["Item ID"]))["Supply Title"]
+        }
 
-    <div className="historyFrame">
-        <ul className="listFrame">
-            <h2 className="homeTitle">
-                History
-        </h2>
-            {history.map((historyItem) => (
-                <div className="card itemFrame mt-1" key={historyItem.Timestamp}>
-                    <div className="card-body">
-                        <li>
-                            <span className="item">
-                                {/* <p className="card-text">Completed By: {historyItem.Author}<br></br>{historyItem["Item ID"]}<br></br>Completed At: {historyItem.Timestamp}</p> */}
-                                <p className="card-text">{historyItem.Author}</p>
-                            </span>
-                        </li>
-                    </div>
-                </div>
-            ))}
+        if (this.props.home.Payments.find(payment => payment.Timestamp.isEqual(historyItem["Item ID"])) !== undefined) {
+            itemTitle = this.props.home.Payments.find(chore => chore.Timestamp.isEqual(historyItem["Item ID"]))["Payment Title"]
+        }
+        historyItem.itemTitle = itemTitle
+
+        if (this.props.imageURLs === undefined) {
+            return historyItem
+        }
+        if (this.props.imageURLs[historyItem.Author] === undefined) {
+            return historyItem
+        }
+
+        historyItem.imageURL = this.props.imageURLs[historyItem.Author]
+        return historyItem
+    }
+    render() {
+        const history = this.props.history.map((historyItem) => {
+            return this.updateHistoryInfo(historyItem)
+        })
+        return (
+            <div className="historyFrame">
+                <ul className="listFrame">
+                    <h2 className="homeTitle">
+                        History
+                    </h2>
+                    {history.map((historyItem) => (
+
+                        <div className="card itemFrame mt-1" key={historyItem.Timestamp} >
+                            <div className="card-body">
+                                <div className="historyProfileContainer">
+                                    <img className="historyProfilePhoto" src={historyItem.imageURL} alt={historyItem.displayName}></img>
+                                </div>
+                                <div className="historyContent">
+                                    <li>
+                                        <span className="item">
+                                            {historyItem.Completed &&
+                                                <div>
+                                                    <p className="card-text">{historyItem.displayName} completed {historyItem.itemTitle}</p>
+                                                    <p className="card-text">Completed: {historyItem.Timestamp.toDate().toDateString()}</p>
+                                                </div>
+                                            }
+                                            {!historyItem.Completed &&
+                                                <div>
+                                                    <p className="card-text">{historyItem.displayName} created {historyItem.itemTitle} </p>
+                                                    <p className="card-text">Created: {historyItem.Timestamp.toDate().toDateString()}</p>
+                                                </div>
+                                            }
+                                        </span>
+                                    </li>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
 
 
-        </ul>
-    </div>
-)
+                </ul>
+            </div >
+        )
+    }
+}
 
 const condition = authUser => !!authUser;
 export default withFirebase(withAuthorization(condition)(Home));
-
