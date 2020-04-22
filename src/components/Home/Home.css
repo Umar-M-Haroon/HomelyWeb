@@ -101,7 +101,7 @@ li {
 .react-calendar {
   border-radius: 20px;
   width: 90%;
-  min-width: 600px;
+  min-width: 400px;
   background: white;
   border: none;
   box-shadow: 5px 5px 40px grey;
@@ -115,9 +115,8 @@ li {
   margin-bottom: 1em;
 }
 
-.homeCalender .react-calendar__navigation__arrow {
-  display: none;
-  font-size: 20px;
+.homeCalendar .react-calendar__navigation__arrow {
+  font-size: 30px;
 }
 
 .homeCalendar .react-calendar__navigation__label {

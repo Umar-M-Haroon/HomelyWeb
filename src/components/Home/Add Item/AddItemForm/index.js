@@ -97,7 +97,7 @@ class AddItemForm extends Component {
                                     <div className="form-group">
                                         <div className="form-group">
                                             <label className="modal-subhead" htmlFor="exampleInputEmail1">Deadline Date</label>
-                                            <div className="calendarGroup">
+                                            <div className="calenderAddItem">
                                                 {<Calendar minDate={new Date()} onChange={(e) => this.handleCalendarChange(e)} />}
                                             </div>
                                         </div>
