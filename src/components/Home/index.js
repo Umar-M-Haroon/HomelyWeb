@@ -8,6 +8,7 @@ import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../Session';
 import AddItem from './Add Item/AddItemForm';
 import './Home.css';
+
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -133,6 +134,11 @@ class Home extends Component {
                     </div>
                     <div className="col">
                         <Calendar className="homeCalendar" tileClassName="CalendarTileName" tileContent={({ activeStartDate, date, view }) => <TotalItems date={date} homeData={this.props.firebase.defaultHomeData} />} />
+                    </div>
+                </div>
+                <div className="row">
+                    <div className="col">
+                    <center><button onclick="notifyMe()">Notify me!</button></center>
                     </div>
                 </div>
             </div >
@@ -342,78 +348,54 @@ class HistoryList extends Component {
     }
 }
 
+
 //credit code to: https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API/Using_the_Notifications_API
-<button id="enable">Enable notifications</button> //clicking this enables the askNotificationPermission
-function askNotificationPermission() {
-    // function to actually ask the permissions
-    function handlePermission(permission) {
-      // Whatever the user answers, we make sure Chrome stores the information
-      if(!('permission' in Notification)) {
-        Notification.permission = permission;
-      }
-  
-      // set the button to shown or hidden, depending on what the user answers
-      if(Notification.permission === 'denied' || Notification.permission === 'default') {
-        notificationBtn.style.display = 'block';
-      } else {
-        notificationBtn.style.display = 'none';
-      }
+function notifyMe() {
+    // Let's check if the browser supports notifications
+    if (!("Notification" in window)) {
+      alert("This browser does not support desktop notification");
     }
   
-    // Checks if the browser supports notifications
-    if (!('Notification' in window)) {
-      console.log("This browser does not support notifications.");
-    } else {
-      if(checkNotificationPromise()) {
-        Notification.requestPermission()
-        .then((permission) => {
-          handlePermission(permission);
-        })
-      } else {
-        Notification.requestPermission(function(permission) {
-          handlePermission(permission);
-        });
-      }
+    // Let's check whether notification permissions have already been granted
+    else if (Notification.permission === "granted") {
+      // If it's okay let's create a notification
+      var notification = new Notification("Notifications have been enabled");
+    }
+  
+    // Otherwise, we need to ask the user for permission
+    else if (Notification.permission !== "denied") {
+      Notification.requestPermission().then(function (permission) {
+        // If the user accepts, let's create a notification
+        if (permission === "granted") {
+          var notification = new Notification("Notifications are enabled");
+        }
+      });
     }
     
-    if(permission === 'granted') //if we do have permission to do notifications
+    else if (Notification.permission === "granted" && (chore.completed == "true" | supply.completed == "true" | payment.completed == "true"))
     {
-        //   var img = '/to-do-notifications/img/icon-128.png';
-        //   var text = 'HEY! Your task "' + title + '" is now overdue.';
-        //   var notification = new Notification('To do list', { body: text, icon: img });
-        // var notify = new Notification('Hi there!', {
-        //     body: 'How are you doing?',
-        //     icon: 'https://bit.ly/2DYqRrh',
-        // });
-
-        //show notifications here, different depending on what user has done
-        if(historyItem) //have a case for when you have finished a task
-        {
-            var note1 = 'You have finished ' + historyItem.Timestamp + '.';
-            var notification1 = new Notification(note1);
-        }
-        if(payment) //have a case for when you have added a payment
-        {
-            var note2 = 'You have added the payment ' + payment.Title + '.';
-            var notificaiton2 = new Notification(note2);
-        }
-        if(supply) //have a case for when you have added a supply
-        {
-            var note3 = 'You have added the supply ' + supply.Title + '.';
-            var notification3 = new Notification(note3);
-        }
-        if(chore) //have a case for when you have a chore
-        {
-            var note4 = 'You have added the chore ' + chore.Title + '.';
-            var notificaiton4 = new Notification(note4);
-        }
+        var note1 = 'This chore/supply/payment has been finished.';
+        var notification1 = new Notification(note1);
     }
-    else {
-        console.log('User blocked notifications.');
+    else if (Notification.permission === "granted" && chore.completed == "false")
+    {
+        var note4 = 'You have added the chore ' + chore.Title + '.';
+        var notificaiton4 = new Notification(note4);
     }
+    else if (Notification.permission === "granted" && supply.completed == "false")
+    {
+        var note3 = 'You have added the supply ' + supply.Title + '.';
+        var notification3 = new Notification(note3);
+    }
+    else if (Notification.permission === "granted" && payment.completed === "false")
+    {
+        var note2 = 'You have added the payment ' + payment.Title + '.';
+        var notificaiton2 = new Notification(note2);
+    }
+  
+    
   }
 
-  
 
 const condition = authUser => !!authUser;
 export default withFirebase(withAuthorization(condition)(Home));
