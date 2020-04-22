@@ -125,7 +125,7 @@ class Home extends Component {
                     </div> */}
                     <div className="col">
                         <AddItem users={this.state.users} type="Chores" />
-                        {<ChoresList chores={chores} />}
+                        {<ChoresList chores={chores} firebase={this.props.firebase} />}
                     </div>
                     <div className="col">
                         <AddItem users={this.state.users} type="Supplies" />
@@ -177,33 +177,44 @@ class TotalItems extends Component {
     }
 }
 
-const ChoresList = ({ chores }) => (
-    <div className="categoryFrame">
-        <ul className="listFrame">
-            <h2 className="homeTitle">
-                <Link className="homeTitle" to={ROUTES.CHORES}>Chores</Link>
-                <button className="addButtonFrame" data-toggle="modal" data-target="#Chores" aria-labelledby="addChore"><Add className="addButton"></Add></button>
-            </h2>
-            {chores.map((chore) => (
-                <div className="card itemFrame mt-1" key={chore.Timestamp}>
-                    <div className="card-body ">
-                        <li>
-                            <div className="item">
-                                <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
-                                <div className="dropdown-menu" aria-labelledby="dropdownOptions">
-                                    <button className="dropdown-item">Complete</button>
-                                    <button className="dropdown-item">Edit</button>
-                                    <button className="dropdown-item">Add to Calender</button>
-                                </div>
-                                <p className="card-text">{chore.Title}</p>
+class ChoresList extends Component {
+    constructor(props) {
+        super(props)
+        this.handleCompleteButton = this.handleCompleteButton.bind(this)
+    }
+    handleCompleteButton(e) {
+        this.props.firebase.completeItem(e, "Chores")
+    }
+    render() {
+        return (
+            <div className="categoryFrame">
+                <ul className="listFrame">
+                    <h2 className="homeTitle">
+                        <Link className="homeTitle" to={ROUTES.CHORES}>Chores</Link>
+                        <button className="addButtonFrame" data-toggle="modal" data-target="#Chores" aria-labelledby="addChore"><Add className="addButton"></Add></button>
+                    </h2>
+                    {this.props.chores.map((chore) => (
+                        <div className="card itemFrame mt-1" key={chore.Timestamp}>
+                            <div className="card-body ">
+                                <li>
+                                    <div className="item">
+                                        <button type="button" className="options btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
+                                        <div className="dropdown-menu" aria-labelledby="dropdownOptions">
+                                            <button className="dropdown-item" onClick={() => { this.handleCompleteButton(chore.Timestamp) }}> Complete</button>
+                                            <button className="dropdown-item">Edit</button>
+                                            <button className="dropdown-item">Add to Calender</button>
+                                        </div>
+                                        <p className="card-text">{chore.Title}</p>
+                                    </div>
+                                </li>
                             </div>
-                        </li>
-                    </div>
-                </div>
-            ))}
-        </ul>
-    </div >
-);
+                        </div>
+                    ))}
+                </ul>
+            </div >
+        )
+    }
+}
 
 const SuppliesList = ({ supplies }) => (
     <div className="categoryFrame">
@@ -316,7 +327,7 @@ class HistoryList extends Component {
                                         <span className="item">
                                             {historyItem.Completed &&
                                                 <div>
-                                                    <p className="card-text">{historyItem.Author} completed {historyItem.itemTitle}</p>
+                                                    <p className="card-text">{historyItem.displayName} completed {historyItem.itemTitle}</p>
                                                     <p className="card-text">Completed: {historyItem.Timestamp.toDate().toDateString()}</p>
                                                 </div>
                                             }
