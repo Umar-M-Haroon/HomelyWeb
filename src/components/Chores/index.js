@@ -42,13 +42,13 @@ class Chores extends Component {
                     this.props.firebase.defaultHomeData = home
                     this.props.firebase.defaultHome = doc.id
                     home.Chores.forEach(chore => {
-                        if (chore.Completed !== true) {
-                            allChores.push(chore);
-                        }
+                        // if (chore.Completed !== true) {
+                        allChores.push(chore);
+                        // }
                     });
                     //iterates through the document's chores and adds to an array that the home page can read
 
-                    
+
                     home.Users.forEach(user => {
                         if (user["Venmo ID"] !== undefined && user["Venmo ID"] !== "") {
                             venmoUsers.push(user)
@@ -84,6 +84,18 @@ class Chores extends Component {
                         loading: false,
                     }, () => {
                         //redering the chart
+                        let dataset = []
+                        for (let index in allUsers) {
+                            let user = allUsers[index]
+                            let newChores = [];
+                            newChores = this.state.chores.filter((chore) => {
+                                let completedItems = user["Completed Items"].find(item => {
+                                    return item.isEqual(chore.Timestamp)
+                                })
+                                return (completedItems !== undefined)
+                            })
+                            dataset.push(newChores.length)
+                        }
                         var myChartRef = this.chartRef.current.getContext("2d");
                         new Chart(myChartRef, {
                             type: "doughnut",
@@ -93,7 +105,7 @@ class Chores extends Component {
                                 datasets: [
                                     {
                                         label: "Chores",
-                                        data: [86, 67, 91, 40, 7],
+                                        data: dataset,
                                         backgroundColor: [
                                             'rgba(255, 99, 132, 1)',
                                             'rgba(54, 162, 235, 1)',
@@ -130,12 +142,12 @@ class Chores extends Component {
                             }
                         });
                     });
-                    this.setState({chartLabels: userLabels})
-                    console.log(this.state.chartLabels)
+                    this.setState({ chartLabels: userLabels })
+                    // console.log(this.state.chartLabels)
                     //while also getting the categories, it also gets the users and sets a default home.
                     //These are needed for assigning users.
                 })
-        }))
+            }))
     }
 
     componentWillUnmount() {
@@ -150,9 +162,9 @@ class Chores extends Component {
                 <div className="row no-gutters flex-nowrap">
                     <div className="col">
                         <div className="center-Logo-Chores">
-                        <Logo className="Homely-Logo-Chores">Homely Logo</Logo>
-                        <p className="bottom-one"></p>
-                        <h1 align="center"> <strong>Chores</strong></h1>
+                            <Logo className="Homely-Logo-Chores">Homely Logo</Logo>
+                            <p className="bottom-one"></p>
+                            <h1 align="center"> <strong>Chores</strong></h1>
                         </div>
                     </div>
                     <div className="col">
@@ -176,7 +188,7 @@ const ChoresList = ({ chores }) => (
                 <label className="homeTitle">Chores</label>
                 <button className="addButtonFrame" data-toggle="modal" data-target="#Chores" aria-labelledby="addChore"><Add className="addButton"></Add></button>
             </h2>
-            {chores.map((chore) => (
+            {chores.map((chore) => !chore.Completed && (
                 <div className="card itemFrame mt-1" key={chore.Timestamp}>
                     <div className="card-body ">
                         <li>
