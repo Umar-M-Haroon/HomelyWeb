@@ -124,18 +124,32 @@ class Home extends Component {
 }
 
 class CalendarItem extends Component {
-
     constructor(props) {
         super(props);
+        this.state = {showState: false};
     }
-
-    testClick(date) {
-        console.log('day clicked', date)
+    
+    testClick(showState) {
+        this.setState({showState: true})
     }
-
+    
     render() {
+        const showState = this.state.showState;
+        let showCal;
+
+        if (showState)
+        {
+            showCal = null
+        }
+        else
+        {
+            showCal = <Calendar tileClassName="CalendarTileName" onClickDay={(date, event) => this.testClick(showState)} tileContent={({ activeStartDate, date, view }) => <TotalItems date={date} homeData={this.props.homeData} />} />
+        }
+
         return (
-            <Calendar tileClassName="CalendarTileName" onClickDay={(date, event) => this.testClick(date)} tileContent={({ activeStartDate, date, view }) => <TotalItems date={date} homeData={this.props.homeData} />} />
+            <div>
+                {showCal}
+            </div>
         );
     }
 }
