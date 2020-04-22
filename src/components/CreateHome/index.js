@@ -57,8 +57,8 @@ class CreateHomeBase extends Component {
     }
     joinHomeFormButtonPressed(e) {
         console.log(e)
-        // var enteredID = document.getElementById("homeIDInput")
-        // this.props.firebase.joinHome()
+        var enteredID = document.getElementById("homeIDInput")
+        this.props.firebase.joinHome(enteredID)
         console.log("Form Button Test");
 
         e.preventDefault()

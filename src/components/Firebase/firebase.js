@@ -250,6 +250,9 @@ class Firebase {
         )
         return completeItemPromise
     }
+    joinHome(newID) {
+        //FIXME: implement this LMAO
+    }
 
 }
 export default Firebase
