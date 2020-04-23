@@ -258,9 +258,7 @@ class Firebase {
             newObject[type] = newItems
             newItems["History"] = app.firestore.FieldValue.arrayUnion(newHistory)
             newItems["Users"] = this.defaultHomeData.Users
-            this.defaultHomeData.History.push(newHistory)
             this.db.collection("Homes").doc(this.defaultHome).update(newObject).then(() => {
-
                 resolve("Successfully Completed Item")
             }).catch((err) => {
                 console.log("Test Completion Failed")

@@ -67,17 +67,17 @@ class Home extends Component {
     }
     componentDidMount() {
         //Set up home page with appropriate data
-        this.setState({ loading: false });
         //calls the homes function to get the current homes the user has
         //it then iterates through each home which is a document in firebase terms and will get the data which is a javascript object
         //as it iterates through it adds to a generic home
         this.listener = this.props.firebase.homes().onSnapshot({ includeMetadataChanges: true }, (
             snapshot => {
                 snapshot.forEach(doc => {
-                    if (this.state.chores || this.state.supplies || this.state.history) {
+                    if (!this.state.loading) {
                         //we have a change in the house, this isn't the first time loading.
                         this.notifyMe()
                     }
+                    this.setState({ loading: false });
                     var allChores = []
                     var allSupplies = []
                     var allPayments = []
