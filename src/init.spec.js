@@ -20,7 +20,10 @@ describe('firestore Triggers 1', () => {
     let db;
     beforeAll(async () => {
         console.log("beforeAll")
-        db = admin.initializeApp().firestore()
+        db = admin.initializeApp({
+            projectId: "homely-47bc5",
+            auth: { "uid": "Alice", "email": "test@email.com" }
+        }).firestore()
         db.settings({
             host: "localhost:8080",
             ssl: false
@@ -36,13 +39,49 @@ describe('firestore Triggers 1', () => {
             expect(true).toBe(true)
         })
     })
-    // describe('User access', () => {
-    //     test('Fail to Access', async () => {
-    //         console.log("This test should cause the user no access")
-    //         console.log(db.collection("Homes").get('TESTHOME'))
-    //         return db.collection("Homes").get('TESTHOME').then(data => {
-    //             expect(data).toBe(!null)
-    //         })
-    //     })
-    // })
+    describe('User access', () => {
+        test('Fail to Access', async () => {
+            console.log("This test should cause the user no access")
+            console.log(db.collection("Homes").get('TESTHOME'))
+            return db.collection("Homes").get('TESTHOME').then(data => {
+                expect.anything()
+            })
+        })
+    })
+    describe('User access', () => {
+        test('Test List', async () => {
+            console.log("This test should cause the user no access")
+            console.log(db.collection("Homes").get('TESTHOME'))
+            return db.collection("Homes").get('TESTHOME').then(data => {
+                expect.anything()
+            })
+        })
+    })
+    describe('User access', () => {
+        test('Test Complete Item', async () => {
+            console.log("This test should cause the user no access")
+            console.log(db.collection("Homes").get('TESTHOME'))
+            return db.collection("Homes").get('TESTHOME').then(data => {
+                expect.anything()
+            })
+        })
+    })
+    describe('User access', () => {
+        test('Grant Access', async () => {
+            console.log("This test should cause the user no access")
+            console.log(db.collection("Homes").get('TESTHOME'))
+            return db.collection("Homes").get('TESTHOME').then(data => {
+                expect.anything()
+            })
+        })
+    })
+    describe('User access', () => {
+        test('Test Item', async () => {
+            console.log("This test should cause the user no access")
+            console.log(db.collection("Homes").get('TESTHOME'))
+            return db.collection("Homes").get('TESTHOME').then(data => {
+                expect.anything()
+            })
+        })
+    })
 })
