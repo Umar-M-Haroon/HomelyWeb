@@ -227,7 +227,9 @@ class ChoresList extends Component {
                                         <p className="card-text">{chore.Title}</p>
                                     </div>
                                 </li>
-                                <label className="card-text">Due:</label>
+                                {chore.Deadline !== undefined &&
+                                    <label className="card-text">Due: {chore.Deadline.toDate().toLocaleString()}</label>
+                                }
                             </div>
                         </div>
                     ))}

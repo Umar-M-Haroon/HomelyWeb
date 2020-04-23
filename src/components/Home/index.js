@@ -248,11 +248,11 @@ class ChoresList extends Component {
                                             <button className="dropdown-item">Add to Calender</button>
                                         </div>
                                         <p className="card-text">{chore.Title}</p>
-                                        {chore.Deadline !== undefined &&
-                                            <small>Due: {chore.Deadline.toDate().toLocaleString()}</small>
-                                        }
                                     </div>
                                 </li>
+                                {chore.Deadline !== undefined &&
+                                    <label className="card-text">Due: {chore.Deadline.toDate().toLocaleString()}</label>
+                                }
                             </div>
                         </div>
                     ))}
