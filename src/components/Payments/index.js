@@ -239,7 +239,7 @@ class PaymentsList extends Component {
                                 <label className="card-text">Amount: ${payment["Payment Amount"]}</label>
                             </div>
                         </div>
-                    ))}}
+                    ))}
                 </ul>
             </div >
         )
