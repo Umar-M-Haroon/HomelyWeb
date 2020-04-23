@@ -307,7 +307,7 @@ class PaymentsList extends Component {
         this.handleCompleteButton = this.handleCompleteButton.bind(this)
     }
     handleCompleteButton(e) {
-        this.props.firebase.completeItem(e, "Chores")
+        this.props.firebase.completeItem(e, "Payments")
     }
     render() {
         return (
@@ -325,7 +325,7 @@ class PaymentsList extends Component {
 
                                         <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
                                         <div className="dropdown-menu" aria-labelledby="dropdownOptions">
-                                            <button className="dropdown-item">Complete</button>
+                                            <button className="dropdown-item" onClick={() => { this.handleCompleteButton(payment.Timestamp) }}>Complete</button>
                                             <button className="dropdown-item">Edit</button>
                                             <button className="dropdown-item">Add to Calender</button>
                                             {/* Payment dropdown. Inactive due to venmo shutting off support :/ */}
@@ -351,6 +351,9 @@ class PaymentsList extends Component {
 
 class HistoryList extends Component {
     updateHistoryInfo(historyItem) {
+        if (historyItem.Completed) {
+            console.log(historyItem)
+        }
         historyItem.displayName = this.props.home.Users.find(user => user["User ID"] === historyItem.Author)["Display Name"]
         var itemTitle
         if (this.props.home.Chores.find(chore => chore.Timestamp.isEqual(historyItem["Item ID"])) !== undefined) {

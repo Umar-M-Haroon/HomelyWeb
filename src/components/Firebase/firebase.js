@@ -247,7 +247,7 @@ class Firebase {
                             payment.Completed = true
                             var x = new Payment(payment)
                             newHistory = x.toHistory(this.auth.currentUser.uid, true)
-                            newHistory = payment.Timestamp
+                            newHistory["Item ID"] = payment.Timestamp
                         }
                         return payment
                     })
@@ -260,6 +260,7 @@ class Firebase {
             newObject[type] = newItems
             newObject["History"] = test
             newObject["Users"] = this.defaultHomeData.Users
+            console.log(newObject)
             this.db.collection("Homes").doc(this.defaultHome).update(newObject).then(() => {
                 resolve("Successfully Completed Item")
             }).catch((err) => {

@@ -94,6 +94,22 @@ class Payments extends Component {
                                 console.error(`Error getting URL ${error}`)
                             })
                     })
+                    let dataset = []
+                    for (let index in allUsers) {
+                        let user = allUsers[index]
+                        let newPayments = [];
+                        newPayments = allPayments.filter((payment) => {
+                            let completedItems = user["Completed Items"].find(item => {
+                                return item.isEqual(payment.Timestamp)
+                            })
+                            return (completedItems !== undefined)
+                        })
+                        let totalAmount = 0
+                        newPayments = newPayments.forEach((payment) => {
+                            totalAmount += payment["Payment Amount"]
+                        })
+                        dataset.push(totalAmount)
+                    }
                     this.setState({
                         payments: allPayments,
                         users: allUsers,
@@ -101,20 +117,9 @@ class Payments extends Component {
                         home: home,
                         venmoUsers: venmoUsers,
                         loading: false,
+                        dataset: dataset
                     }, () => {
                         //redering the chart
-                        let dataset = []
-                        for (let index in allUsers) {
-                            let user = allUsers[index]
-                            let newPayments = [];
-                            newPayments = this.state.payments.filter((payment) => {
-                                let completedItems = user["Completed Items"].find(item => {
-                                    return item.isEqual(payment.Timestamp)
-                                })
-                                return (completedItems !== undefined)
-                            })
-                            dataset.push(newPayments.length)
-                        }
                         var myChartRef = this.chartRef.current.getContext("2d");
                         new Chart(myChartRef, {
                             type: "doughnut",
@@ -178,7 +183,7 @@ class Payments extends Component {
             <div>
                 {loading && <div>Loading ...</div>}
                 <h1 align="center"><strong>Users</strong></h1>
-                {<UserList users={users} />}
+                {<UserList users={users} completed={this.state.dataset} />}
                 <div className="row no-gutters flex-nowrap">
                     <div className="col">
                         <AddItem users={this.state.users} type="Payments" />
@@ -209,7 +214,7 @@ class PaymentsList extends Component {
                         <label className="homeTitle">Payments</label>
                         <button className="addButtonFrame" data-toggle="modal" data-target="#Payments"><Add className="addButton"></Add></button>
                     </h2>
-                    {this.props.payments.map((payment) => (
+                    {this.props.payments.map((payment) => !payment.Completed && (
                         <div className="card itemFrame mt-1" key={payment.Timestamp}>
                             <div className="card-body">
                                 <li key={payment.Timestamp}>
@@ -234,22 +239,25 @@ class PaymentsList extends Component {
                                 <label className="card-text">Amount: ${payment["Payment Amount"]}</label>
                             </div>
                         </div>
-                    ))}
+                    ))}}
                 </ul>
             </div >
         )
     }
 }
 
-const UserList = ({ users }) => (
+const UserList = ({ users, completed }) => (
     <div className="row no-gutters flex-nowrap">
-        {users.map((label) => (
+        {users.map((label, index) => (
             <div className="col">
-                <div className="userFrame"> 
+                <div className="userFrame">
                     <div className="userTitle">
                         <label className="userTitle"> {label["Display Name"]}  </label>
                     </div>
-                    <label className="userBody">Completed Payments:</label>
+
+                    {!isNaN(completed[0]) &&
+                        <label className="userBody">Completed Amount: ${completed[index]}</label>
+                    }
                 </div>
             </div>
         ))}
