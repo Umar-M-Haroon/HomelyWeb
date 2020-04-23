@@ -187,7 +187,35 @@ class TotalItems extends Component {
         }
 
         return (
-            <div><br /><div className="itemsBadge">{deadlines}</div></div>
+            //original item badge
+            //<div><br /><div className="itemsBadge">{deadlines}</div></div>
+            <div>
+                <button type="button" id="modalButton" class="btn btn-primary" data-toggle="modal" data-target="#listModal">
+                    {deadlines}
+                </button>
+
+                <div class="modal fade" id="listModal" tabindex="-1" role="dialog" aria-labelledby="listModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="listModalLabel">Events due</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        <div class="modal-body">
+                            <p>
+                                You have {deadlines} chore(s) due on this day!
+                            </p>
+                        </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         )
     }
 }

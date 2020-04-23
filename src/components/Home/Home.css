@@ -207,3 +207,11 @@ li {
 .MinWidth {
   min-width: 600;
 }
+
+.modal-title {
+  color: black;
+}
+
+.modal-body {
+  color: black;
+}
