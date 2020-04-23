@@ -32,7 +32,7 @@ class Home extends Component {
         // Let's check whether notification permissions have already been granted
         else if (Notification.permission === "granted") {
             // If it's okay let's create a notification
-            var notification = new Notification("Notifications have been enabled");
+            new Notification("An Item was Added");
         }
 
         // Otherwise, we need to ask the user for permission
@@ -41,7 +41,7 @@ class Home extends Component {
             Notification.requestPermission().then(function (permission) {
                 // If the user accepts, let's create a notification
                 if (permission === "granted") {
-                    var notification = new Notification("Notifications are enabled");
+                    new Notification("An Item was Added");
                 }
             });
         }

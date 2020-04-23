@@ -216,30 +216,51 @@ class Firebase {
                 }
                 return user
             })
+            let newHistory
+            let newItems
             switch (type) {
                 case "Chores":
-                    this.defaultHomeData.Chores = this.defaultHomeData.Chores.map((chore) => {
+                    newItems = this.defaultHomeData.Chores.map((chore) => {
                         if (chore.Timestamp === itemID) {
                             chore.Completed = true
                             var x = new Chore(chore)
-                            var newHistory = x.toHistory(this.auth.currentUser.uid, true)
-                            newHistory.displayName = this.auth.currentUser.displayName
-                            newHistory.itemTitle = chore.Title
-                            // this.defaultHomeData.History.push(newHistory)
+                            newHistory = x.toHistory(this.auth.currentUser.uid, true)
                         }
                         return chore
                     })
                     break
                 case "Supplies":
-                    this.defaultHomeData.Supplies.find(supply => supply.Timestamp === itemID).Completed = true
+                    newItems = this.defaultHomeData.Supplies.map((supply) => {
+                        if (supply.Timestamp === itemID) {
+                            supply.Completed = true
+                            var x = new Supply(supply)
+                            newHistory = x.toHistory(this.auth.currentUser.uid, true)
+                        }
+                        return supply
+                    })
                     break
                 case "Payments":
-                    this.defaultHomeData.Payments.find(payment => payment.Timestamp === itemID).Completed = true
+                    newItems = this.defaultHomeData.Payments.map((payment) => {
+                        if (payment.Timestamp === itemID) {
+                            payment.Completed = true
+                            var x = new Payment(payment)
+                            newHistory = x.toHistory(this.auth.currentUser.uid, true)
+                            console.log(newHistory)
+                        }
+                        return payment
+                    })
                     break
                 default:
                     break
             }
-            this.db.collection("Homes").doc(this.defaultHome).update(this.defaultHomeData).then(() => {
+            console.log(newItems)
+            var newObject = {}
+            newObject[type] = newItems
+            newItems["History"] = app.firestore.FieldValue.arrayUnion(newHistory)
+            newItems["Users"] = this.defaultHomeData.Users
+            this.defaultHomeData.History.push(newHistory)
+            this.db.collection("Homes").doc(this.defaultHome).update(newObject).then(() => {
+
                 resolve("Successfully Completed Item")
             }).catch((err) => {
                 console.log("Test Completion Failed")
