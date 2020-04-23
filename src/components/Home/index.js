@@ -166,11 +166,6 @@ class Home extends Component {
                         <Calendar className="homeCalendar" tileClassName="CalendarTileName" tileContent={({ activeStartDate, date, view }) => <TotalItems date={date} homeData={this.props.firebase.defaultHomeData} />} />
                     </div>
                 </div>
-                <div className="row">
-                    <div className="col">
-                        <center><button onClick={this.notifyMe}>Notify me!</button></center>
-                    </div>
-                </div>
             </div >
         );
     }
