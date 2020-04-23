@@ -22,16 +22,38 @@ class Payments extends Component {
             home: ""
         };
     }
+    notifyMe() {
+        // Let's check if the browser supports notifications
+        if (this.state.loading) { return }
+        if (!("Notification" in window)) {
+            alert("This browser does not support desktop notification");
+        } else if (Notification.permission === "granted") {
+            // If it's okay let's create a notification
+            new Notification("An Item was Added");
+            return
+        } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then(function (permission) {
+                // If the user accepts, let's create a notification
+                if (permission === "granted") {
+                    new Notification("An Item was Added");
+                }
+            });
+        }
+
+    }
     chartRef = React.createRef();
 
     componentDidMount() {
         //Set up home page with appropriate data
-        this.setState({ loading: false });
         //calls the homes function to get the current homes the user has
         //it then iterates through each home which is a document in firebase terms and will get the data which is a javascript object
         //as it iterates through it adds to a generic home
         this.listener = this.props.firebase.homes().onSnapshot({ includeMetadataChanges: true }, (
             snapshot => {
+                if (!this.state.loading) {
+                    //we have a change in the house, this isn't the first time loading.
+                    this.notifyMe()
+                }
                 snapshot.forEach(doc => {
                     var allPayments = []
                     var allUsers = []
@@ -41,9 +63,7 @@ class Payments extends Component {
                     this.props.firebase.defaultHomeData = home
                     this.props.firebase.defaultHome = doc.id
                     home.Payments.forEach(payment => {
-                        // if (payment.Completed !== true) {
                         allPayments.push(payment);
-                        // }
                     })
                     //iterates through the document's chores and adds to an array that the home page can read
 
@@ -93,7 +113,6 @@ class Payments extends Component {
                                 })
                                 return (completedItems !== undefined)
                             })
-                            console.log(newPayments);
                             dataset.push(newPayments.length)
                         }
                         var myChartRef = this.chartRef.current.getContext("2d");
@@ -163,7 +182,7 @@ class Payments extends Component {
                 <div className="row no-gutters flex-nowrap">
                     <div className="col">
                         <AddItem users={this.state.users} type="Payments" />
-                        {<PaymentsList users={this.state.venmoUsers} payments={payments} />}
+                        {<PaymentsList users={this.state.venmoUsers} payments={payments} firebase={this.props.firebase} />}
                     </div>
                     <div className="col">
                         <canvas id="myChart" ref={this.chartRef}></canvas>
@@ -174,41 +193,53 @@ class Payments extends Component {
     }
 }
 
-const PaymentsList = ({ users, payments }) => (
-    <div className="paymentsFrame">
-        <ul className="listFrame">
-            <h2 className="homeTitle">
-                <label className="homeTitle">Payments</label>
-                <button className="addButtonFrame" data-toggle="modal" data-target="#Payments"><Add className="addButton"></Add></button>
-            </h2>
-            {payments.map((payment) => (
-                <div className="card itemFrame mt-1" key={payment.Timestamp}>
-                    <div className="card-body">
-                        <li key={payment.Timestamp}>
-                            <span className="item">
+class PaymentsList extends Component {
+    constructor(props) {
+        super(props)
+        this.handleCompleteButton = this.handleCompleteButton.bind(this)
+    }
+    handleCompleteButton(e) {
+        this.props.firebase.completeItem(e, "Chores")
+    }
+    render() {
+        return (
+            <div className="categoryFrame">
+                <ul className="listFrame">
+                    <h2 className="homeTitle">
+                        <label className="homeTitle">Payments</label>
+                        <button className="addButtonFrame" data-toggle="modal" data-target="#Payments"><Add className="addButton"></Add></button>
+                    </h2>
+                    {this.props.payments.map((payment) => (
+                        <div className="card itemFrame mt-1" key={payment.Timestamp}>
+                            <div className="card-body">
+                                <li key={payment.Timestamp}>
+                                    <span className="item">
 
-                                <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
-                                <div className="dropdown-menu" aria-labelledby="dropdownOptions">
-                                    <button className="dropdown-item">Complete</button>
-                                    <button className="dropdown-item">Edit</button>
-                                    <button className="dropdown-item">Add to Calender</button>
-                                    {/* Payment dropdown. Inactive due to venmo shutting off support :/ */}
-                                    {/* <div class="dropdown-divider"></div>
+                                        <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
+                                        <div className="dropdown-menu" aria-labelledby="dropdownOptions">
+                                            <button className="dropdown-item">Complete</button>
+                                            <button className="dropdown-item">Edit</button>
+                                            <button className="dropdown-item">Add to Calender</button>
+                                            {/* Payment dropdown. Inactive due to venmo shutting off support :/ */}
+                                            {/* <div class="dropdown-divider"></div>
                                     <h6 className="dropdown-header">Pay Users</h6>
                                     {users.map((user) => (
                                         <a href="https://venmo.com" key={user["User ID"]} className="dropdown-item">{"Pay " + user["Display Name"]}</a>
                                     ))} */}
 
-                                </div>
-                                <p className="card-text">{payment["Payment Title"]}</p>
-                            </span>
-                        </li>
-                    </div>
-                </div>
-            ))}
-        </ul>
-    </div >
-)
+                                        </div>
+                                        <p className="card-text">{payment["Payment Title"]}</p>
+                                    </span>
+                                </li>
+                                <label className="card-text">Amount: ${payment["Payment Amount"]}</label>
+                            </div>
+                        </div>
+                    ))}
+                </ul>
+            </div >
+        )
+    }
+}
 
 const UserList = ({ users }) => (
     <div className="row no-gutters flex-nowrap">

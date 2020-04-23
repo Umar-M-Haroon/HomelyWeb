@@ -138,13 +138,6 @@ class Home extends Component {
                     <h1><strong>  Homely</strong></h1>
                 </div>
                 <div className="row no-gutters flex-nowrap">
-                    {/* <div className="col">
-                        <div className="center-Logo">
-                        <Logo className="Homely-Logo">Homely Logo</Logo>
-                        <p className="bottom-one"></p>
-                        <h1 align="center"> <strong>Home</strong></h1>
-                        </div>
-                    </div> */}
                     <div className="col">
                         <AddItem users={this.state.users} type="Chores" />
                         {<ChoresList chores={chores} firebase={this.props.firebase} />}
@@ -268,6 +261,7 @@ class SuppliesList extends Component {
                                         <p className="card-text" >{supply["Supply Title"]}</p>
                                     </div>
                                 </li>
+                                <label className="card-text">Quantity: {supply["Supply Amount"]} items</label>
                             </div>
                         </div>
                     ))}
@@ -314,6 +308,7 @@ class PaymentsList extends Component {
                                         <p className="card-text">{payment["Payment Title"]}</p>
                                     </span>
                                 </li>
+                                <label className="card-text">Amount: ${payment["Payment Amount"]}</label>
                             </div>
                         </div>
                     ))}

@@ -22,16 +22,38 @@ class Chores extends Component {
             home: ""
         };
     }
+    notifyMe() {
+        // Let's check if the browser supports notifications
+        if (this.state.loading) { return }
+        if (!("Notification" in window)) {
+            alert("This browser does not support desktop notification");
+        } else if (Notification.permission === "granted") {
+            // If it's okay let's create a notification
+            new Notification("An Item was Added");
+            return
+        } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then(function (permission) {
+                // If the user accepts, let's create a notification
+                if (permission === "granted") {
+                    new Notification("An Item was Added");
+                }
+            });
+        }
+
+    }
     chartRef = React.createRef();
 
     componentDidMount() {
         //Set up home page with appropriate data
-        this.setState({ loading: false });
         //calls the homes function to get the current homes the user has
         //it then iterates through each home which is a document in firebase terms and will get the data which is a javascript object
         //as it iterates through it adds to a generic home
         this.listener = this.props.firebase.homes().onSnapshot({ includeMetadataChanges: true }, (
             snapshot => {
+                if (!this.state.loading) {
+                    //we have a change in the house, this isn't the first time loading.
+                    this.notifyMe()
+                }
                 snapshot.forEach(doc => {
                     var allChores = []
                     var allUsers = []
@@ -41,9 +63,7 @@ class Chores extends Component {
                     this.props.firebase.defaultHomeData = home
                     this.props.firebase.defaultHome = doc.id
                     home.Chores.forEach(chore => {
-                        // if (chore.Completed !== true) {
                         allChores.push(chore);
-                        // }
                     });
                     //iterates through the document's chores and adds to an array that the home page can read
 
@@ -163,14 +183,9 @@ class Chores extends Component {
                 {<UserList users={users} />}
                 <h1 align="center"><strong></strong></h1>
                 <div className="row no-gutters flex-nowrap">
-                    {/* <div className="col">
-                        <div className="center-Logo-Chores">
-                            <h1 align="center"> <strong>Chores</strong></h1>
-                        </div>
-                    </div> */}
                     <div className="col">
                         <AddItem users={this.state.users} type="Chores" />
-                        {<ChoresList chores={chores} />}
+                        {<ChoresList chores={chores} firebase={this.props.firebase} />}
                     </div>
                     <div className="col">
                         <canvas id="myChart" ref={this.chartRef}></canvas>
@@ -182,33 +197,45 @@ class Chores extends Component {
 }
 
 
-const ChoresList = ({ chores }) => (
-    <div className="choresFrame">
-        <ul className="listFrame">
-            <h2 className="homeTitle">
-                <label className="homeTitle">Current Chores</label>
-                <button className="addButtonFrame" data-toggle="modal" data-target="#Chores" aria-labelledby="addChore"><Add className="addButton"></Add></button>
-            </h2>
-            {chores.map((chore) => !chore.Completed && (
-                <div className="card itemFrame mt-1" key={chore.Timestamp}>
-                    <div className="card-body ">
-                        <li>
-                            <div className="item">
-                                <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
-                                <div className="dropdown-menu" aria-labelledby="dropdownOptions">
-                                    <button className="dropdown-item">Complete</button>
-                                    <button className="dropdown-item">Edit</button>
-                                    <button className="dropdown-item">Add to Calender</button>
-                                </div>
-                                <p className="card-text">{chore.Title}</p>
+class ChoresList extends Component {
+    constructor(props) {
+        super(props)
+        this.handleCompleteButton = this.handleCompleteButton.bind(this)
+    }
+    handleCompleteButton(e) {
+        this.props.firebase.completeItem(e, "Chores")
+    }
+    render() {
+        return (
+            <div className="choresFrame">
+                <ul className="listFrame">
+                    <h2 className="homeTitle">
+                        <label className="homeTitle">Current Chores</label>
+                        <button className="addButtonFrame" data-toggle="modal" data-target="#Chores" aria-labelledby="addChore"><Add className="addButton"></Add></button>
+                    </h2>
+                    {this.props.chores.map((chore) => !chore.Completed && (
+                        <div className="card itemFrame mt-1" key={chore.Timestamp}>
+                            <div className="card-body ">
+                                <li>
+                                    <div className="item">
+                                        <button type="button" className="options btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
+                                        <div className="dropdown-menu" aria-labelledby="dropdownOptions">
+                                            <button className="dropdown-item" onClick={() => { this.handleCompleteButton(chore.Timestamp) }}> Complete</button>
+                                            <button className="dropdown-item">Edit</button>
+                                            <button className="dropdown-item">Add to Calender</button>
+                                        </div>
+                                        <p className="card-text">{chore.Title}</p>
+                                    </div>
+                                </li>
+                                <label className="card-text">Due:</label>
                             </div>
-                        </li>
-                    </div>
-                </div>
-            ))}
-        </ul>
-    </div >
-);
+                        </div>
+                    ))}
+                </ul>
+            </div >
+        )
+    }
+}
 
 const UserList = ({ users }) => (
     <div className="row no-gutters flex-nowrap">
