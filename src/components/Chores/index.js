@@ -1,7 +1,6 @@
 import Chart from 'chart.js';
 import React, { Component } from 'react';
 import 'react-calendar/dist/Calendar.css';
-import { ReactComponent as Logo } from '../../homely-logo.svg';
 import { ReactComponent as Add } from '../../plus.svg';
 import { withFirebase } from '../Firebase';
 import AddItem from '../Home/Add Item/AddItemForm';
@@ -96,6 +95,7 @@ class Chores extends Component {
                             })
                             dataset.push(newChores.length)
                         }
+                        
                         var myChartRef = this.chartRef.current.getContext("2d");
                         new Chart(myChartRef, {
                             type: "doughnut",
@@ -107,10 +107,10 @@ class Chores extends Component {
                                         label: "Chores",
                                         data: dataset,
                                         backgroundColor: [
-                                            'rgba(255, 99, 132, 1)',
-                                            'rgba(54, 162, 235, 1)',
-                                            'rgba(255, 206, 86, 1)',
-                                            'rgba(75, 192, 192, 1)',
+                                            '#EB5757',
+                                            '#27AE60',
+                                            'F2994A',
+                                            '2F80ED',
                                             'rgba(153, 102, 255, 1)'
                                         ],
                                     }
@@ -138,11 +138,11 @@ class Chores extends Component {
                                         fontColor: "#333",
                                         fontSize: 22
                                     }
-                                }
+                                },
                             }
                         });
                     });
-                    this.setState({ chartLabels: userLabels })
+                    // this.setState({ chartLabels: userLabels })
                     // console.log(this.state.chartLabels)
                     //while also getting the categories, it also gets the users and sets a default home.
                     //These are needed for assigning users.
@@ -155,18 +155,19 @@ class Chores extends Component {
     }
 
     render() {
-        const { chores, loading } = this.state;
+        const { chores, users, loading } = this.state;
         return (
             <div>
                 {loading && <div>Loading ...</div>}
+                <h1 align="center"><strong>Users</strong></h1>
+                {<UserList users={users} />}
+                <h1 align="center"><strong></strong></h1>
                 <div className="row no-gutters flex-nowrap">
-                    <div className="col">
+                    {/* <div className="col">
                         <div className="center-Logo-Chores">
-                            <Logo className="Homely-Logo-Chores">Homely Logo</Logo>
-                            <p className="bottom-one"></p>
                             <h1 align="center"> <strong>Chores</strong></h1>
                         </div>
-                    </div>
+                    </div> */}
                     <div className="col">
                         <AddItem users={this.state.users} type="Chores" />
                         {<ChoresList chores={chores} />}
@@ -182,10 +183,10 @@ class Chores extends Component {
 
 
 const ChoresList = ({ chores }) => (
-    <div className="choreFrame">
+    <div className="choresFrame">
         <ul className="listFrame">
             <h2 className="homeTitle">
-                <label className="homeTitle">Chores</label>
+                <label className="homeTitle">Current Chores</label>
                 <button className="addButtonFrame" data-toggle="modal" data-target="#Chores" aria-labelledby="addChore"><Add className="addButton"></Add></button>
             </h2>
             {chores.map((chore) => !chore.Completed && (
@@ -207,6 +208,22 @@ const ChoresList = ({ chores }) => (
             ))}
         </ul>
     </div >
+);
+
+const UserList = ({ users }) => (
+    <div className="row no-gutters flex-nowrap">
+        {users.map((label) => (
+            <div className="col">
+                <div className="userFrame"> 
+                    <div className="userTitle">
+                        <label className="userTitle"> {label["Display Name"]}  </label>
+                    </div>
+                    <label className="userBody">Completed Chores:</label>
+                </div>
+            </div>
+        ))}
+    </div>
+
 );
 
 const condition = authUser => !!authUser;

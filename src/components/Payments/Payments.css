@@ -9,8 +9,21 @@
     width: 200px;
     height: 100px;
     padding: 10px;
-    margin: 20px;
+    margin: auto;
     text-align: left;
+}
+
+.paymentsFrame{
+    border-radius: 20px;
+    box-shadow: 5px 5px 10px grey;
+    background: linear-gradient( 145.15deg, rgba(255, 255, 255, 0.62) -30.66%, rgba(255, 255, 255, 0) 115.34%), #0447e0;
+    min-width: 400px;
+    max-width: 600px;
+    height: 600px;
+    padding: 10px;
+    margin: auto;
+    text-align: left;
+    overflow: auto;
 }
 .choreTitle {
     text-align: left;

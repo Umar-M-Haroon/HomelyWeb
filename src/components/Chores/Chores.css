@@ -2,28 +2,51 @@
     width: 500px;
     margin: auto;
 }
-.choreFrame {
+
+.choresFrame {
     border-radius: 20px;
     box-shadow: 5px 5px 10px grey;
-    background: linear-gradient(145.15deg, rgba(255, 255, 255, 0.62) -30.66%, rgba(255, 255, 255, 0) 115.34%), #0447E0;
+    background: linear-gradient( 145.15deg, rgba(255, 255, 255, 0.62) -30.66%, rgba(255, 255, 255, 0) 115.34%), #0447e0;
     min-width: 400px;
     max-width: 600px;
-    min-height: 600px;
     height: 600px;
     padding: 10px;
     margin: auto;
     text-align: left;
     overflow: auto;
 }
-
-.Homely-Logo-Chores {
-    fill: #2b2b2b;
-    display: block;
-    width: 300px;
+.userFrame {
+    border-radius: 20px;
+    box-shadow: 5px 5px 10px grey;
+    background: linear-gradient(145.15deg, rgba(255, 255, 255, 0.62) -30.66%, rgba(255, 255, 255, 0) 115.34%), #0447E0;
+    width: 250px;
+    min-height: 100px;
+    padding: 10px;
     margin: auto;
-    margin-bottom: 30px;
+    text-align: left;
+    overflow: auto;
 }
-  
+
+
+.userTitle {
+    text-align: left;
+    /* margin-left: -20px; */
+    font-style: normal;
+    font-weight: 600;
+    font-size: 30px;
+    color: white;
+    margin-right: 4px;
+}
+.userBody {
+    text-align: left;
+    /* margin-left: -20px; */
+    font-style: normal;
+    font-weight: 300;
+    font-size: 20px;
+    color: white;
+    margin-right: 4px;
+}
+
 .center-Logo-Chores {
-    padding: 100px 0;
+    padding: 250px 0;
 }
