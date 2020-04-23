@@ -9,6 +9,7 @@ class Chore {
     }
     toHistory(author, completed) {
         if (this.id === null || this.id === undefined) {
+            console.log("HOUSTON WE HAVE A PROBLEMO")
             this.id = firestore.Timestamp.fromDate(new Date())
         }
         var historyItem = {}

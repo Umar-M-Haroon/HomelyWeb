@@ -8,6 +8,7 @@ import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../Session';
 import AddItem from './Add Item/AddItemForm';
 import './Home.css';
+
 class Home extends Component {
     constructor(props) {
         super(props);
@@ -22,16 +23,38 @@ class Home extends Component {
             home: ""
         };
     }
+    notifyMe() {
+        // Let's check if the browser supports notifications
+        if (this.state.loading) { return }
+        if (!("Notification" in window)) {
+            alert("This browser does not support desktop notification");
+        } else if (Notification.permission === "granted") {
+            // If it's okay let's create a notification
+            new Notification("An Item was Added");
+            return
+        } else if (Notification.permission !== "denied") {
+            Notification.requestPermission().then(function (permission) {
+                // If the user accepts, let's create a notification
+                if (permission === "granted") {
+                    new Notification("An Item was Added");
+                }
+            });
+        }
 
+    }
     componentDidMount() {
         //Set up home page with appropriate data
-        this.setState({ loading: false });
         //calls the homes function to get the current homes the user has
         //it then iterates through each home which is a document in firebase terms and will get the data which is a javascript object
         //as it iterates through it adds to a generic home
         this.listener = this.props.firebase.homes().onSnapshot({ includeMetadataChanges: true }, (
             snapshot => {
                 snapshot.forEach(doc => {
+                    if (!this.state.loading) {
+                        //we have a change in the house, this isn't the first time loading.
+                        this.notifyMe()
+                    }
+                    this.setState({ loading: false });
                     var allChores = []
                     var allSupplies = []
                     var allPayments = []
@@ -61,7 +84,6 @@ class Home extends Component {
                     home.History.forEach(historyItem => {
                         allHistory.push(historyItem);
                     })
-
 
                     home.Users.forEach(user => {
                         if (user["Venmo ID"] !== undefined && user["Venmo ID"] !== "") {
@@ -129,11 +151,11 @@ class Home extends Component {
                     </div>
                     <div className="col">
                         <AddItem users={this.state.users} type="Supplies" />
-                        {<SuppliesList supplies={supplies} />}
+                        {<SuppliesList supplies={supplies} firebase={this.props.firebase} />}
                     </div>
                     <div className="col">
                         <AddItem users={this.state.users} type="Payments" />
-                        {<PaymentsList users={this.state.venmoUsers} payments={payments} />}
+                        {<PaymentsList users={this.state.venmoUsers} payments={payments} firebase={this.props.firebase} />}
                     </div>
                 </div>
                 <div className="row no-gutters flex-nowrap">
@@ -216,68 +238,90 @@ class ChoresList extends Component {
     }
 }
 
-const SuppliesList = ({ supplies }) => (
-    <div className="categoryFrame">
-        <ul className="listFrame">
-            <h2 className="homeTitle">
-                <Link className="homeTitle" to={ROUTES.SUPPLIES}>Supplies</Link>
-                <button className="addButtonFrame" data-toggle="modal" data-target="#Supplies" aria-labelledby="AddSupply"><Add className="addButton"></Add></button>
-            </h2>
-            {supplies.map((supply) => (
-                <div className="card itemFrame mt-1" key={supply.Timestamp}>
-                    <div className="card-body" >
-                        <li>
-                            <div className="item" >
-                                <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
-                                <div className="dropdown-menu" aria-labelledby="dropdownOptions">
-                                    <button className="dropdown-item">Complete</button>
-                                    <button className="dropdown-item">Edit</button>
-                                    <button className="dropdown-item">Add to Calender</button>
-                                </div>
-                                <p className="card-text" >{supply["Supply Title"]}</p>
+class SuppliesList extends Component {
+    constructor(props) {
+        super(props)
+        this.handleCompleteButton = this.handleCompleteButton.bind(this)
+    }
+    handleCompleteButton(e) {
+        this.props.firebase.completeItem(e, "Supplies")
+    }
+    render() {
+        return (
+            <div className="categoryFrame">
+                <ul className="listFrame">
+                    <h2 className="homeTitle">
+                        <Link className="homeTitle" to={ROUTES.SUPPLIES}>Supplies</Link>
+                        <button className="addButtonFrame" data-toggle="modal" data-target="#Supplies" aria-labelledby="AddSupply"><Add className="addButton"></Add></button>
+                    </h2>
+                    {this.props.supplies.map((supply) => (
+                        <div className="card itemFrame mt-1" key={supply.Timestamp}>
+                            <div className="card-body" >
+                                <li>
+                                    <div className="item" >
+                                        <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
+                                        <div className="dropdown-menu" aria-labelledby="dropdownOptions">
+                                            <button className="dropdown-item" onClick={() => { this.handleCompleteButton(supply.Timestamp) }}> Complete</button>
+                                            <button className="dropdown-item">Edit</button>
+                                            <button className="dropdown-item">Add to Calender</button>
+                                        </div>
+                                        <p className="card-text" >{supply["Supply Title"]}</p>
+                                    </div>
+                                </li>
                             </div>
-                        </li>
-                    </div>
-                </div>
-            ))}
-        </ul>
-    </div >
-)
-const PaymentsList = ({ users, payments }) => (
-    <div className="categoryFrame">
-        <ul className="listFrame">
-            <h2 className="homeTitle">
-                <Link className="homeTitle" to={ROUTES.PAYMENTS}>Payments</Link>
-                <button className="addButtonFrame" data-toggle="modal" data-target="#Payments"><Add className="addButton"></Add></button>
-            </h2>
-            {payments.map((payment) => (
-                <div className="card itemFrame mt-1" key={payment.Timestamp}>
-                    <div className="card-body">
-                        <li key={payment.Timestamp}>
-                            <span className="item">
+                        </div>
+                    ))}
+                </ul>
+            </div >
+        )
+    }
+}
+class PaymentsList extends Component {
+    constructor(props) {
+        super(props)
+        this.handleCompleteButton = this.handleCompleteButton.bind(this)
+    }
+    handleCompleteButton(e) {
+        this.props.firebase.completeItem(e, "Chores")
+    }
+    render() {
+        return (
+            <div className="categoryFrame">
+                <ul className="listFrame">
+                    <h2 className="homeTitle">
+                        <Link className="homeTitle" to={ROUTES.PAYMENTS}>Payments</Link>
+                        <button className="addButtonFrame" data-toggle="modal" data-target="#Payments"><Add className="addButton"></Add></button>
+                    </h2>
+                    {this.props.payments.map((payment) => (
+                        <div className="card itemFrame mt-1" key={payment.Timestamp}>
+                            <div className="card-body">
+                                <li key={payment.Timestamp}>
+                                    <span className="item">
 
-                                <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
-                                <div className="dropdown-menu" aria-labelledby="dropdownOptions">
-                                    <button className="dropdown-item">Complete</button>
-                                    <button className="dropdown-item">Edit</button>
-                                    <button className="dropdown-item">Add to Calender</button>
-                                    {/* Payment dropdown. Inactive due to venmo shutting off support :/ */}
-                                    {/* <div class="dropdown-divider"></div>
+                                        <button type="button" className="options btn btn-primary dropdown-toggle" id="dropdownOptions" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Options</button>
+                                        <div className="dropdown-menu" aria-labelledby="dropdownOptions">
+                                            <button className="dropdown-item">Complete</button>
+                                            <button className="dropdown-item">Edit</button>
+                                            <button className="dropdown-item">Add to Calender</button>
+                                            {/* Payment dropdown. Inactive due to venmo shutting off support :/ */}
+                                            {/* <div class="dropdown-divider"></div>
                                     <h6 className="dropdown-header">Pay Users</h6>
                                     {users.map((user) => (
                                         <a href="https://venmo.com" key={user["User ID"]} className="dropdown-item">{"Pay " + user["Display Name"]}</a>
                                     ))} */}
 
-                                </div>
-                                <p className="card-text">{payment["Payment Title"]}</p>
-                            </span>
-                        </li>
-                    </div>
-                </div>
-            ))}
-        </ul>
-    </div >
-)
+                                        </div>
+                                        <p className="card-text">{payment["Payment Title"]}</p>
+                                    </span>
+                                </li>
+                            </div>
+                        </div>
+                    ))}
+                </ul>
+            </div >
+        )
+    }
+}
 
 class HistoryList extends Component {
     updateHistoryInfo(historyItem) {
@@ -350,6 +394,55 @@ class HistoryList extends Component {
         )
     }
 }
+
+
+//credit code to: https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API/Using_the_Notifications_API
+// function notifyMe() {
+//     // Let's check if the browser supports notifications
+//     if (!("Notification" in window)) {
+//       alert("This browser does not support desktop notification");
+//     }
+
+//     // Let's check whether notification permissions have already been granted
+//     else if (Notification.permission === "granted") {
+//       // If it's okay let's create a notification
+//       var notification = new Notification("Notifications have been enabled");
+//     }
+
+//     // Otherwise, we need to ask the user for permission
+//     else if (Notification.permission !== "denied") {
+//       Notification.requestPermission().then(function (permission) {
+//         // If the user accepts, let's create a notification
+//         if (permission === "granted") {
+//           var notification = new Notification("Notifications are enabled");
+//         }
+//       });
+//     }
+
+//     else if (Notification.permission === "granted" && (chore.completed == "true" | supply.completed == "true" | payment.completed == "true"))
+//     {
+//         var note1 = 'This chore/supply/payment has been finished.';
+//         var notification1 = new Notification(note1);
+//     }
+//     else if (Notification.permission === "granted" && chore.completed == "false")
+//     {
+//         var note4 = 'You have added the chore ' + chore.Title + '.';
+//         var notificaiton4 = new Notification(note4);
+//     }
+//     else if (Notification.permission === "granted" && supply.completed == "false")
+//     {
+//         var note3 = 'You have added the supply ' + supply.Title + '.';
+//         var notification3 = new Notification(note3);
+//     }
+//     else if (Notification.permission === "granted" && payment.completed === "false")
+//     {
+//         var note2 = 'You have added the payment ' + payment.Title + '.';
+//         var notificaiton2 = new Notification(note2);
+//     }
+
+
+//   }
+
 
 const condition = authUser => !!authUser;
 export default withFirebase(withAuthorization(condition)(Home));
