@@ -225,6 +225,7 @@ class Firebase {
                             chore.Completed = true
                             var x = new Chore(chore)
                             newHistory = x.toHistory(this.auth.currentUser.uid, true)
+                            newHistory["Item ID"] = chore.Timestamp
                         }
                         return chore
                     })
@@ -235,6 +236,7 @@ class Firebase {
                             supply.Completed = true
                             var x = new Supply(supply)
                             newHistory = x.toHistory(this.auth.currentUser.uid, true)
+                            newHistory["Item ID"] = supply.Timestamp
                         }
                         return supply
                     })
@@ -245,7 +247,7 @@ class Firebase {
                             payment.Completed = true
                             var x = new Payment(payment)
                             newHistory = x.toHistory(this.auth.currentUser.uid, true)
-                            console.log(newHistory)
+                            newHistory = payment.Timestamp
                         }
                         return payment
                     })
@@ -253,11 +255,11 @@ class Firebase {
                 default:
                     break
             }
-            console.log(newItems)
+            var test = app.firestore.FieldValue.arrayUnion(newHistory)
             var newObject = {}
             newObject[type] = newItems
-            newItems["History"] = app.firestore.FieldValue.arrayUnion(newHistory)
-            newItems["Users"] = this.defaultHomeData.Users
+            newObject["History"] = test
+            newObject["Users"] = this.defaultHomeData.Users
             this.db.collection("Homes").doc(this.defaultHome).update(newObject).then(() => {
                 resolve("Successfully Completed Item")
             }).catch((err) => {
