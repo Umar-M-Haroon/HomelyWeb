@@ -10,7 +10,7 @@ service cloud.firestore {
 					return request.resource.data.shareID == resource.data.shareID;
       }
       allow read, write: if userIsInHome(request.auth.uid) || userHasValidShareID() || userIsInHome(request.auth.token.firebase.identities["apple.com"][0]) || userIsInHome(request.auth.token.firebase.identities["firebase"][0]);
-      allow read, write: if true;
+      allow read, write: if request.auth == null;
       allow create: if request.auth.uid != null;
 			
     }
