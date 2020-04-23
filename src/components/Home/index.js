@@ -200,14 +200,14 @@ class TotalItems extends Component {
                             <div class="modal-header">
                                 <h5 class="modal-title" id="listModalLabel">Events due</h5>
                                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
+                                    <span aria-hidden="true">&times;</span>
                                 </button>
                             </div>
-                        <div class="modal-body">
-                            <p>
-                                You have {deadlines} chore(s) due on this day!
+                            <div class="modal-body">
+                                <p>
+                                    You have {deadlines} chore(s) due on this day!
                             </p>
-                        </div>
+                            </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             </div>
@@ -248,6 +248,9 @@ class ChoresList extends Component {
                                             <button className="dropdown-item">Add to Calender</button>
                                         </div>
                                         <p className="card-text">{chore.Title}</p>
+                                        {chore.Deadline !== undefined &&
+                                            <small>Due: {chore.Deadline.toDate().toLocaleString()}</small>
+                                        }
                                     </div>
                                 </li>
                             </div>
