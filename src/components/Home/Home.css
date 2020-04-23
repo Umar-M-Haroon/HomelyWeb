@@ -215,3 +215,7 @@ li {
 .modal-body {
   color: black;
 }
+
+#modalButton {
+  margin-top: 10px;
+}
