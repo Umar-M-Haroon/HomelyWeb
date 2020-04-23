@@ -7,7 +7,6 @@ import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../Session';
 import AddItem from './Add Item/AddItemForm';
 import './Home.css';
-import ViewItem from './View Items/';
 
 class Home extends Component {
     constructor(props) {
@@ -123,32 +122,37 @@ class Home extends Component {
     }
 }
 
+
+//Leaving this block of code in for now in case we want to do more stuff with click handling on the tiles in the future.
+//If this is no longer needed then simply replace <CalendarItem homeData={this.props.firebase.defaultHomeData}/> above with 
+//<Calendar tileClassName="CalendarTileName" onClickDay={(date, event) => this.clickHandle(showState)} tileContent={({ activeStartDate, date, view }) => <TotalItems date={date} homeData={this.props.homeData} />} />
+//Then feel free to delete the class below
 class CalendarItem extends Component {
     constructor(props) {
         super(props);
         this.state = {showState: false};
     }
     
-    testClick(showState) {
+    clickHandle(showState) {
         this.setState({showState: true})
     }
     
     render() {
         const showState = this.state.showState;
-        let showCal;
+        let renderCal;
 
         if (showState)
         {
-            showCal = null
+            renderCal = <Calendar tileClassName="CalendarTileName" onClickDay={(date, event) => this.clickHandle(showState)} tileContent={({ activeStartDate, date, view }) => <TotalItems date={date} homeData={this.props.homeData} />} />
         }
         else
         {
-            showCal = <Calendar tileClassName="CalendarTileName" onClickDay={(date, event) => this.testClick(showState)} tileContent={({ activeStartDate, date, view }) => <TotalItems date={date} homeData={this.props.homeData} />} />
+            renderCal = <Calendar tileClassName="CalendarTileName" onClickDay={(date, event) => this.clickHandle(showState)} tileContent={({ activeStartDate, date, view }) => <TotalItems date={date} homeData={this.props.homeData} />} />
         }
 
         return (
             <div>
-                {showCal}
+                {renderCal}
             </div>
         );
     }
@@ -177,7 +181,35 @@ class TotalItems extends Component {
         }
 
         return (
-            <div><br /><div className="itemsBadge">{deadlines}</div></div>
+            //original item badge
+            //<div><br /><div className="itemsBadge">{deadlines}</div></div>
+            <div>
+                <button type="button" id="modalButton" class="btn btn-primary" data-toggle="modal" data-target="#listModal">
+                    {deadlines}
+                </button>
+
+                <div class="modal fade" id="listModal" tabindex="-1" role="dialog" aria-labelledby="listModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="listModalLabel">Events due</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                        <div class="modal-body">
+                            <p>
+                                You have {deadlines} chore(s) due on this day!
+                            </p>
+                        </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
         )
     }
 }

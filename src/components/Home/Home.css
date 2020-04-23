@@ -89,13 +89,6 @@ li {
   margin-bottom: 25px;
 }
 
-.react-calendar__tile {
-  outline: solid !important;
-  outline-width: .5px !important;
-  outline-color: black !important;
-  height: 84.5px;
-}
-
 .modal-title {
   font-weight: 600;
   font-size: 30px;
@@ -170,19 +163,18 @@ li {
   background-color: white;
 }
 
-.itemsBadge {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+.modal-title {
+  color: black;
+}
+
+.modal-body {
+  color: black;
+}
+
+#modalButton {
   background-color: red;
   color: white;
-  width: 20px;
-  height: 20px;
-  border-radius: 50%;
-  vertical-align: middle;
-  font-size: 15px;
-  margin-top: -30px;
-}
+} 
 
 .CalendarTileName {
   box-shadow: black;
