@@ -94,6 +94,19 @@ class Chores extends Component {
                                 console.error(`Error getting URL ${error}`)
                             })
                     })
+                    let dataset = []
+                    for (let index in allUsers) {
+                        let user = allUsers[index]
+                        let newChores = [];
+                        newChores = allChores.filter((chore) => {
+                            let completedItems = user["Completed Items"].find(item => {
+                                return item.isEqual(chore.Timestamp)
+                            })
+                            return (completedItems !== undefined)
+                        })
+                        dataset.push(newChores.length)
+                    }
+
                     this.setState({
                         chores: allChores,
                         users: allUsers,
@@ -101,21 +114,9 @@ class Chores extends Component {
                         home: home,
                         venmoUsers: venmoUsers,
                         loading: false,
+                        completed: dataset
                     }, () => {
                         //redering the chart
-                        let dataset = []
-                        for (let index in allUsers) {
-                            let user = allUsers[index]
-                            let newChores = [];
-                            newChores = this.state.chores.filter((chore) => {
-                                let completedItems = user["Completed Items"].find(item => {
-                                    return item.isEqual(chore.Timestamp)
-                                })
-                                return (completedItems !== undefined)
-                            })
-                            dataset.push(newChores.length)
-                        }
-                        
                         var myChartRef = this.chartRef.current.getContext("2d");
                         new Chart(myChartRef, {
                             type: "doughnut",
@@ -180,7 +181,7 @@ class Chores extends Component {
             <div>
                 {loading && <div>Loading ...</div>}
                 <h1 align="center"><strong>Users</strong></h1>
-                {<UserList users={users} />}
+                {<UserList users={users} completed={this.state.completed} />}
                 <h1 align="center"><strong></strong></h1>
                 <div className="row no-gutters flex-nowrap">
                     <div className="col">
@@ -239,15 +240,17 @@ class ChoresList extends Component {
     }
 }
 
-const UserList = ({ users }) => (
+const UserList = ({ users, completed }) => (
     <div className="row no-gutters flex-nowrap">
-        {users.map((label) => (
+        {users.map((label, index) => (
             <div className="col">
-                <div className="userFrame"> 
+                <div className="userFrame">
                     <div className="userTitle">
                         <label className="userTitle"> {label["Display Name"]}  </label>
                     </div>
-                    <label className="userBody">Completed Chores:</label>
+                    {!isNaN(completed[0]) &&
+                        <label className="userBody">Completed Chores:{completed[index]}</label>
+                    }
                 </div>
             </div>
         ))}

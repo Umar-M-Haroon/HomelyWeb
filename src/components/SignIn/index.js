@@ -40,7 +40,7 @@ class SignInFormBase extends Component {
                 this.setState({ ...INITIAL_STATE });
                 // this.props.history.push(ROUTES.HOME);
                 this.props.firebase.homes().get().then((snapshot) => {
-                    if (!snapshot.docs.length > 0) {
+                    if (snapshot.docs.length > 0) {
                         this.props.history.push(ROUTES.HOME);
                     } else {
                         this.props.history.push(ROUTES.CREATE_HOME);
