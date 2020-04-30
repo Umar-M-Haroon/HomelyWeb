@@ -359,7 +359,7 @@ class HistoryList extends Component {
     updateHistoryInfo(historyItem) {
         if (historyItem.Completed) {
         }
-        historyItem.displayName = this.props.home.Users.find(user => user["User ID"] === historyItem.Author)["Display Name"]
+        historyItem.displayName = "Test" //this.props.home.Users.find(user => user["User ID"] === historyItem.Author)["Display Name"]
         var itemTitle
         if (this.props.home.Chores.find(chore => chore.Timestamp.isEqual(historyItem["Item ID"])) !== undefined) {
             itemTitle = this.props.home.Chores.find(chore => chore.Timestamp.isEqual(historyItem["Item ID"])).Title
