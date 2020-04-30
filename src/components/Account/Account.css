@@ -1,0 +1,12 @@
+.ProfilePhoto {
+    border-radius: 50%;
+    height: 200px;
+    width: 200px;
+    align-items: center;
+    text-align: center;
+}
+
+.Master {
+    text-align: center;
+    align-items: center;
+}

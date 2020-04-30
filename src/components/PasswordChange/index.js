@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { withFirebase } from '../Firebase';
+import './PasswordChange.css';
 const INITIAL_STATE = {
   passwordOne: '',
   passwordTwo: '',
@@ -30,26 +31,38 @@ class PasswordChangeForm extends Component {
     const isInvalid =
       passwordOne !== passwordTwo || passwordOne === '';
     return (
-      <form onSubmit={this.onSubmit}>
-        <input
-          name="passwordOne"
-          value={passwordOne}
-          onChange={this.onChange}
-          type="password"
-          placeholder="New Password"
-        />
-        <input
-          name="passwordTwo"
-          value={passwordTwo}
-          onChange={this.onChange}
-          type="password"
-          placeholder="Confirm New Password"
-        />
-        <button disabled={isInvalid} type="submit">
-          Reset My Password
-        </button>
-        {error && <p>{error.message}</p>}
-      </form>
+      <div className="form-group PasswordChangeFrame">
+        <form className="p5" onSubmit={this.onSubmit} >
+          <div className="form-row">
+            <div className="col">
+              <div>
+                <label className="form-text text-muted">New Password</label>
+                <input
+                  name="passwordOne"
+                  value={passwordOne}
+                  onChange={this.onChange}
+                  type="password"
+                  placeholder="New Password"
+                  className="form-control mb-4"
+                />
+              </div>
+              <div>
+                <label className="form-text text-muted">Confirm New Password</label>
+                <input
+                  name="passwordTwo"
+                  value={passwordTwo}
+                  onChange={this.onChange}
+                  type="password"
+                  placeholder="Confirm New Password"
+                  className="form-control mb-4"
+                />
+              </div>
+              <button disabled={isInvalid} type="submit" className="btn btn-primary">Set New Password </button>
+            </div>
+          </div>
+          {error && <p>{error.message}</p>}
+        </form>
+      </div>
     );
   }
 }

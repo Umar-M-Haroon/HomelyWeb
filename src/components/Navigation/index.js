@@ -1,9 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import SignOutButton from '../SignOut';
 import * as ROUTES from '../../constants/routes';
-
+// import { ReactComponent as Logo } from '../../homely-logo.svg';
 import { AuthUserContext } from '../Session';
+
 const Navigation = ({ authUser }) => (
     <div>
         <AuthUserContext.Consumer>
@@ -17,24 +17,20 @@ const Navigation = ({ authUser }) => (
 const NavigationAuth = () => (
     <div>
         <nav className="navbar navbar-light">
-            <Link className="navbar-brand" to={ROUTES.HOME}>Homely</Link>
-            <Link className="navbar" to={ROUTES.LANDING}>Landing</Link>
+            <Link className="navbar-brand" to={ROUTES.HOME}> <strong>Home</strong></Link>
+            <Link className="navbar-brand" to={ROUTES.CHORES}>Chores</Link>
+            <Link className="navbar-brand" to={ROUTES.SUPPLIES}>Supplies</Link>
+            <Link className="navbar-brand" to={ROUTES.PAYMENTS}>Payments</Link>
             <Link className="navbar" to={ROUTES.ACCOUNT}>Account</Link>
-            <SignOutButton />
         </nav>
     </div>
 );
 
 const NavigationNonAuth = () => (
     <div>
-        <ul>
-            <li>
-                <Link to={ROUTES.SIGN_IN}>Sign In</Link>
-            </li>
-            <li>
-                <Link to={ROUTES.LANDING}>Landing</Link>
-            </li>
-        </ul>
+        <nav className="navbar navbar-light">
+            <Link className="navbar-brand" to={ROUTES.HOME}>Homely</Link>
+        </nav>
     </div>
 );
 

@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-
-import { withFirebase } from '../Firebase';
 import * as ROUTES from '../../constants/routes';
+import { withFirebase } from '../Firebase';
+
 const PasswordForget = () => (
     <div>
         <h1>PasswordForget</h1>
@@ -34,30 +34,24 @@ class PasswordForgetFormBase extends Component {
         this.setState({ [event.target.name]: event.target.value });
     };
     render() {
-        const { email, error } = this.state;
+        const { email } = this.state;
         const isInvalid = email === '';
         return (
-            <div>
-            <strong >Reset Password</strong>
-            <form>
-                <div className="form-row">
-                    <div className="col-auto">
-                        <div className="form-group">
+            <div className="form-group">
+                <strong >Reset Password</strong>
+                <form onSubmit={this.onSubmit}>
+                    <div className="form-row">
+                        <div className="col">
                             <input type="email"
-                                className="form-control"
+                                name="email"
                                 value={this.state.email}
                                 onChange={this.onChange}
                                 placeholder="Email Address" />
                             <small id="emailHelp" className="form-text text-muted">We'll never share your email with anyone else</small>
-                        </div>
-                    </div>
-                    <div className="col-auto">
-                        <div className="form-group">
                             <button disabled={isInvalid} type="submit" className="btn btn-primary">Reset My Password</button>
                         </div>
                     </div>
-                </div>
-            </form>
+                </form>
             </div>
         );
     }

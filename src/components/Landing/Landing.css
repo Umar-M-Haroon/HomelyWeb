@@ -1,0 +1,15 @@
+.Title {
+    text-align: center;
+}
+
+.Main {
+    width: 500px;
+    margin: auto;
+}
+
+.Homely-Logo {
+    fill: #2b2b2b;
+    display: block;
+    max-width: 300px;
+    margin: auto;
+}
