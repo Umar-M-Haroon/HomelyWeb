@@ -132,7 +132,9 @@ class Home extends Component {
     }
 
     componentWillUnmount() {
-        this.listener()
+        if (this.listener) {
+            this.listener()
+        }
     }
 
     render() {
@@ -359,7 +361,10 @@ class HistoryList extends Component {
     updateHistoryInfo(historyItem) {
         if (historyItem.Completed) {
         }
-        historyItem.displayName = "Test" //this.props.home.Users.find(user => user["User ID"] === historyItem.Author)["Display Name"]
+        var testUser = this.props.home.Users.find(user => user["User ID"] === historyItem.Author)
+        if (testUser) {
+            historyItem.displayName = testUser["Display Name"]
+        }
         var itemTitle
         if (this.props.home.Chores.find(chore => chore.Timestamp.isEqual(historyItem["Item ID"])) !== undefined) {
             itemTitle = this.props.home.Chores.find(chore => chore.Timestamp.isEqual(historyItem["Item ID"])).Title

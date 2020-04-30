@@ -29,12 +29,12 @@ class Firebase {
             this.storage = app.storage();
             //emulator setup. If you want to use firebase emulators, use the ./dir folder and keep this if statement in
             //if you dont, comment out this if statement and uncomment the persistence lines.
-            if (window.location.hostname === "localhost") {
-                this.db.settings({
-                    host: "localhost:8080",
-                    ssl: false
-                })
-            }
+            // if (window.location.hostname === "localhost") {
+            //     this.db.settings({
+            //         host: "localhost:8080",
+            //         ssl: false
+            //     })
+            // }
             // this.db.enablePersistence()
             //     .catch(err => {
             //         console.log("Error setting persistence");
@@ -79,14 +79,13 @@ class Firebase {
      * @memberof Firebase
      */
     homes = () => {
-        // this.auth.currentUser.providerData.forEach(element => {
-        //     this.db.collection('Homes').where("userIDs", "array-contains", element.uid).get().then((result) => {
-        //         result.docs.forEach((querySnapshot) => {
-        //             console.log(querySnapshot.data())
-        //         })
-        //     }).catch((error) => {
-        //     });
-        // });
+
+        if (this.auth.currentUser.providerData && this.auth.currentUser.providerData[0] && this.auth.currentUser.providerData[0].uid) {
+            if (this.auth.currentUser.providerData[0].uid !== this.auth.currentUser.uid) {
+                console.log("running alternate")
+                return this.db.collection('Homes').where("userIDs", "array-contains", this.auth.currentUser.providerData[0].uid)
+            }
+        }
         return this.db.collection('Homes').where("userIDs", "array-contains", this.auth.currentUser.uid)
     }
     /**
@@ -123,14 +122,15 @@ class Firebase {
      * @memberof Firebase
      */
     migrateUserToSignInWithApple = () => {
-        var provider = new app.auth.OAuthProvider('apple.com');
-        provider.addScope('name');
-        this.auth.currentUser.linkWithPopup(provider).catch((error) => {
-            if (error.code === "auth/credential-already-in-use") {
-                this.auth.signInWithCredential(error.credential).then((result) => {
-                });
-            }
-        })
+        // var provider = new app.auth.OAuthProvider('apple.com');
+        // provider.addScope('name');
+        // this.auth.currentUser.linkWithPopup(provider).catch((error) => {
+        //     console.log("WE HERE MIGRATE")
+        //     if (error.code === "auth/credential-already-in-use") {
+        //         this.auth.signInWithCredential(error.credential).then((result) => {
+        //         });
+        //     }
+        // })
     }
     /**
      *
