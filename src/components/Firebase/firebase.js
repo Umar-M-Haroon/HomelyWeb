@@ -28,18 +28,19 @@ class Firebase {
             this.functions = app.functions();
             this.storage = app.storage();
             //emulator setup. If you want to use firebase emulators, use the ./dir folder and keep this if statement in
-            //if you dont, comment out this if statement and uncomment the persistence lines.
-            // if (window.location.hostname === "localhost") {
-            //     this.db.settings({
-            //         host: "localhost:8080",
-            //         ssl: false
-            //     })
-            // }
-            // this.db.enablePersistence()
-            //     .catch(err => {
-            //         console.log("Error setting persistence");
-            //         console.log(err);
-            //     });
+            // if you dont, comment out this if statement and uncomment the persistence lines.
+            if (window.location.hostname === "localhost") {
+                this.db.settings({
+                    host: "localhost:8080",
+                    ssl: false
+                })
+            } else {
+                this.db.enablePersistence()
+                    .catch(err => {
+                        console.log("Error setting persistence");
+                        console.log(err);
+                    });
+            }
             this.defaultHome = null
         } else {
             return
