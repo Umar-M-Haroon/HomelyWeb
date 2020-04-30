@@ -358,7 +358,6 @@ class PaymentsList extends Component {
 class HistoryList extends Component {
     updateHistoryInfo(historyItem) {
         if (historyItem.Completed) {
-            console.log(historyItem)
         }
         historyItem.displayName = this.props.home.Users.find(user => user["User ID"] === historyItem.Author)["Display Name"]
         var itemTitle
@@ -375,12 +374,10 @@ class HistoryList extends Component {
         historyItem.itemTitle = itemTitle
 
         if (!this.props.imageURLs) {
-            console.log("WE HERE")
             historyItem.imageURL = DefaultLogo
             return historyItem
         }
         if (this.props.imageURLs[historyItem.Author] === undefined) {
-            console.log("WE HERE")
             historyItem.imageURL = DefaultLogo
             return historyItem
         }
@@ -403,7 +400,7 @@ class HistoryList extends Component {
                         <div className="card itemFrame mt-1" key={historyItem.Timestamp} >
                             <div className="card-body">
                                 <div className="historyProfileContainer">
-                                    <img className="historyProfilePhoto" src={DefaultLogo} alt={historyItem.displayName}></img>
+                                    <img className="historyProfilePhoto" src={historyItem.imageURL} alt={historyItem.displayName}></img>
                                 </div>
                                 <div className="historyContent">
                                     <li>

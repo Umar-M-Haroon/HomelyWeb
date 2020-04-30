@@ -22,7 +22,6 @@ class AssignedUsers extends Component {
         }
         var promises = []
         this.props.users.forEach((user) => {
-            console.log(user)
             var userToAppend = user
             var promise = new Promise((resolve, reject) => {
                 this.props.firebase.getImage(user["User ID"]).then(url => {
