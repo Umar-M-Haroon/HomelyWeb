@@ -12,7 +12,9 @@ class CreateHomeBase extends Component {
         this.createHomeButtonPressed = this.createHomeButtonPressed.bind(this)
         this.createHomeFormButtonPressed = this.createHomeFormButtonPressed.bind(this)
     }
-
+    componentDidMount() {
+        this.loadQR()
+    }
     updateInfo() {
         this.props.history()
     }
@@ -42,7 +44,6 @@ class CreateHomeBase extends Component {
             }
         }).then((response) => {
             response.json().then((result) => {
-                console.log(result)
                 qrcode.toCanvas(canvasElement, result.shortLink, { scale: 10 }, (error) => {
                 })
             })
@@ -65,10 +66,13 @@ class CreateHomeBase extends Component {
     }
     createHomeFormButtonPressed(e) {
         e.preventDefault()
+        var homeNameInput = document.getElementById("HomeNameInput")
+        this.props.firebase.createHome(homeNameInput).then(() => {
+            this.props.history.push(ROUTES.HOME)
+        })
     }
 
     render() {
-
         return (
             <center>
                 <div id="CreateHomeContainer">
@@ -93,7 +97,7 @@ class CreateHomeBase extends Component {
                         Create a New Home
                     </button>
                     <br></br>
-                    <form id="CreateHomeForm" hidden={true} onSubmit={this.joinHomeFormButtonPressed}>
+                    <form id="CreateHomeForm" hidden={true} onSubmit={this.createHomeFormButtonPressed}>
                         <div className="form-group">
                             <label>
                                 Home Name (Optional)

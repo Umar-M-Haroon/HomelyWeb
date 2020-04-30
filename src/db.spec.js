@@ -12,16 +12,17 @@
 
 // export default firebaseAdmin
 // import 'firebase/testing';
-const admin = require('firebase-admin')
 const firebase = require('@firebase/testing')
 const fs = require('fs')
-const userID2 = "9cN3l0x3NoQY95dx7zE3nJI4z0613"
+const userID2 = "OfmzIC88wxYBsPXpUd4R3cgHwM12"
 
+// const homelyFirebase = require('../src/components/Firebase/firebase.js')
+// const chore = require('../src/Model/Chore')
 describe('Data Controller', () => {
     let db;
     let app;
     beforeAll(async () => {
-        const projectId = `homely-47bc5`
+        const projectId = `homely-test3`
         console.log("beforeAll");
         app = firebase.initializeTestApp({
             projectId,
@@ -40,6 +41,9 @@ describe('Data Controller', () => {
     describe('User access', () => {
         test('Grant Access', async () => {
             console.log("This test should cause the user to have access")
+            app.firestore().collection("Homes").doc("TESTHOME").get().then((snapshot) => {
+                console.log(snapshot.data())
+            })
             return firebase.assertSucceeds(app.firestore().collection("Homes").doc("TESTHOME").get())
         })
     })
@@ -48,40 +52,38 @@ describe('Data Controller', () => {
     })
 })
 
-    // describe('User access', () => {
-    //     test('Test List', async () => {
-    //         console.log("This test should cause the user no access")
-    //         console.log(db.collection("Homes").get('TESTHOME'))
-    //         return db.collection("Homes").get('TESTHOME').then(data => {
-    //             expect.anything()
-    //         })
-    //     })
-    // })
-    // describe('User access', () => {
-    //     test('Test Complete Item', async () => {
-    //         console.log("This test should cause the user no access")
-    //         console.log(db.collection("Homes").get('TESTHOME'))
-    //         return db.collection("Homes").get('TESTHOME').then(data => {
-    //             expect.anything()
-    //         })
-    //     })
-    // })
-    // describe('User access', () => {
-    //     test('Grant Access', async () => {
-    //         console.log("This test should cause the user no access")
-    //         console.log(db.collection("Homes").get('TESTHOME'))
-    //         return db.collection("Homes").get('TESTHOME').then(data => {
-    //             expect.anything()
-    //         })
-    //     })
-    // })
-    // describe('User access', () => {
-    //     test('Test Item', async () => {
-    //         console.log("This test should cause the user no access")
-    //         console.log(db.collection("Homes").get('TESTHOME'))
-    //         return db.collection("Homes").get('TESTHOME').then(data => {
-    //             expect.anything()
-    //         })
-    //     })
-    // })
-// })
+describe('Add Item', () => {
+    let db;
+    let app;
+    beforeAll(async () => {
+        const projectId = `homely-test3`
+        console.log("beforeAll");
+        app = firebase.initializeTestApp({
+            projectId,
+            auth: { "uid": userID2, "email": "test@email.com" }
+        })
+        db = app.firestore()
+        await firebase.loadFirestoreRules({
+            projectId,
+            "rules": fs.readFileSync('./firestore.rules', 'utf8')
+        })
+        db.settings({
+            host: "localhost:8080",
+            ssl: false
+        })
+    })
+    describe('Item management', () => {
+        test('Add Item', async () => {
+            console.log("This test should add a chore and confirm it was added")
+            let choreState = {
+                "title": "firebase-testing",
+                "DeadlineDate": null,
+                "assignedUsers": null,
+            }
+            expect(true).toBe(true)
+        })
+    })
+    afterAll(async () => {
+        Promise.all(firebase.apps().map(app => app.delete()))
+    })
+})

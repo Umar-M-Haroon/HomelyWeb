@@ -30,17 +30,28 @@ class SignUpFormBase extends Component {
         });
     }
     onSubmit = event => {
-        const { email, passwordOne } = this.state;
+        const {
+            username,
+            email,
+            passwordOne,
+        } = this.state;
         this.props.firebase
             .doCreateUserWithEmailAndPassword(email, passwordOne)
             .then(authUser => {
                 this.setState({ ...INITIAL_STATE });
+                let currentUser = this.props.firebase.auth.currentUser
+                if (currentUser) {
+                    currentUser.updateProfile({
+                        "displayName": username
+                    }).then(() => {
+                        this.props.history.push(ROUTES.CREATE_HOME)
+                    })
+                }
                 // this.props.firebase.homes().get().then((snapshots) => {
                 //     if (!snapshots.isEmpty) {
                 //         this.props.history.push(ROUTES.HOME);
                 //     }
                 // })
-                this.props.history.push(ROUTES.CREATE_HOME)
             })
             .catch(error => {
                 this.setState({ error });
@@ -48,6 +59,7 @@ class SignUpFormBase extends Component {
         event.preventDefault();
     }
     onChange = event => {
+        console.log(event.target.name)
         this.setState({ [event.target.name]: event.target.value });
     }
     validateEmail = (email) => {
@@ -65,7 +77,7 @@ class SignUpFormBase extends Component {
         const isInvalid =
             passwordOne.length <= 7 ||
             this.validateEmail(email) ||
-            username === '';
+            !username;
         return (
             <container>
                 <div class="Absolute-Center is-Responsive">
@@ -97,6 +109,7 @@ class SignUpFormBase extends Component {
                                 onChange={this.onChange}
                                 type="password"
                                 placeholder="Password"
+                                autocomplete="new-password"
                             />
                             <small className="form-text text-muted">Passwords must be at least 8 characters long</small>
                         </div>

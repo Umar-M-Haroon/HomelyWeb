@@ -1,8 +1,10 @@
 import React, { Component } from 'react';
 import Calendar from 'react-calendar';
 import 'react-calendar/dist/Calendar.css';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
+import { compose } from 'recompose';
 import * as ROUTES from '../../constants/routes';
+import DefaultLogo from '../../Default.png';
 import { ReactComponent as Add } from '../../plus.svg';
 import { withFirebase } from '../Firebase';
 import { withAuthorization } from '../Session';
@@ -49,6 +51,10 @@ class Home extends Component {
         //as it iterates through it adds to a generic home
         this.listener = this.props.firebase.homes().onSnapshot({ includeMetadataChanges: true }, (
             snapshot => {
+                if (snapshot.docs.length === 0) {
+                    this.props.history.push(ROUTES.CREATE_HOME)
+                    return
+                }
                 snapshot.forEach(doc => {
                     if (!this.state.loading) {
                         //we have a change in the house, this isn't the first time loading.
@@ -106,7 +112,7 @@ class Home extends Component {
                                 })
                             })
                             .catch((error) => {
-                                console.error(`Error getting URL ${error}`)
+                                // console.error(`Error getting URL ${error}`)
                             })
                     })
                     this.setState({
@@ -368,10 +374,14 @@ class HistoryList extends Component {
         }
         historyItem.itemTitle = itemTitle
 
-        if (this.props.imageURLs === undefined) {
+        if (!this.props.imageURLs) {
+            console.log("WE HERE")
+            historyItem.imageURL = DefaultLogo
             return historyItem
         }
         if (this.props.imageURLs[historyItem.Author] === undefined) {
+            console.log("WE HERE")
+            historyItem.imageURL = DefaultLogo
             return historyItem
         }
 
@@ -393,7 +403,7 @@ class HistoryList extends Component {
                         <div className="card itemFrame mt-1" key={historyItem.Timestamp} >
                             <div className="card-body">
                                 <div className="historyProfileContainer">
-                                    <img className="historyProfilePhoto" src={historyItem.imageURL} alt={historyItem.displayName}></img>
+                                    <img className="historyProfilePhoto" src={DefaultLogo} alt={historyItem.displayName}></img>
                                 </div>
                                 <div className="historyContent">
                                     <li>
@@ -425,53 +435,5 @@ class HistoryList extends Component {
 }
 
 
-//credit code to: https://developer.mozilla.org/en-US/docs/Web/API/Notifications_API/Using_the_Notifications_API
-// function notifyMe() {
-//     // Let's check if the browser supports notifications
-//     if (!("Notification" in window)) {
-//       alert("This browser does not support desktop notification");
-//     }
-
-//     // Let's check whether notification permissions have already been granted
-//     else if (Notification.permission === "granted") {
-//       // If it's okay let's create a notification
-//       var notification = new Notification("Notifications have been enabled");
-//     }
-
-//     // Otherwise, we need to ask the user for permission
-//     else if (Notification.permission !== "denied") {
-//       Notification.requestPermission().then(function (permission) {
-//         // If the user accepts, let's create a notification
-//         if (permission === "granted") {
-//           var notification = new Notification("Notifications are enabled");
-//         }
-//       });
-//     }
-
-//     else if (Notification.permission === "granted" && (chore.completed == "true" | supply.completed == "true" | payment.completed == "true"))
-//     {
-//         var note1 = 'This chore/supply/payment has been finished.';
-//         var notification1 = new Notification(note1);
-//     }
-//     else if (Notification.permission === "granted" && chore.completed == "false")
-//     {
-//         var note4 = 'You have added the chore ' + chore.Title + '.';
-//         var notificaiton4 = new Notification(note4);
-//     }
-//     else if (Notification.permission === "granted" && supply.completed == "false")
-//     {
-//         var note3 = 'You have added the supply ' + supply.Title + '.';
-//         var notification3 = new Notification(note3);
-//     }
-//     else if (Notification.permission === "granted" && payment.completed === "false")
-//     {
-//         var note2 = 'You have added the payment ' + payment.Title + '.';
-//         var notificaiton2 = new Notification(note2);
-//     }
-
-
-//   }
-
-
 const condition = authUser => !!authUser;
-export default withFirebase(withAuthorization(condition)(Home));
+export default compose(withAuthorization(condition), withFirebase, withRouter)(Home);

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { ReactComponent as Check } from '../../../../check.svg';
+import DefaultLogo from '../../../../Default.png';
 import { withFirebase } from '../../../Firebase';
 import { withAuthorization } from '../../../Session';
 import './AssignedUsers.css';
@@ -21,6 +22,7 @@ class AssignedUsers extends Component {
         }
         var promises = []
         this.props.users.forEach((user) => {
+            console.log(user)
             var userToAppend = user
             var promise = new Promise((resolve, reject) => {
                 this.props.firebase.getImage(user["User ID"]).then(url => {
@@ -28,7 +30,7 @@ class AssignedUsers extends Component {
                     resolve(userToAppend)
                 }).catch(error => {
                     console.log(error)
-                    userToAppend.imageURL = ""
+                    userToAppend.imageURL = DefaultLogo
                     resolve(userToAppend)
                 })
             })

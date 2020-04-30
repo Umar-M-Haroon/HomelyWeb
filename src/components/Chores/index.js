@@ -75,24 +75,24 @@ class Chores extends Component {
                         allUsers.push(user);
                         userLabels.push(user["Display Name"]) // for chart labels
                         // for chart data
-                        this.props.firebase.getImage(user["User ID"])
-                            .then((url) => {
+                        // this.props.firebase.getImage(user["User ID"])
+                        //     .then((url) => {
 
-                                var userURLs = {}
-                                if (this.state.userURLs !== undefined) {
-                                    userURLs = this.state.userURLs
-                                }
-                                if (url === undefined) { return }
-                                var userID = user["User ID"]
-                                userURLs[userID] = url
+                        //         var userURLs = {}
+                        //         if (this.state.userURLs !== undefined) {
+                        //             userURLs = this.state.userURLs
+                        //         }
+                        //         if (url === undefined) { return }
+                        //         var userID = user["User ID"]
+                        //         userURLs[userID] = url
 
-                                this.setState({
-                                    userURLs: userURLs
-                                })
-                            })
-                            .catch((error) => {
-                                console.error(`Error getting URL ${error}`)
-                            })
+                        //         this.setState({
+                        //             userURLs: userURLs
+                        //         })
+                        //     })
+                        //     .catch((error) => {
+                        //         console.error(`Error getting URL ${error}`)
+                        //     })
                     })
                     let dataset = []
                     for (let index in allUsers) {

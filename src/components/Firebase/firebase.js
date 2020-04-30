@@ -276,5 +276,26 @@ class Firebase {
         //FIXME: implement this LMAO
     }
 
+    createHome(homeNameInput) {
+        if (!this.auth.currentUser) { return }
+        if (homeNameInput) {
+            homeNameInput = ""
+        }
+        let defaultHomeObject = {
+            "Home Name": homeNameInput,
+            "userIDs": [this.auth.currentUser.uid],
+            "Chores": [],
+            "Supplies": [],
+            "Payments": [],
+            "History": [],
+            "Users": [{
+                "Display Name": this.auth.currentUser.displayName,
+                "Completed Items": [],
+                "Venmo ID": "",
+                "User ID": this.auth.currentUser.uid
+            }]
+        }
+        return this.db.collection('Homes').add(defaultHomeObject)
+    }
 }
 export default Firebase
