@@ -1,4 +1,4 @@
-#HomelyWeb
+# HomelyWeb
 
 Homely is an online shared task manager for roommates to have a central location to see chores, supplies, and payments. 
 
