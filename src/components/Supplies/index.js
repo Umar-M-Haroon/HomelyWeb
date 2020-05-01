@@ -52,7 +52,6 @@ class Supplies extends Component {
                     this.setState({ loading: false });
                     var allSupplies = []
                     var allUsers = []
-                    var allHistory = []
                     var venmoUsers = []
                     var home = doc.data();
                     this.props.firebase.defaultHomeData = home
