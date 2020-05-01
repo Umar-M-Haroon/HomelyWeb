@@ -29,7 +29,6 @@ class Home extends Component {
         // Let's check if the browser supports notifications
         if (this.state.loading) { return }
         if (!("Notification" in window)) {
-            alert("This browser does not support desktop notification");
         } else if (Notification.permission === "granted") {
             // If it's okay let's create a notification
             new Notification("An Item was Added");
@@ -55,80 +54,88 @@ class Home extends Component {
                     this.props.history.push(ROUTES.CREATE_HOME)
                     return
                 }
-                snapshot.forEach(doc => {
-                    if (!this.state.loading) {
-                        //we have a change in the house, this isn't the first time loading.
-                        this.notifyMe()
+                var preferredHome = localStorage.getItem('preferredHome')
+                let doc = snapshot.docs[0]
+                if (preferredHome) {
+                    if (snapshot.docs.find(doc => doc.id === preferredHome)) {
+                        doc = snapshot.docs.find(doc => doc.id === preferredHome)
                     }
-                    this.setState({ loading: false });
-                    var allChores = []
-                    var allSupplies = []
-                    var allPayments = []
-                    var allUsers = []
-                    var allHistory = []
-                    var venmoUsers = []
-                    var home = doc.data();
-                    this.props.firebase.defaultHomeData = home
-                    this.props.firebase.defaultHome = doc.id
-                    home.Chores.forEach(chore => {
-                        if (chore.Completed !== true) {
-                            allChores.push(chore);
-                        }
-                    });
-                    home.Supplies.forEach(supply => {
-                        if (supply.Completed !== true) {
-                            allSupplies.push(supply);
-                        }
-                    });
-                    home.Payments.forEach(payment => {
-                        if (payment.Completed !== true) {
-                            allPayments.push(payment);
-                        }
-                    })
-                    //add each payment, supply, and chore that is finished to the allHistory list
-                    //iterates through the document's chores/supplies/payments and adds to an array that the home page can read
-                    home.History.forEach(historyItem => {
-                        allHistory.push(historyItem);
-                    })
 
-                    home.Users.forEach(user => {
-                        if (user["Venmo ID"] !== undefined && user["Venmo ID"] !== "") {
-                            venmoUsers.push(user)
-                        }
-                        allUsers.push(user);
-                        this.props.firebase.getImage(user["User ID"])
-                            .then((url) => {
-
-                                var userURLs = {}
-                                if (this.state.userURLs !== undefined) {
-                                    userURLs = this.state.userURLs
-                                }
-                                if (url === undefined) { return }
-                                var userID = user["User ID"]
-                                userURLs[userID] = url
-
-                                this.setState({
-                                    userURLs: userURLs
-                                })
-                            })
-                            .catch((error) => {
-                                // console.error(`Error getting URL ${error}`)
-                            })
-                    })
-                    this.setState({
-                        chores: allChores,
-                        supplies: allSupplies,
-                        payments: allPayments,
-                        history: allHistory,
-                        users: allUsers,
-                        home: home,
-                        venmoUsers: venmoUsers,
-                        loading: false,
-                    });
-                    //while also getting the categories, it also gets the users and sets a default home.
-                    //These are needed for assigning users.
+                }
+                // snapshot.forEach(doc => {
+                if (!this.state.loading) {
+                    //we have a change in the house, this isn't the first time loading.
+                    this.notifyMe()
+                }
+                this.setState({ loading: false });
+                var allChores = []
+                var allSupplies = []
+                var allPayments = []
+                var allUsers = []
+                var allHistory = []
+                var venmoUsers = []
+                var home = doc.data();
+                this.props.firebase.defaultHomeData = home
+                this.props.firebase.defaultHome = doc.id
+                home.Chores.forEach(chore => {
+                    if (chore.Completed !== true) {
+                        allChores.push(chore);
+                    }
+                });
+                home.Supplies.forEach(supply => {
+                    if (supply.Completed !== true) {
+                        allSupplies.push(supply);
+                    }
+                });
+                home.Payments.forEach(payment => {
+                    if (payment.Completed !== true) {
+                        allPayments.push(payment);
+                    }
                 })
-            }))
+                //add each payment, supply, and chore that is finished to the allHistory list
+                //iterates through the document's chores/supplies/payments and adds to an array that the home page can read
+                home.History.forEach(historyItem => {
+                    allHistory.push(historyItem);
+                })
+
+                home.Users.forEach(user => {
+                    if (user["Venmo ID"] !== undefined && user["Venmo ID"] !== "") {
+                        venmoUsers.push(user)
+                    }
+                    allUsers.push(user);
+                    this.props.firebase.getImage(user["User ID"])
+                        .then((url) => {
+
+                            var userURLs = {}
+                            if (this.state.userURLs !== undefined) {
+                                userURLs = this.state.userURLs
+                            }
+                            if (url === undefined) { return }
+                            var userID = user["User ID"]
+                            userURLs[userID] = url
+
+                            this.setState({
+                                userURLs: userURLs
+                            })
+                        })
+                        .catch((error) => {
+                            // console.error(`Error getting URL ${error}`)
+                        })
+                })
+                this.setState({
+                    chores: allChores,
+                    supplies: allSupplies,
+                    payments: allPayments,
+                    history: allHistory,
+                    users: allUsers,
+                    home: home,
+                    venmoUsers: venmoUsers,
+                    loading: false,
+                });
+                //while also getting the categories, it also gets the users and sets a default home.
+                //These are needed for assigning users.
+            })
+        )
     }
 
     componentWillUnmount() {
