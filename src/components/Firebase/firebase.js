@@ -5,7 +5,7 @@ import 'firebase/functions';
 import 'firebase/storage';
 import Chore from '../../Model/Chore';
 import Payment from '../../Model/Payment';
-import Supply from '../../Model/Supply';
+import Supply from '../../Model/Supply.ts';
 
 const config = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -29,18 +29,18 @@ class Firebase {
             this.storage = app.storage();
             //emulator setup. If you want to use firebase emulators, use the ./dir folder and keep this if statement in
             // if you dont, comment out this if statement and uncomment the persistence lines.
-            // if (window.location.hostname === "localhost") {
-            //     this.db.settings({
-            //         host: "localhost:8080",
-            //         ssl: false
-            //     })
-            // } else {
-            this.db.enablePersistence()
-                .catch(err => {
-                    console.log("Error setting persistence");
-                    console.log(err);
-                });
-            // }
+            if (window.location.hostname === "localhost") {
+                this.db.settings({
+                    host: "localhost:8080",
+                    ssl: false
+                })
+            } else {
+                this.db.enablePersistence()
+                    .catch(err => {
+                        console.log("Error setting persistence");
+                        console.log(err);
+                    });
+            }
             this.defaultHome = null
         } else {
             return

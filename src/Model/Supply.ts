@@ -1,7 +1,13 @@
-import { firestore } from "firebase"
+import { firestore } from "firebase";
 
 class Supply {
-    constructor(title, amount, description, completed, photo, id) {
+    title: String;
+    amount: Number;
+    description: String;
+    completed: Boolean;
+    photo: String;
+    id: firestore.Timestamp;
+    constructor(title: String, amount: Number, description: String, completed: Boolean, photo: String, id: firestore.Timestamp) {
         this.title = title
         this.amount = amount
         this.completed = completed
@@ -9,11 +15,11 @@ class Supply {
         this.id = id
         this.description = description
     }
-    toHistory(author, completed) {
-        if (this.id === null){
+    toHistory(author: String, completed: Boolean) {
+        if (this.id === null) {
             this.id = firestore.Timestamp.fromDate(new Date())
         }
-        var historyItem = {}
+        var historyItem = Object.create(null)
         historyItem.Author = author;
         historyItem.Completed = completed
         historyItem.Timestamp = firestore.Timestamp.fromDate(new Date())
@@ -21,12 +27,12 @@ class Supply {
         return historyItem
     }
     toFirestore() {
-        var firestoreData = {}
+        var firestoreData = Object.create(null)
         if (this.title !== null && this.title !== "") {
             firestoreData["Supply Title"] = this.title
         }
         if (this.amount !== null && this.amount > 0) {
-            firestoreData["Supply Amount"] = Number(parseFloat(this.amount).toFixed(2))
+            firestoreData["Supply Amount"] = this.amount.toFixed(2);
         }
         if (this.photo !== null && this.photo !== "") {
             firestoreData["Image Link"] = this.photo
@@ -45,8 +51,7 @@ class Supply {
 
         firestoreData.Timestamp = this.id
         firestoreData.Preset = false
-        this.toHistory()
-        return firestoreData 
+        return firestoreData
     }
 }
 
